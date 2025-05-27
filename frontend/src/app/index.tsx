@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './output.css'; // Import the generated Tailwind CSS
+import './input.css'; // Import the Tailwind CSS source
 import App from './App';
 
 const root = ReactDOM.createRoot(
