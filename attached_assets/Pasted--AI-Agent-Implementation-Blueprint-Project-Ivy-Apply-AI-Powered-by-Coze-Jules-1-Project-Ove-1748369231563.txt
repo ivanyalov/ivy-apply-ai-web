@@ -1,0 +1,76 @@
+🧠 AI Agent Implementation Blueprint
+Project: Ivy Apply AI (Powered by Coze + Jules)
+
+1. Project Overview
+Name: Ivy Apply AI
+Goal: Deliver a GPT-style AI assistant on a clean, minimalist website that helps users with university admissions — including document uploads, unlimited questions, and smart feedback.
+Core AI Stack: Coze (handles chat, file processing, and user prompts using Jules)
+2. Stack Choices
+Frontend: React + Tailwind CSS
+Backend: FastAPI
+Database: Supabase (PostgreSQL)
+Hosting: AWS (for both frontend and backend)
+AI Assistant: Coze + Jules by Google
+Payments: YooKassa API (for subscription flow)
+3. Chat Interface & User Flow
+🧭 Landing Page
+Hero section with:
+
+Headline
+Short description
+CTA: “Get Started”
+Additional Sections:
+
+About Ivy AI
+Feature Highlights (file upload, GPT-style chat, unlimited questions)
+How It Works (3-step explanation)
+FAQ
+Footer (privacy policy, terms, contact info)
+🔐 Authentication
+Sign up / log in with email + password
+
+Backend validates access:
+
+Free trial (via internal flag)
+Subscription status (via YooKassa)
+💸 Access Selection Page
+Option 1: Start Free Trial → triggers access via API
+Option 2: Subscribe – 990₽ / month → redirects to YooKassa checkout
+Optional text below: “Unlimited access, upload files, GPT-style chat interface.”
+✅ Access Verification
+If access granted: Redirect to Chat Page
+If access denied: Show error + subscribe prompt
+💬 Chat Interface Page
+Layout mimics GPT-style chat:
+
+Scrollable conversation window
+
+Input field at the bottom
+
+Two buttons:
+
+Upload File – handled via Coze (sent to Jules for parsing)
+Clear Chat – resets history and context
+4. Visual Design Style
+Style: Minimalist, modern (inspired by GPT, Notion, Perplexity)
+Canvas: White background
+Accent Color: Harvard Crimson #A51C30
+Text Color: Black / Dark Charcoal
+Fonts: Inter / Manrope / Helvetica Neue
+Layout: Clean spacing, intuitive flow, clear content hierarchy
+5. APIs & Tools
+POST /start-trial → backend activates free trial
+POST /subscribe → redirects to YooKassa payment
+GET /validate-access → checks subscription or trial
+POST /upload-file → forwards file to Coze (processed by Jules)
+POST /clear-session → resets session history
+6. MVP Use Cases
+✅ Essay review (via file uploads)
+✅ School match based on input or profile
+✅ Visa and application guidance
+✅ Longform Q&A in GPT-style conversation
+7. Future Extensions
+🔄 Persistent memory with vector store (Weaviate, Pinecone, or OpenAI)
+📄 Advanced document annotation or grading
+📱 Telegram bot extension for mobile access
+🎓 Personalized school shortlists with filters
