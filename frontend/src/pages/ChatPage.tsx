@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 
 interface Message {
@@ -19,6 +18,7 @@ const ChatPage: React.FC = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -45,24 +45,32 @@ const ChatPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // TODO: Replace with actual backend API call to Coze/Jules
-      const response = await fetch('/api/chat', {
+      const response = await fetch('http://localhost:8000/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: inputText }),
+        body: JSON.stringify({ 
+          message: inputText,
+          sessionId: sessionId 
+        }),
       });
 
       if (response.ok) {
         const data = await response.json();
+        if (data.sessionId) {
+          setSessionId(data.sessionId);
+        }
+        
         const aiMessage: Message = {
           id: Date.now() + 1,
-          text: data.response || "I understand you're asking about university admissions. Let me help you with that...",
+          text: data.message || "I understand you're asking about university admissions. Let me help you with that...",
           isUser: false,
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, aiMessage]);
+      } else {
+        throw new Error('Failed to get response');
       }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -95,22 +103,30 @@ const ChatPage: React.FC = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      if (sessionId) {
+        formData.append('sessionId', sessionId);
+      }
 
-      // TODO: Replace with actual backend API call
-      const response = await fetch('/api/upload-file', {
+      const response = await fetch('http://localhost:8000/api/upload', {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
         const data = await response.json();
+        if (data.sessionId) {
+          setSessionId(data.sessionId);
+        }
+        
         const aiMessage: Message = {
           id: Date.now() + 1,
-          text: data.analysis || `I've received your file "${file.name}". I'm analyzing it now and will provide feedback shortly.`,
+          text: data.message || `I've received your file "${file.name}". I'm analyzing it now and will provide feedback shortly.`,
           isUser: false,
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, aiMessage]);
+      } else {
+        throw new Error('Failed to upload file');
       }
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -132,13 +148,29 @@ const ChatPage: React.FC = () => {
   };
 
   const handleClearChat = async () => {
+    if (!sessionId) {
+      setMessages([
+        {
+          id: 1,
+          text: "Chat cleared! I'm ready to help you with your university admissions questions.",
+          isUser: false,
+          timestamp: new Date(),
+        }
+      ]);
+      return;
+    }
+
     try {
-      // TODO: Replace with actual backend API call
-      const response = await fetch('/api/clear-session', {
+      const response = await fetch('http://localhost:8000/api/clear-session', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId }),
       });
 
       if (response.ok) {
+        setSessionId(null);
         setMessages([
           {
             id: 1,
@@ -147,6 +179,8 @@ const ChatPage: React.FC = () => {
             timestamp: new Date(),
           }
         ]);
+      } else {
+        throw new Error('Failed to clear chat');
       }
     } catch (error) {
       console.error('Error clearing chat:', error);
