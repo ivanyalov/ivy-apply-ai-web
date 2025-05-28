@@ -1,51 +1,107 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../shared/context/AuthContext';
+import { authService } from '../shared/api/auth';
+import { paymentService } from '../shared/api/payment';
+import { subscriptionService, SubscriptionStatus } from '../shared/api/subscription';
 
 const AccessSelectionPage: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null);
+
+  useEffect(() => {
+    const checkSubscriptionStatus = async () => {
+      if (isAuthenticated) {
+        try {
+          const status = await subscriptionService.getStatus();
+          setSubscriptionStatus(status);
+        } catch (error) {
+          console.error('Error checking subscription status:', error);
+        }
+      }
+    };
+
+    checkSubscriptionStatus();
+  }, [isAuthenticated]);
 
   const handleStartTrial = async () => {
     try {
-      // TODO: Replace with actual backend URL
-      const response = await fetch('/api/start-trial', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      setIsLoading(true);
+      setError(null);
       
-      if (response.ok) {
-        navigate('/chat');
-      } else {
-        console.error('Failed to start trial');
-      }
+      const { message, expiresAt } = await subscriptionService.startTrial();
+      setSubscriptionStatus({
+        hasAccess: true,
+        type: 'trial',
+        expiresAt: new Date(expiresAt)
+      });
+      navigate('/chat');
     } catch (error) {
       console.error('Error starting trial:', error);
+      setError('An error occurred while starting the trial');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSubscribe = async () => {
     try {
-      // TODO: Replace with actual backend URL
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        // TODO: Redirect to YooKassa checkout
-        window.location.href = data.checkoutUrl || '/chat';
-      } else {
-        console.error('Failed to initiate subscription');
-      }
+      setIsLoading(true);
+      setError(null);
+
+      const { redirectUrl } = await paymentService.createPayment(990, 'RUB');
+      window.location.href = redirectUrl;
     } catch (error) {
       console.error('Error starting subscription:', error);
+      setError('An error occurred while processing your subscription');
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
+          <p className="text-gray-600 mb-6">You need to be signed in to access subscription options.</p>
+          <button
+            onClick={() => navigate('/auth')}
+            className="bg-harvard-crimson text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // If user already has an active subscription, show subscription info
+  if (subscriptionStatus?.hasAccess) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            {subscriptionStatus.type === 'trial' ? 'Active Trial' : 'Active Subscription'}
+          </h2>
+          <p className="text-gray-600 mb-6">
+            {subscriptionStatus.type === 'trial' 
+              ? `Your trial expires on ${new Date(subscriptionStatus.expiresAt!).toLocaleDateString()}`
+              : 'You have full access to all features'}
+          </p>
+          <button
+            onClick={() => navigate('/chat')}
+            className="bg-harvard-crimson text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
+          >
+            Go to Chat
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -54,6 +110,12 @@ const AccessSelectionPage: React.FC = () => {
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Access Plan</h2>
           <p className="text-lg text-gray-600">Select the option that works best for you</p>
         </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-8 mt-12">
           {/* Free Trial Option */}
@@ -87,9 +149,10 @@ const AccessSelectionPage: React.FC = () => {
               </ul>
               <button
                 onClick={handleStartTrial}
-                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+                disabled={isLoading}
+                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Start Free Trial
+                {isLoading ? 'Processing...' : 'Start Free Trial'}
               </button>
             </div>
           </div>
@@ -136,9 +199,10 @@ const AccessSelectionPage: React.FC = () => {
               </ul>
               <button
                 onClick={handleSubscribe}
-                className="w-full bg-harvard-crimson text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-800 transition-colors"
+                disabled={isLoading}
+                className="w-full bg-harvard-crimson text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Subscribe Now
+                {isLoading ? 'Processing...' : 'Subscribe Now'}
               </button>
             </div>
           </div>

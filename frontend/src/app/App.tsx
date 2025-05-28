@@ -4,6 +4,7 @@ import LandingPage from '../pages/LandingPage';
 import AuthPage from '../pages/AuthPage';
 import AccessSelectionPage from '../pages/AccessSelectionPage';
 import ChatPage from '../pages/ChatPage';
+import PaymentSuccessPage from '../pages/PaymentSuccessPage';
 import ProtectedRoute from '../shared/components/ProtectedRoute';
 
 const App: React.FC = () => {
@@ -16,7 +17,7 @@ const App: React.FC = () => {
           <Route 
             path="/access" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireSubscription={false}>
                 <AccessSelectionPage />
               </ProtectedRoute>
             } 
@@ -24,8 +25,16 @@ const App: React.FC = () => {
           <Route 
             path="/chat" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireSubscription={true}>
                 <ChatPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/payment/success" 
+            element={
+              <ProtectedRoute requireSubscription={false}>
+                <PaymentSuccessPage />
               </ProtectedRoute>
             } 
           />
