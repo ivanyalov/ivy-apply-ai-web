@@ -1,18 +1,37 @@
-
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../shared/context/AuthContext';
 
 const AuthPage: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { signIn, signUp } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Get the redirect path from location state or default to /access
+  const from = (location.state as any)?.from?.pathname || '/access';
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement actual authentication logic
-    console.log('Auth attempt:', { email, password, isSignUp });
-    navigate('/access');
+    setError('');
+    setIsLoading(true);
+
+    try {
+      if (isSignUp) {
+        await signUp({ email, password });
+      } else {
+        await signIn({ email, password });
+      }
+      navigate(from, { replace: true });
+    } catch (err: any) {
+      setError(err.response?.data?.message || `Failed to ${isSignUp ? 'sign up' : 'sign in'}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,12 +84,20 @@ const AuthPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
+          {error && (
+            <div className="text-red-500 text-sm text-center">{error}</div>
+          )}
+
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-harvard-crimson hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson"
+              disabled={isLoading}
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-harvard-crimson hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSignUp ? 'Sign up' : 'Sign in'}
+              {isLoading 
+                ? (isSignUp ? 'Creating account...' : 'Signing in...') 
+                : (isSignUp ? 'Sign up' : 'Sign in')}
             </button>
           </div>
         </form>
