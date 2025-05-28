@@ -22,7 +22,7 @@ router.post('/create', authMiddleware, async (req, res) => {
         const subscription = await createSubscription({
             userId,
             status: 'active',
-            planType: 'premium',
+            planType: 'monthly',
             startDate: new Date(),
             endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         });
