@@ -1,10 +1,18 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path'; // Import path module
 import chatRoutes from './routes/chat';
+import authRoutes from './routes/auth';
+import { pool } from './config/database';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8000; // Backend typically runs on a different port e.g. 8000
 
+// Middleware
+app.use(cors());
 app.use(express.json()); // Middleware to parse JSON bodies
 
 // Enable CORS
@@ -25,7 +33,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Chat routes
-app.use('/api', chatRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/auth', authRoutes);
 
 // Placeholder API Endpoints
 app.post('/start-trial', (req: Request, res: Response) => {
@@ -51,6 +60,11 @@ app.post('/upload-file', (req: Request, res: Response) => {
 app.post('/clear-session', (req: Request, res: Response) => {
   // TODO: Implement session clearing logic
   res.status(200).json({ message: 'Session cleared (placeholder)' });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
 });
 
 // Error handling middleware
