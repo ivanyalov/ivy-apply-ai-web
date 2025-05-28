@@ -1,45 +1,56 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from '../pages/LandingPage';
+import { AuthProvider } from '../shared/context/AuthContext';
+import { SubscriptionProvider } from '../shared/context/SubscriptionContext';
+import { ProtectedRoute } from '../shared/components/ProtectedRoute';
 import AuthPage from '../pages/AuthPage';
 import AccessSelectionPage from '../pages/AccessSelectionPage';
 import ChatPage from '../pages/ChatPage';
 import PaymentSuccessPage from '../pages/PaymentSuccessPage';
-import ProtectedRoute from '../shared/components/ProtectedRoute';
+import LandingPage from '../pages/LandingPage';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="min-h-screen bg-white">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route 
-            path="/access" 
-            element={
-              <ProtectedRoute requireSubscription={false}>
-                <AccessSelectionPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/chat" 
-            element={
-              <ProtectedRoute requireSubscription={true}>
-                <ChatPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/payment/success" 
-            element={
-              <ProtectedRoute requireSubscription={false}>
-                <PaymentSuccessPage />
-              </ProtectedRoute>
-            } 
-          />
-        </Routes>
-      </div>
+      <AuthProvider>
+        <SubscriptionProvider>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route 
+              path="/auth" 
+              element={
+                <ProtectedRoute>
+                  <AuthPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/access" 
+              element={
+                <ProtectedRoute>
+                  <AccessSelectionPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/payment/success" 
+              element={
+                <ProtectedRoute>
+                  <PaymentSuccessPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute>
+                  <ChatPage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </SubscriptionProvider>
+      </AuthProvider>
     </Router>
   );
 };
