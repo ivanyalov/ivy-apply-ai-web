@@ -37,8 +37,12 @@ class AuthService {
     localStorage.removeItem('token');
   }
 
-  private getAuthHeader() {
+  getAuthHeader() {
     return this.token ? { Authorization: `Bearer ${this.token}` } : {};
+  }
+
+  getToken(): string | null {
+    return this.token;
   }
 
   async signUp(credentials: SignUpCredentials): Promise<AuthResponse> {
