@@ -1,73 +1,69 @@
-import { Router, Request, Response } from 'express';
-import multer from 'multer';
-import { CozeService } from '../services/cozeService';
+import express, { Request, Response } from 'express';
+import { cozeService } from '../services/cozeService';
+import { ChatEventType } from '@coze/api';
 
-const router = Router();
-const cozeService = new CozeService();
+const router = express.Router();
 
-// Configure multer for file uploads
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
-  },
-});
-
-// Chat endpoint
-router.post('/chat', async (req: Request, res: Response): Promise<void> => {
+// Regular message endpoint
+router.post('/message', async (req: Request, res: Response) => {
   try {
-    const { message, sessionId } = req.body;
-    
-    if (!message) {
-      res.status(400).json({ error: 'Message is required' });
-      return;
-    }
-
-    const response = await cozeService.sendMessage(message, sessionId);
+    const { message, conversationHistory } = req.body;
+    const response = await cozeService.sendMessage(message, conversationHistory);
     res.json(response);
   } catch (error) {
-    console.error('Error in chat endpoint:', error);
-    res.status(500).json({ error: 'Failed to process message' });
+    console.error('Error in /message endpoint:', error);
+    res.status(500).json({ error: 'Failed to send message' });
   }
 });
 
-// File upload endpoint
-router.post('/upload', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
-  try {
-    if (!req.file) {
-      res.status(400).json({ error: 'No file uploaded' });
-      return;
-    }
+// Streaming endpoint
+router.post('/stream', async (req: Request, res: Response) => {
+  const { message, conversationHistory } = req.body;
 
-    const { sessionId } = req.body;
-    const response = await cozeService.uploadFile(
-      req.file.buffer,
-      req.file.originalname,
-      sessionId
-    );
+  // Set headers for SSE
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  try {
+    // Send start event
+    res.write(`data: ${JSON.stringify({ type: 'start' })}\n\n`);
+
+    const stream = await cozeService.streamMessage(message, conversationHistory);
     
-    res.json(response);
+    for await (const chunk of stream) {
+      if (chunk.event === ChatEventType.CONVERSATION_MESSAGE_DELTA) {
+        // Send delta event with content
+        res.write(`data: ${JSON.stringify({
+          type: 'delta',
+          content: chunk.data.content
+        })}\n\n`);
+      } else if (chunk.event === ChatEventType.CONVERSATION_MESSAGE_COMPLETED) {
+        // Send done event
+        res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
+      }
+    }
   } catch (error) {
-    console.error('Error in upload endpoint:', error);
-    res.status(500).json({ error: 'Failed to upload file' });
+    console.error('Error in /stream endpoint:', error);
+    // Send error event
+    res.write(`data: ${JSON.stringify({
+      type: 'error',
+      message: error instanceof Error ? error.message : 'Unknown error occurred'
+    })}\n\n`);
+  } finally {
+    res.end();
   }
 });
 
-// Clear session endpoint
-router.post('/clear-session', async (req: Request, res: Response): Promise<void> => {
+// Clear history endpoint
+router.delete('/clear/:conversationId', async (req: Request, res: Response) => {
   try {
-    const { sessionId } = req.body;
-    
-    if (!sessionId) {
-      res.status(400).json({ error: 'Session ID is required' });
-      return;
-    }
-
-    await cozeService.clearSession(sessionId);
-    res.json({ message: 'Session cleared successfully' });
+    const { conversationId } = req.params;
+    await cozeService.clearHistory(conversationId);
+    res.json({ success: true });
   } catch (error) {
-    console.error('Error in clear-session endpoint:', error);
-    res.status(500).json({ error: 'Failed to clear session' });
+    console.error('Error in /clear endpoint:', error);
+    res.status(500).json({ error: 'Failed to clear history' });
   }
 });
 

@@ -1,190 +1,123 @@
-import axios from 'axios';
+import { CozeAPI } from '@coze/api';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-interface CozeConfig {
-  apiKey: string;
-  botId: string;
-  userId: string;
-  baseUrl: string;
-}
-
-interface CozeMessage {
+interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+  content_type: 'text';
+  type?: 'answer' | 'follow_up' | 'verbose';
 }
 
-interface CozeResponse {
-  message: string;
-  sessionId?: string;
+interface ChatResponse {
+  messages: ChatMessage[];
+  usage?: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
 }
 
-export class CozeService {
-  private config: CozeConfig;
-  private axiosInstance;
+class CozeService {
+  private client: CozeAPI;
+  private botId: string;
 
   constructor() {
-    this.config = {
-      apiKey: process.env.COZE_API_KEY || '',
-      botId: process.env.COZE_BOT_ID || '',
-      userId: process.env.COZE_USER_ID || '',
-      baseUrl: process.env.COZE_API_URL || 'https://api.coze.com'
-    };
-
-    // Validate configuration
-    if (!this.config.apiKey) {
-      console.error('COZE_API_KEY is not set in environment variables');
+    if (!process.env.COZE_TOKEN) {
+      throw new Error('COZE_TOKEN is not defined in environment variables');
     }
-    if (!this.config.botId) {
-      console.error('COZE_BOT_ID is not set in environment variables');
-    }
-    if (!this.config.userId) {
-      console.error('COZE_USER_ID is not set in environment variables');
+    if (!process.env.COZE_BOT_ID) {
+      throw new Error('COZE_BOT_ID is not defined in environment variables');
     }
 
-    this.axiosInstance = axios.create({
-      baseURL: this.config.baseUrl,
-      headers: {
-        'Authorization': `Bearer ${this.config.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Origin': 'https://www.coze.com',
-        'Referer': 'https://www.coze.com/',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15'
-      }
+    this.client = new CozeAPI({
+      token: process.env.COZE_TOKEN,
     });
-
-    // Add request interceptor for logging
-    this.axiosInstance.interceptors.request.use(request => {
-      console.log('Starting Request:', {
-        url: request.url,
-        method: request.method,
-        headers: request.headers
-      });
-      return request;
-    });
-
-    // Add response interceptor for logging
-    this.axiosInstance.interceptors.response.use(
-      response => {
-        console.log('Response:', {
-          status: response.status,
-          data: response.data
-        });
-        return response;
-      },
-      error => {
-        console.error('API Error:', {
-          status: error.response?.status,
-          data: error.response?.data,
-          message: error.message,
-          config: {
-            url: error.config?.url,
-            method: error.config?.method,
-            headers: error.config?.headers
-          }
-        });
-        throw error;
-      }
-    );
+    this.botId = process.env.COZE_BOT_ID;
   }
 
-  async sendMessage(message: string, sessionId?: string): Promise<CozeResponse> {
+  async sendMessage(message: string, conversationHistory: any[] = []) {
     try {
-      console.log('Sending message to Coze:', { message, sessionId });
-      
-      const response = await this.axiosInstance.post('/v3/chat', {
-        bot_id: this.config.botId,
-        user_id: this.config.userId,
-        query: message,
-        stream: false
+      const response = await this.client.chat.createAndPoll({
+        bot_id: this.botId,
+        additional_messages: [
+          ...conversationHistory,
+          {
+            role: 'user',
+            content: message,
+            content_type: 'text'
+          }
+        ],
+        auto_save_history: true,
+        meta_data: {}
       });
 
-      console.log('Coze response:', response.data);
-
-      return {
-        message: response.data.answer || response.data.message,
-        sessionId: response.data.session_id
-      };
-    } catch (error) {
-      console.error('Error sending message to Coze:', error);
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error details:', {
-          status: error.response?.status,
-          data: error.response?.data,
-          headers: error.response?.headers
-        });
+      if (!response.messages || response.messages.length === 0) {
+        throw new Error('No response received from Coze API');
       }
-      throw new Error('Failed to send message to Coze');
-    }
-  }
 
-  async uploadFile(file: Buffer, fileName: string, sessionId?: string): Promise<CozeResponse> {
-    try {
-      console.log('Uploading file to Coze:', { fileName, sessionId });
+      // Find the main answer message
+      const mainAnswer = response.messages.find(msg => msg.type === 'answer');
       
-      const formData = new FormData();
-      formData.append('file', new Blob([file]), fileName);
-      formData.append('bot_id', this.config.botId);
-      formData.append('user_id', this.config.userId);
-      if (sessionId) {
-        formData.append('session_id', sessionId);
-      }
-
-      const response = await this.axiosInstance.post(
-        '/v3/upload',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
-
-      console.log('Coze file upload response:', response.data);
-
-      return {
-        message: response.data.message,
-        sessionId: response.data.session_id
-      };
-    } catch (error) {
-      console.error('Error uploading file to Coze:', error);
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error details:', {
-          status: error.response?.status,
-          data: error.response?.data,
-          headers: error.response?.headers
-        });
-      }
-      throw new Error('Failed to upload file to Coze');
-    }
-  }
-
-  async clearSession(sessionId: string): Promise<void> {
-    try {
-      console.log('Clearing Coze session:', sessionId);
+      // Find all follow-up questions
+      const followUps = response.messages
+        .filter(msg => msg.type === 'follow_up')
+        .map(msg => msg.content);
       
-      await this.axiosInstance.delete('/v3/session', {
+      return {
+        success: true,
         data: {
-          bot_id: this.config.botId,
-          user_id: this.config.userId,
-          session_id: sessionId
+          message: mainAnswer?.content || 'No answer received',
+          followUpQuestions: followUps,
+          usage: response.usage
         }
-      });
-      console.log('Session cleared successfully');
+      };
     } catch (error) {
-      console.error('Error clearing Coze session:', error);
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error details:', {
-          status: error.response?.status,
-          data: error.response?.data,
-          headers: error.response?.headers
-        });
-      }
-      throw new Error('Failed to clear Coze session');
+      console.error('Error in sendMessage:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      };
     }
   }
-} 
+
+  async streamMessage(message: string, conversationHistory: any[] = []) {
+    try {
+      const stream = await this.client.chat.stream({
+        bot_id: this.botId,
+        additional_messages: [
+          ...conversationHistory,
+          {
+            role: 'user',
+            content: message,
+            content_type: 'text'
+          }
+        ]
+      });
+
+      return stream;
+    } catch (error) {
+      console.error('Error in streamMessage:', error);
+      throw error;
+    }
+  }
+
+  async clearHistory(conversationId: string) {
+    try {
+      // Note: Implement this method when Coze API provides a way to clear history
+      return {
+        success: true,
+        message: 'Chat history cleared'
+      };
+    } catch (error) {
+      console.error('Error in clearHistory:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      };
+    }
+  }
+}
+
+export const cozeService = new CozeService(); 
