@@ -50,18 +50,27 @@ const ChatPage: React.FC = () => {
       }));
   };
 
-  const handleSendMessage = async () => {
-    if (!inputText.trim()) return;
+  const handleSendMessage = async (messageTextFromButton?: string) => {
+    const textToSend = messageTextFromButton || inputText.trim();
+    if (!textToSend) return;
+
+    // Clear previous follow-up questions from all messages
+    setMessages(prev => prev.map(msg => ({ ...msg, followUpQuestions: undefined })));
 
     const userMessage: Message = {
       id: nextMessageId.current++,
-      text: inputText,
+      text: textToSend,
       isUser: true,
       timestamp: new Date(),
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputText('');
+    // Clear input box immediately if sending from button, otherwise clear after adding user message
+    if (!messageTextFromButton) {
+      setInputText('');
+    } else {
+      setInputText(''); // Also clear input if sending via button click
+    }
     setIsLoading(true);
 
     try {
@@ -72,7 +81,7 @@ const ChatPage: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: inputText,
+          message: textToSend,
           conversationHistory: getConversationHistory()
         })
       });
@@ -93,6 +102,8 @@ const ChatPage: React.FC = () => {
         };
         setMessages(prev => [...prev, aiMessage]);
 
+        // No need to explicitly handle follow-up questions here, they are included in the message object
+
       } else {
         // Handle error case from backend
         const errorMessage: Message = {
@@ -109,7 +120,7 @@ const ChatPage: React.FC = () => {
     } catch (error) {
       console.error('Error sending message:', error);
       setIsLoading(false);
-      
+
       const errorMessage: Message = {
         id: nextMessageId.current++,
         text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
@@ -148,7 +159,7 @@ const ChatPage: React.FC = () => {
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSendMessage(); // Call with no arguments to use inputText
     }
   };
 
@@ -206,7 +217,7 @@ const ChatPage: React.FC = () => {
                 {message.followUpQuestions.map((question, index) => (
                   <button
                     key={`follow-up-${message.id}-${index}`}
-                    onClick={() => setInputText(question)} // Set input text to the question
+                    onClick={() => handleSendMessage(question)} // Send the follow-up question
                     className="px-3 py-1 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-100 transition-colors"
                   >
                     {question}
@@ -248,7 +259,7 @@ const ChatPage: React.FC = () => {
             disabled={isLoading}
           />
           <button
-            onClick={handleSendMessage}
+            onClick={() => handleSendMessage()}
             disabled={isLoading || !inputText.trim()}
             className={`px-6 py-2 rounded-lg font-medium ${
               isLoading || !inputText.trim()
