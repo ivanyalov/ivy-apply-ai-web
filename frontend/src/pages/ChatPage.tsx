@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
   id: number;
   text: string;
   isUser: boolean;
   timestamp: Date;
+  followUpQuestions?: string[]; // Optional field for follow-up questions
 }
 
 interface ConversationHistory {
@@ -60,11 +63,10 @@ const ChatPage: React.FC = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputText('');
     setIsLoading(true);
-    setStreamingText('');
 
     try {
-      // Create a POST request to the streaming endpoint
-      const response = await fetch('http://localhost:8000/api/chat/stream', {
+      // Create a POST request to the message endpoint
+      const response = await fetch('http://localhost:8000/api/chat/message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,83 +81,37 @@ const ChatPage: React.FC = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const reader = response.body?.getReader();
-      if (!reader) {
-        throw new Error('No reader available');
+      const result = await response.json();
+
+      if (result.success) {
+        const aiMessage: Message = {
+          id: nextMessageId.current++,
+          text: result.data.message, // Main answer
+          followUpQuestions: result.data.followUpQuestions, // Add follow-up questions
+          isUser: false,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, aiMessage]);
+
+      } else {
+        // Handle error case from backend
+        const errorMessage: Message = {
+          id: nextMessageId.current++,
+          text: result.error || 'An error occurred.',
+          isUser: false,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
       }
 
-      const decoder = new TextDecoder();
-      let buffer = '';
-      let fullMessageText = ''; // Local variable to build the full message
-      let currentAIMessageId: number | null = null; // To hold the ID of the current AI message being streamed
+      setIsLoading(false);
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        // Add new chunk to buffer
-        buffer += decoder.decode(value, { stream: true });
-
-        // Process complete events in buffer
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || ''; // Keep the last incomplete line in buffer
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              
-              if (data.type === 'start') {
-                // Handle start event
-                console.log('Stream started');
-              } else if (data.type === 'delta') {
-                console.log('Received delta:', data.content);
-                
-                if (currentAIMessageId === null) {
-                  // Create a new message object for the AI's response on the first delta
-                  currentAIMessageId = nextMessageId.current++;
-                  const initialAIMessage: Message = {
-                    id: currentAIMessageId,
-                    text: data.content,
-                    isUser: false,
-                    timestamp: new Date(),
-                  };
-                  setMessages(prev => [...prev, initialAIMessage]);
-                } else {
-                  // Update the existing AI message with new content
-                  setMessages(prev => 
-                    prev.map(msg =>
-                      msg.id === currentAIMessageId ? { ...msg, text: msg.text + data.content } : msg
-                    )
-                  );
-                }
-                setStreamingText(prev => prev + data.content); // Keep this for the typing indicator/partial display
-                fullMessageText += data.content; // Continue building full text locally
-
-              } else if (data.type === 'done') {
-                console.log('Stream done. Finalizing message.');
-                // Message is already added and updated in delta; now just clean up
-                setStreamingText('');
-                setIsLoading(false);
-                currentAIMessageId = null; // Reset for next message
-
-              } else if (data.type === 'error') {
-                console.error('Received error:', data.message);
-                throw new Error(data.message);
-              }
-            } catch (e) {
-              console.error('Error parsing SSE data:', e);
-            }
-          }
-        }
-      }
     } catch (error) {
       console.error('Error sending message:', error);
       setIsLoading(false);
-      setStreamingText('');
       
       const errorMessage: Message = {
-        id: Date.now() + 1,
+        id: nextMessageId.current++,
         text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
         isUser: false,
         timestamp: new Date(),
@@ -216,14 +172,22 @@ const ChatPage: React.FC = () => {
             key={message.id}
             className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
           >
-            <div
-              className={`max-w-3xl px-4 py-3 rounded-lg ${
-                message.isUser
-                  ? 'bg-harvard-crimson text-white'
-                  : 'bg-gray-100 text-gray-900'
-              }`}
-            >
-              <p className="whitespace-pre-wrap">{message.text}</p>
+            <div className={`max-w-3xl px-4 py-3 rounded-lg ${
+              message.isUser
+                ? 'bg-harvard-crimson text-white'
+                : 'bg-gray-100 text-gray-900'
+            }`}>
+              {message.isUser ? (
+                <p className="whitespace-pre-wrap">{message.text}</p>
+              ) : (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}
+                  components={{
+                    p: ({ node, ...props }) => <p className="whitespace-pre-wrap mb-4" {...props} />
+                  }}
+                >
+                  {message.text}
+                </ReactMarkdown>
+              )}
               <p className={`text-xs mt-1 ${
                 message.isUser ? 'text-red-100' : 'text-gray-500'
               }`}>
@@ -233,13 +197,24 @@ const ChatPage: React.FC = () => {
           </div>
         ))}
         
-        {streamingText && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-900 max-w-3xl px-4 py-3 rounded-lg">
-              <p className="whitespace-pre-wrap">{streamingText}</p>
+        {/* Render follow-up questions as buttons */}
+        {messages.map((message) => (
+          !message.isUser && message.followUpQuestions && message.followUpQuestions.length > 0 && (
+            <div key={`follow-ups-${message.id}`} className="flex justify-start mt-2">
+              <div className="flex flex-wrap gap-2">
+                {message.followUpQuestions.map((question, index) => (
+                  <button
+                    key={`follow-up-${message.id}-${index}`}
+                    onClick={() => setInputText(question)} // Set input text to the question
+                    className="px-3 py-1 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-100 transition-colors"
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )
+        ))}
         
         {isLoading && !streamingText && (
           <div className="flex justify-start">
