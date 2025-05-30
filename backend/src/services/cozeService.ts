@@ -52,7 +52,7 @@ class CozeService {
         auto_save_history: true,
         meta_data: {}
       });
-
+console.log(response);
       if (!response.messages || response.messages.length === 0) {
         throw new Error('No response received from Coze API');
       }
