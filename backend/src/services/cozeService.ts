@@ -1,13 +1,21 @@
 import { CozeAPI } from '@coze/api';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 dotenv.config();
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
-  content_type: 'text';
+  content_type: 'text' | 'object_string';
   type?: 'answer' | 'follow_up' | 'verbose';
+}
+
+interface ObjectStringItem {
+  type: 'text' | 'file' | 'image' | 'audio';
+  text?: string;
+  file_id?: string;
+  file_url?: string;
 }
 
 interface ChatResponse {
@@ -37,30 +45,50 @@ class CozeService {
     this.botId = process.env.COZE_BOT_ID;
   }
 
-  async sendMessage(message: string, conversationHistory: any[] = []) {
+  async uploadFile(file: Express.Multer.File): Promise<string> {
+    try {
+      const fileStream = fs.createReadStream(file.path);
+      const response = await this.client.files.upload({
+        file: fileStream as any
+      });
+
+      fs.unlink(file.path, (err: any) => {
+        if (err) console.error('Error deleting temporary file:', err);
+      });
+
+      if (!response || !response.id) {
+        throw new Error('File upload to Coze API failed or returned no ID.');
+      }
+
+      return response.id;
+    } catch (error) {
+      console.error('Error in uploadFile to Coze:', error);
+      throw error;
+    }
+  }
+
+  async sendMessage(message: string | ObjectStringItem[], conversationHistory: any[] = []) {
     try {
       const response = await this.client.chat.createAndPoll({
         bot_id: this.botId,
         additional_messages: [
-          ...conversationHistory,
+          ...conversationHistory as any[],
           {
             role: 'user',
-            content: message,
-            content_type: 'text'
+            content: typeof message === 'string' ? message : message,
+            content_type: typeof message === 'string' ? 'text' : 'object_string'
           }
         ],
         auto_save_history: true,
         meta_data: {}
       });
-console.log(response);
+
       if (!response.messages || response.messages.length === 0) {
         throw new Error('No response received from Coze API');
       }
 
-      // Find the main answer message
       const mainAnswer = response.messages.find(msg => msg.type === 'answer');
       
-      // Find all follow-up questions
       const followUps = response.messages
         .filter(msg => msg.type === 'follow_up')
         .map(msg => msg.content);
@@ -87,7 +115,7 @@ console.log(response);
       const stream = await this.client.chat.stream({
         bot_id: this.botId,
         additional_messages: [
-          ...conversationHistory,
+          ...conversationHistory as any[],
           {
             role: 'user',
             content: message,
@@ -105,7 +133,6 @@ console.log(response);
 
   async clearHistory(conversationId: string) {
     try {
-      // Note: Implement this method when Coze API provides a way to clear history
       return {
         success: true,
         message: 'Chat history cleared'

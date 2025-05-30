@@ -8,13 +8,26 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   followUpQuestions?: string[]; // Optional field for follow-up questions
+  // Fields for attached file details (for display)
+  fileName?: string;
+  fileSize?: number;
+  fileType?: string; // MIME type
 }
 
 interface ConversationHistory {
   role: 'user' | 'assistant';
   content: string;
-  content_type: 'text';
+  content_type: 'text' | 'object_string'; // Allow object_string for files
 }
+
+interface ObjectStringItem {
+  type: 'text' | 'file' | 'image' | 'audio';
+  text?: string;
+  file_id?: string | null;
+  file_url?: string | null;
+}
+
+interface MessageContent extends Array<ObjectStringItem> {}
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -31,6 +44,7 @@ const ChatPage: React.FC = () => {
   const [streamingText, setStreamingText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const nextMessageId = useRef(2);
+  const [attachedFile, setAttachedFile] = useState<{ file: File, fileId: string | null } | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -52,28 +66,65 @@ const ChatPage: React.FC = () => {
 
   const handleSendMessage = async (messageTextFromButton?: string) => {
     const textToSend = messageTextFromButton || inputText.trim();
-    if (!textToSend) return;
+    if (!textToSend && !attachedFile) return; // Prevent sending empty message with no file
 
     // Clear previous follow-up questions from all messages
     setMessages(prev => prev.map(msg => ({ ...msg, followUpQuestions: undefined })));
+
+    // Clear attached file display immediately
+    setAttachedFile(null);
 
     const userMessage: Message = {
       id: nextMessageId.current++,
       text: textToSend,
       isUser: true,
       timestamp: new Date(),
+      // Add file details to the message object if a file is attached
+      fileName: attachedFile?.file.name,
+      fileSize: attachedFile?.file.size,
+      fileType: attachedFile?.file.type,
     };
 
     setMessages(prev => [...prev, userMessage]);
+
     // Clear input box immediately if sending from button, otherwise clear after adding user message
     if (!messageTextFromButton) {
       setInputText('');
     } else {
       setInputText(''); // Also clear input if sending via button click
     }
+
     setIsLoading(true);
 
     try {
+      // Construct the content based on text and file ID
+      let messageContent: ObjectStringItem[] = [];
+
+      if (textToSend) {
+        messageContent.push({ type: 'text', text: textToSend });
+      }
+
+      if (attachedFile) {
+        // Assuming the uploaded file is an image or file type supported by Coze
+        // We might need to determine the exact type (file, image, audio) based on the file extension or mime type.
+        // For simplicity, let's assume it's a generic 'file' or 'image' for now.
+        // A more robust implementation would check the file type.
+        // Coze API supports 'file', 'image', 'audio'. We should map MIME types.
+        let cozeFileType: 'file' | 'image' | 'audio' = 'file'; // Default to 'file'
+        if (attachedFile.file.type.startsWith('image/')) {
+          cozeFileType = 'image';
+        } else if (attachedFile.file.type.startsWith('audio/')) {
+          cozeFileType = 'audio';
+        }
+        messageContent.push({ type: cozeFileType, file_id: attachedFile.fileId });
+      }
+
+      if (messageContent.length === 0) {
+         // Should not happen if textToSend or attachedFile is checked
+         setIsLoading(false);
+         return;
+      }
+
       // Create a POST request to the message endpoint
       const response = await fetch('http://localhost:8000/api/chat/message', {
         method: 'POST',
@@ -81,7 +132,7 @@ const ChatPage: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: textToSend,
+          message: messageContent.length === 1 && messageContent[0].type === 'text' ? textToSend : messageContent, // Send messageContent if multimodal
           conversationHistory: getConversationHistory()
         })
       });
@@ -154,12 +205,49 @@ const ChatPage: React.FC = () => {
         timestamp: new Date(),
       }
     ]);
+    setAttachedFile(null); // Also clear attached file when clearing chat
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage(); // Call with no arguments to use inputText
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log('Selected file:', file);
+      setIsLoading(true); // Indicate loading while uploading file
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Send file to the backend upload endpoint
+      fetch('http://localhost:8000/api/chat/upload', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && data.fileId) {
+          console.log('File uploaded, received ID:', data.fileId);
+          setAttachedFile({ file, fileId: data.fileId }); // Save the received file and its ID
+          // No alert needed, file name will be displayed
+        } else {
+          console.error('File upload failed:', data.error);
+          alert('File upload failed.');
+        }
+      })
+      .catch(error => {
+        console.error('Error during file upload fetch:', error);
+        alert('Error during file upload.');
+      })
+      .finally(() => {
+        setIsLoading(false); // End loading indicator
+        e.target.value = ''; // Clear the input so the same file can be selected again
+      });
     }
   };
 
@@ -189,16 +277,36 @@ const ChatPage: React.FC = () => {
                 : 'bg-gray-100 text-gray-900'
             }`}>
               {message.isUser ? (
-                <p className="whitespace-pre-wrap">{message.text}</p>
+                // Render user message
+                message.fileName ? (
+                  // Render attached file for user
+                  <div className="flex items-center space-x-2">
+                    {/* File icon (you can use a library or custom icons here) */}
+                    <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-white text-gray-900 rounded">
+                      {/* Simple text icon based on type */}
+                      <span className="text-xs font-bold">{message.fileType?.split('/')[1]?.toUpperCase().substring(0, 3) || 'FILE'}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-white">{message.fileName}</p>
+                      {message.fileSize !== undefined && (
+                        <p className="text-xs text-blue-100">{(message.fileSize / 1024).toFixed(2)} KB</p>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  // Render regular text message for user
+                  <p className="whitespace-pre-wrap">{message.text}</p>
+                )
               ) : (
+                // Render bot message (Markdown)
                 <ReactMarkdown remarkPlugins={[remarkGfm]}
-                  components={{
-                    p: ({ node, ...props }) => <p className="whitespace-pre-wrap mb-4" {...props} />,
-                    a: ({ node, ...props }) => <a className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
-                  }}
-                >
-                  {message.text}
-                </ReactMarkdown>
+                   components={{
+                     p: ({ node, ...props }) => <p className="whitespace-pre-wrap mb-4" {...props} />,
+                     a: ({ node, ...props }) => <a className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+                    }}
+                 >
+                   {message.text}
+                 </ReactMarkdown>
               )}
               <p className={`text-xs mt-1 ${
                 message.isUser ? 'text-red-100' : 'text-gray-500'
@@ -249,6 +357,20 @@ const ChatPage: React.FC = () => {
       {/* Input Area */}
       <div className="border-t border-gray-200 px-6 py-4">
         <div className="flex space-x-4">
+          {/* Hidden file input */}
+          <input
+            type="file"
+            id="file-upload"
+            className="hidden"
+            onChange={handleFileSelect}
+          />
+          {/* File upload button */}
+          <label
+            htmlFor="file-upload"
+            className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            <span className="text-2xl font-bold text-gray-700">+</span>
+          </label>
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
@@ -258,11 +380,38 @@ const ChatPage: React.FC = () => {
             rows={1}
             disabled={isLoading}
           />
+          {attachedFile && (
+            // Display attached file icon, name, and size
+            <div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded-lg text-gray-800">
+              {/* File icon */}
+              <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded">
+                {/* Simple text icon based on extension or type */}
+                <span className="text-xs font-bold">
+                  {attachedFile.file.name.split('.').pop()?.toUpperCase().substring(0, 3) ||
+                   attachedFile.file.type?.split('/')[1]?.toUpperCase().substring(0, 3) ||
+                   'FILE'}
+                </span>
+              </div>
+              <div>
+                <p className="font-medium text-sm">{attachedFile.file.name}</p>
+                {attachedFile.file.size !== undefined && (
+                  <p className="text-xs text-gray-600">{(attachedFile.file.size / 1024).toFixed(2)} KB</p>
+                )}
+              </div>
+              {/* Button to remove the attached file */}
+              <button
+                onClick={() => setAttachedFile(null)}
+                className="ml-1 text-gray-400 hover:text-gray-600 text-lg leading-none"
+              >
+                ×
+              </button>
+            </div>
+          )}
           <button
             onClick={() => handleSendMessage()}
-            disabled={isLoading || !inputText.trim()}
+            disabled={isLoading || (!inputText.trim() && !attachedFile)}
             className={`px-6 py-2 rounded-lg font-medium ${
-              isLoading || !inputText.trim()
+              isLoading || (!inputText.trim() && !attachedFile)
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-harvard-crimson text-white hover:bg-red-700'
             }`}

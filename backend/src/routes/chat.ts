@@ -1,18 +1,40 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { cozeService } from '../services/cozeService';
 import { ChatEventType } from '@coze/api';
+import multer from 'multer';
 
 const router = express.Router();
+const upload = multer({ dest: 'uploads/' }); // Configure multer to save files to an 'uploads' directory
+
+// File upload endpoint
+// @ts-ignore - Temporarily ignore type error due to Multer/Express type incompatibility
+router.post('/upload', upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const file = (req as any).file; // Use 'any' to bypass type error for req.file
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    // Call CozeService to upload the file to Coze API
+    const fileId = await cozeService.uploadFile(file);
+
+    // Respond with the file ID
+    res.json({ success: true, fileId });
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    next(error); // Pass error to the next middleware
+  }
+});
 
 // Regular message endpoint
-router.post('/message', async (req: Request, res: Response) => {
+router.post('/message', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { message, conversationHistory } = req.body;
     const response = await cozeService.sendMessage(message, conversationHistory);
     res.json(response);
   } catch (error) {
     console.error('Error in /message endpoint:', error);
-    res.status(500).json({ error: 'Failed to send message' });
+    next(error); // Pass error to the next middleware
   }
 });
 
