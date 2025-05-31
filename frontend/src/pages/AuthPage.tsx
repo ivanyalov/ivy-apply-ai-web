@@ -39,22 +39,22 @@ const AuthPage: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-            {isSignUp ? 'Create your account' : 'Sign in to your account'}
+            {isSignUp ? 'Создать аккаунт' : 'Войти в аккаунт'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+            {isSignUp ? 'Уже есть аккаунт? ' : "Нет аккаунта? "}
             <button
               onClick={() => setIsSignUp(!isSignUp)}
               className="font-medium text-harvard-crimson hover:text-red-800"
             >
-              {isSignUp ? 'Sign in' : 'Sign up'}
+              {isSignUp ? 'Войти' : 'Зарегистрироваться'}
             </button>
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="sr-only">
-              Email address
+              Адрес электронной почты
             </label>
             <input
               id="email"
@@ -63,14 +63,14 @@ const AuthPage: React.FC = () => {
               autoComplete="email"
               required
               className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm"
-              placeholder="Email address"
+              placeholder="Адрес электронной почты"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
             <label htmlFor="password" className="sr-only">
-              Password
+              Пароль
             </label>
             <input
               id="password"
@@ -79,7 +79,7 @@ const AuthPage: React.FC = () => {
               autoComplete="current-password"
               required
               className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm"
-              placeholder="Password"
+              placeholder="Пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -96,8 +96,8 @@ const AuthPage: React.FC = () => {
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-harvard-crimson hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading 
-                ? (isSignUp ? 'Creating account...' : 'Signing in...') 
-                : (isSignUp ? 'Sign up' : 'Sign in')}
+                ? (isSignUp ? 'Создание аккаунта...' : 'Вход...') 
+                : (isSignUp ? 'Зарегистрироваться' : 'Войти')}
             </button>
           </div>
         </form>

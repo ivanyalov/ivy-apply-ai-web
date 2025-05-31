@@ -33,7 +33,7 @@ const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hi! I'm your AI admissions assistant. I can help you with essays, school selection, application guidance, and answer any questions about university admissions. How can I assist you today?",
+      text: "Привет! Я ваш AI-помощник по поступлению. Я могу помочь вам с эссе, выбором школы, руководством по подаче документов и ответить на любые вопросы о поступлении в университет. Чем я могу вам помочь сегодня?",
       isUser: false,
       timestamp: new Date(),
     }
@@ -174,7 +174,7 @@ const ChatPage: React.FC = () => {
 
       const errorMessage: Message = {
         id: nextMessageId.current++,
-        text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        text: "Извините, у меня сейчас проблемы с подключением. Пожалуйста, попробуйте еще раз через некоторое время.",
         isUser: false,
         timestamp: new Date(),
       };
@@ -200,7 +200,7 @@ const ChatPage: React.FC = () => {
     setMessages([
       {
         id: 1,
-        text: "Chat cleared! I'm ready to help you with your university admissions questions.",
+        text: "Чат очищен! Я готов помочь вам с вашими вопросами по поступлению в университет.",
         isUser: false,
         timestamp: new Date(),
       }
@@ -237,12 +237,12 @@ const ChatPage: React.FC = () => {
           // No alert needed, file name will be displayed
         } else {
           console.error('File upload failed:', data.error);
-          alert('File upload failed.');
+          alert('Ошибка загрузки файла.');
         }
       })
       .catch(error => {
         console.error('Error during file upload fetch:', error);
-        alert('Error during file upload.');
+        alert('Ошибка при загрузке файла.');
       })
       .finally(() => {
         setIsLoading(false); // End loading indicator
@@ -255,12 +255,12 @@ const ChatPage: React.FC = () => {
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-semibold text-gray-900">Ivy Apply AI Assistant</h1>
+        <h1 className="text-xl font-semibold text-gray-900">Ivy Apply AI</h1>
         <button
           onClick={handleClearChat}
           className="text-gray-500 hover:text-gray-700 px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-400 transition-colors"
         >
-          Clear Chat
+          Очистить историю
         </button>
       </div>
 
@@ -345,7 +345,7 @@ const ChatPage: React.FC = () => {
                   <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                   <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                 </div>
-                <span className="text-sm">AI is typing...</span>
+                <span className="text-sm">AI печатает...</span>
               </div>
             </div>
           </div>
@@ -369,13 +369,13 @@ const ChatPage: React.FC = () => {
             htmlFor="file-upload"
             className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-200 transition-colors"
           >
-            <span className="text-2xl font-bold text-gray-700">+</span>
+            <span className="text-2xl font-bold text-gray-700 inline-flex items-center justify-center transform -translate-y-px">+</span>
           </label>
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
+            placeholder="Введите ваше сообщение..."
             className="flex-1 resize-none rounded-lg border border-gray-300 px-4 py-2 focus:border-harvard-crimson focus:outline-none focus:ring-1 focus:ring-harvard-crimson"
             rows={1}
             disabled={isLoading}
@@ -389,7 +389,7 @@ const ChatPage: React.FC = () => {
                 <span className="text-xs font-bold">
                   {attachedFile.file.name.split('.').pop()?.toUpperCase().substring(0, 3) ||
                    attachedFile.file.type?.split('/')[1]?.toUpperCase().substring(0, 3) ||
-                   'FILE'}
+                   'ФАЙЛ'}
                 </span>
               </div>
               <div>
@@ -416,7 +416,7 @@ const ChatPage: React.FC = () => {
                 : 'bg-harvard-crimson text-white hover:bg-red-700'
             }`}
           >
-            Send
+            Отправить
           </button>
         </div>
       </div>

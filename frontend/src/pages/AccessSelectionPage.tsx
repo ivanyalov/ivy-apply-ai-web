@@ -41,7 +41,7 @@ const AccessSelectionPage: React.FC = () => {
       navigate('/chat');
     } catch (error) {
       console.error('Error starting trial:', error);
-      setError('An error occurred while starting the trial');
+      setError('Произошла ошибка при запуске пробной версии');
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +56,7 @@ const AccessSelectionPage: React.FC = () => {
       window.location.href = redirectUrl;
     } catch (error) {
       console.error('Error starting subscription:', error);
-      setError('An error occurred while processing your subscription');
+      setError('Произошла ошибка при обработке вашей подписки');
     } finally {
       setIsLoading(false);
     }
@@ -66,13 +66,13 @@ const AccessSelectionPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Sign In</h2>
-          <p className="text-gray-600 mb-6">You need to be signed in to access subscription options.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Пожалуйста, войдите</h2>
+          <p className="text-gray-600 mb-6">Вам необходимо войти, чтобы получить доступ к вариантам подписки.</p>
           <button
             onClick={() => navigate('/auth')}
             className="bg-harvard-crimson text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
           >
-            Sign In
+            Войти
           </button>
         </div>
       </div>
@@ -85,18 +85,18 @@ const AccessSelectionPage: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            {subscriptionStatus.type === 'trial' ? 'Active Trial' : 'Active Subscription'}
+            {subscriptionStatus.type === 'trial' ? 'Активная пробная версия' : 'Активная подписка'}
           </h2>
           <p className="text-gray-600 mb-6">
             {subscriptionStatus.type === 'trial' 
-              ? `Your trial expires on ${new Date(subscriptionStatus.expiresAt!).toLocaleDateString()}`
-              : 'You have full access to all features'}
+              ? `Ваша пробная версия истекает ${new Date(subscriptionStatus.expiresAt!).toLocaleDateString()}`
+              : 'У вас полный доступ ко всем функциям'}
           </p>
           <button
             onClick={() => navigate('/chat')}
             className="bg-harvard-crimson text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
           >
-            Go to Chat
+            Перейти в чат
           </button>
         </div>
       </div>
@@ -107,8 +107,7 @@ const AccessSelectionPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl w-full space-y-8">
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Access Plan</h2>
-          <p className="text-lg text-gray-600">Select the option that works best for you</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Выберите ваш план доступа</h2>
         </div>
 
         {error && (
@@ -117,101 +116,105 @@ const AccessSelectionPage: React.FC = () => {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-8 mt-12">
+        <div className="grid md:grid-cols-2 gap-8 mt-12 items-stretch">
           {/* Free Trial Option */}
-          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-gray-200">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Free Trial</h3>
-              <p className="text-gray-600 mb-6">Get started with limited access to explore our AI assistant</p>
-              <div className="mb-8">
-                <span className="text-4xl font-bold text-gray-900">Free</span>
-                <span className="text-gray-600 ml-2">for 7 days</span>
+          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-gray-200 flex flex-col justify-between">
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Пробная версия</h3>
+                  <div className="mb-8">
+                    <span className="text-4xl font-bold text-gray-900">Бесплатно</span>
+                    <span className="text-gray-600 ml-2">на 7 дней</span>
+                  </div>
+                </div>
+                <ul className="text-left space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Ограниченные сессии чата
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Базовая загрузка документов
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Основные рекомендации по поступлению
+                  </li>
+                </ul>
               </div>
-              <ul className="text-left space-y-3 mb-8">
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Limited chat sessions
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Basic document upload
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Essential admissions guidance
-                </li>
-              </ul>
               <button
                 onClick={handleStartTrial}
                 disabled={isLoading}
                 className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Processing...' : 'Start Free Trial'}
+                {isLoading ? 'Обработка...' : 'Начать пробную версию'}
               </button>
             </div>
           </div>
 
           {/* Subscription Option */}
-          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-harvard-crimson relative">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-harvard-crimson relative flex flex-col justify-between">
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full mt-2">
               <span className="bg-harvard-crimson text-white px-4 py-1 rounded-full text-sm font-medium">
-                Recommended
+                Рекомендуется
               </span>
             </div>
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Full Access</h3>
-              <p className="text-gray-600 mb-6">Unlimited access to all features and premium support</p>
-              <div className="mb-8">
-                <span className="text-4xl font-bold text-harvard-crimson">990₽</span>
-                <span className="text-gray-600 ml-2">per month</span>
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Полный доступ</h3>
+                  <div className="mb-8">
+                    <span className="text-4xl font-bold text-harvard-crimson">990₽</span>
+                    <span className="text-gray-600 ml-2">в месяц</span>
+                  </div>
+                </div>
+                <ul className="text-left space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Неограниченные сессии чата
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Расширенная загрузка и анализ файлов
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Интерфейс чата в стиле GPT
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Приоритетная поддержка
+                  </li>
+                </ul>
               </div>
-              <ul className="text-left space-y-3 mb-8">
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Unlimited chat sessions
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Advanced file upload & analysis
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  GPT-style conversation interface
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Priority support
-                </li>
-              </ul>
               <button
                 onClick={handleSubscribe}
                 disabled={isLoading}
                 className="w-full bg-harvard-crimson text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Processing...' : 'Subscribe Now'}
+                {isLoading ? 'Обработка...' : 'Подписаться сейчас'}
               </button>
             </div>
           </div>
         </div>
 
         <div className="text-center mt-8">
-          <p className="text-sm text-gray-600">
-            Unlimited access, upload files, GPT-style chat interface.
-          </p>
+          {/* Removed redundant text */}
         </div>
       </div>
     </div>
