@@ -1,7 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useNavigate } from 'react-router-dom';
 
+/**
+ * @interface Message
+ * @description Представляет сообщение в чате между пользователем и AI-помощником.
+ * @property {number} id - Уникальный идентификатор сообщения.
+ * @property {string} text - Текст сообщения.
+ * @property {boolean} isUser - Флаг, указывающий, является ли сообщение пользовательским.
+ * @property {Date} timestamp - Временная метка сообщения.
+ * @property {string[]} [followUpQuestions] - Дополнительные вопросы от AI для продолжения диалога.
+ * @property {string} [fileName] - Название прикрепленного файла.
+ * @property {number} [fileSize] - Размер прикрепленного файла в байтах.
+ * @property {string} [fileType] - MIME-тип прикрепленного файла.
+ */
 interface Message {
   id: number;
   text: string;
@@ -14,12 +27,27 @@ interface Message {
   fileType?: string; // MIME type
 }
 
+/**
+ * @interface ConversationHistory
+ * @description Представляет историю разговора для отправки в API.
+ * @property {'user' | 'assistant'} role - Роль участника разговора.
+ * @property {string} content - Содержимое сообщения.
+ * @property {'text' | 'object_string'} content_type - Тип содержимого.
+ */
 interface ConversationHistory {
   role: 'user' | 'assistant';
   content: string;
   content_type: 'text' | 'object_string'; // Allow object_string for files
 }
 
+/**
+ * @interface ObjectStringItem
+ * @description Представляет элемент мультимодального сообщения (текст, файл, изображение, аудио).
+ * @property {'text' | 'file' | 'image' | 'audio'} type - Тип содержимого.
+ * @property {string} [text] - Текстовое содержимое.
+ * @property {string | null} [file_id] - Идентификатор файла на сервере.
+ * @property {string | null} [file_url] - URL файла.
+ */
 interface ObjectStringItem {
   type: 'text' | 'file' | 'image' | 'audio';
   text?: string;
@@ -27,8 +55,25 @@ interface ObjectStringItem {
   file_url?: string | null;
 }
 
+/**
+ * @type MessageContent
+ * @description Массив элементов мультимодального сообщения.
+ */
 interface MessageContent extends Array<ObjectStringItem> {}
 
+/**
+ * @component ChatPage
+ * @description Основная страница чата с AI-помощником по поступлению.
+ * Позволяет пользователям общаться с AI, загружать документы и получать рекомендации.
+ * Поддерживает мультимодальные сообщения (текст + файлы).
+ * 
+ * @returns {JSX.Element} Интерфейс чата с историей сообщений, полем ввода и возможностью загрузки файлов.
+ * 
+ * @example
+ * ```tsx
+ * <ChatPage />
+ * ```
+ */
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {

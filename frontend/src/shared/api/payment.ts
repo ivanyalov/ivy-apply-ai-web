@@ -1,33 +1,14 @@
 import axios from 'axios';
 import { authService } from './auth';
 
-const API_URL = 'http://localhost:8000/api/payments';
-
-export interface CreatePaymentResponse {
-  redirectUrl: string;
-}
-
-export interface PaymentStatusResponse {
-  status: 'pending' | 'succeeded' | 'canceled' | 'failed';
-}
-
+/**
+ * @class PaymentService
+ * @description Сервис для взаимодействия с API платежей. (В настоящее время не используется,
+ * так как логика оплаты обрабатывается через виджет CloudPayments на стороне клиента).
+ */
 class PaymentService {
-  async createPayment(amount: number, currency: string): Promise<CreatePaymentResponse> {
-    const response = await axios.post<CreatePaymentResponse>(
-      `${API_URL}/create`,
-      { amount, currency },
-      { headers: authService.getAuthHeader() }
-    );
-    return response.data;
-  }
-
-  async getPaymentStatus(paymentId: string): Promise<PaymentStatusResponse> {
-    const response = await axios.get<PaymentStatusResponse>(
-      `${API_URL}/status/${paymentId}`,
-      { headers: authService.getAuthHeader() }
-    );
-    return response.data;
-  }
+  // Методы createPayment и getPaymentStatus удалены,
+  // так как они больше не соответствуют текущей логике оплаты.
 }
 
 export const paymentService = new PaymentService(); 

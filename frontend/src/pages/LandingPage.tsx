@@ -1,8 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSubscription } from '../shared/context/SubscriptionContext';
+import { useAuth } from '../shared/context/AuthContext';
 
+/**
+ * @component LandingPage
+ * @description Главная страница приложения с описанием сервиса и кнопками для начала работы.
+ * Предоставляет информацию о возможностях AI-помощника и вариантах подписки.
+ * 
+ * @returns {JSX.Element} Главная страница с hero-секцией, описанием функций и FAQ.
+ * 
+ * @example
+ * ```tsx
+ * <LandingPage />
+ * ```
+ */
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { subscription } = useSubscription();
+  const { isAuthenticated } = useAuth();
+  const [subError, setSubError] = useState<string | null>(null);
+
+  /**
+   * @method handleStart
+   * @description Обрабатывает нажатие кнопки "Начать".
+   * Перенаправляет пользователя на страницу аутентификации или чата в зависимости от статуса подписки.
+   */
+  const handleStart = () => {
+    if (isAuthenticated && subscription?.hasAccess) {
+      navigate('/chat');
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  /**
+   * @method handleSubscription
+   * @description Обрабатывает нажатие кнопки "Подписка".
+   * Перенаправляет пользователя на страницу выбора подписки.
+   */
+  const handleSubscription = () => {
+    navigate('/access');
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -16,11 +55,22 @@ const LandingPage: React.FC = () => {
             Ivy Apply AI — ваш персональный AI-консультант по поступлению в вузы. Загружайте документы, задавайте вопросы и получайте чёткие рекомендации на русском языке.
           </p>
           <button
-            onClick={() => navigate('/auth')}
+            onClick={handleStart}
             className="bg-harvard-crimson text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
           >
             Начать
           </button>
+          <div className="mt-4">
+            <button
+              onClick={handleSubscription}
+              className="bg-gray-900 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-colors"
+            >
+              Подписка
+            </button>
+          </div>
+          {subError && (
+            <div className="mt-2 text-red-600 text-sm">{subError}</div>
+          )}
         </div>
       </section>
 
@@ -92,9 +142,8 @@ const LandingPage: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-2xl font-bold mb-4">Ivy Apply AI</h3>
           <div className="flex justify-center space-x-8 mb-6">
-            <a href="#" className="text-gray-900 hover:text-gray-700">Политика конфиденциальности</a>
-            <a href="#" className="text-gray-900 hover:text-gray-700">Условия использования</a>
-            <a href="#" className="text-gray-900 hover:text-gray-700">Контакты</a>
+            <a href="/user-agreement" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:text-gray-700">Пользовательское соглашение</a>
+            <a href="/contact" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:text-gray-700">Контакты</a>
           </div>
           <p className="text-gray-600">© 2024 Ivy Apply AI. Все права защищены.</p>
         </div>

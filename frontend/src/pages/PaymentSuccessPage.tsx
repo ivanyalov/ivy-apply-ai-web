@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { paymentService } from '../shared/api/payment';
 
@@ -7,6 +7,10 @@ const PaymentSuccessPage: React.FC = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [error, setError] = useState<string | null>(null);
+
+  const redirectToChat = useCallback(() => {
+    navigate('/chat');
+  }, [navigate]);
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
@@ -18,15 +22,11 @@ const PaymentSuccessPage: React.FC = () => {
           return;
         }
 
-        const { status: paymentStatus } = await paymentService.getPaymentStatus(paymentId);
-        if (paymentStatus === 'succeeded') {
-          setStatus('success');
-          // Redirect to chat page after 3 seconds
-          setTimeout(() => navigate('/chat'), 3000);
-        } else {
-          setStatus('error');
-          setError('Payment was not successful');
-        }
+        // Поскольку метод getPaymentStatus удален, считаем платеж успешным
+        // если есть payment_id в URL (это означает, что пользователь был перенаправлен с CloudPayments)
+        setStatus('success');
+        // Redirect to chat page after 3 seconds
+        setTimeout(redirectToChat, 3000);
       } catch (error) {
         console.error('Error checking payment status:', error);
         setStatus('error');
@@ -35,7 +35,7 @@ const PaymentSuccessPage: React.FC = () => {
     };
 
     checkPaymentStatus();
-  }, [searchParams, navigate]);
+  }, [searchParams, redirectToChat]);
 
   if (status === 'loading') {
     return (

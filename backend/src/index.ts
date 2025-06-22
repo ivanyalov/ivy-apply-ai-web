@@ -29,6 +29,9 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
   next();
 });
 
+// Enable static file serving
+app.use('/legal', express.static(path.join(__dirname, '../public/legal')));
+
 // Root endpoint
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Ivy Apply AI Backend (Express.js + TypeScript)' });

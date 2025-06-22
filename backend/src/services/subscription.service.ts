@@ -1,47 +1,52 @@
-import { createSubscription, getSubscriptionByUserId, updateSubscriptionStatus } from '../models/Subscription';
+import { createSubscription, getSubscriptionByUserId, updateSubscription } from '../models/Subscription';
+import { AuthService } from './authService';
 
 export class SubscriptionService {
     async startTrial(userId: string) {
-        // Check if user already has an active subscription
         const existingSubscription = await getSubscriptionByUserId(userId);
         if (existingSubscription && existingSubscription.status === 'active') {
-            throw new Error('User already has an active subscription');
+            throw new Error('User already has an active subscription or trial.');
         }
-
-        // Create trial subscription
-        const startDate = new Date();
-        const endDate = new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
 
         return await createSubscription({
             userId,
             status: 'active',
             planType: 'trial',
-            startDate,
-            endDate
+            startDate: new Date(),
         });
     }
 
     async getSubscriptionStatus(userId: string) {
         const subscription = await getSubscriptionByUserId(userId);
         
-        if (!subscription) {
-            return { hasAccess: false, type: null, expiresAt: null };
+        if (!subscription || subscription.status === 'unsubscribed' || subscription.status === 'cancelled') {
+            return { hasAccess: false, type: subscription?.planType || null, status: subscription?.status || 'unsubscribed', expiresAt: subscription?.endDate || null };
         }
 
         const now = new Date();
-        const isActive = subscription.status === 'active' && subscription.endDate > now;
-
-        // If subscription has expired, update its status
-        if (subscription.status === 'active' && subscription.endDate <= now) {
-            await updateSubscriptionStatus(subscription.id!, 'expired');
-            return { hasAccess: false, type: subscription.planType, expiresAt: subscription.endDate };
+        if (subscription.endDate && subscription.endDate <= now) {
+            // Subscription has expired, update status
+            if(subscription.id) {
+                await updateSubscription(subscription.id, { status: 'unsubscribed' });
+            }
+            return { hasAccess: false, type: subscription.planType, status: 'unsubscribed', expiresAt: subscription.endDate };
         }
+        
+        const hasAccess = subscription.status === 'active';
 
         return {
-            hasAccess: isActive,
+            hasAccess,
             type: subscription.planType,
+            status: subscription.status,
             expiresAt: subscription.endDate
         };
+    }
+
+    async signupAndStartTrial(email: string, password: string) {
+        const authService = new AuthService();
+        const { user } = await authService.signup(email, password);
+        const subscription = await this.startTrial(user.id);
+        return { user, subscription };
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../shared/context/AuthContext';
 
 const AuthPage: React.FC = () => {
@@ -8,9 +8,10 @@ const AuthPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { signIn, signUp } = useAuth();
+  const { signin, signup } = useAuth();
 
   // Get the redirect path from location state or default to /access
   const from = (location.state as any)?.from?.pathname || '/access';
@@ -22,9 +23,9 @@ const AuthPage: React.FC = () => {
 
     try {
       if (isSignUp) {
-        await signUp({ email, password });
+        await signup({ email, password });
       } else {
-        await signIn({ email, password });
+        await signin({ email, password });
       }
       navigate(from, { replace: true });
     } catch (err: any) {
@@ -84,6 +85,26 @@ const AuthPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div style={{ margin: '16px 0' }}>
+            <label style={{ display: 'flex', alignItems: 'center', fontSize: 15 }}>
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={e => setAgreed(e.target.checked)}
+                required
+                style={{ marginRight: 8 }}
+              />
+              Я принимаю&nbsp;
+              <a
+                href="/user-agreement"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#b91c1c', textDecoration: 'underline' }}
+              >
+                Пользовательское соглашение
+              </a>
+            </label>
+          </div>
 
           {error && (
             <div className="text-red-500 text-sm text-center">{error}</div>
@@ -92,7 +113,7 @@ const AuthPage: React.FC = () => {
           <div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !agreed}
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-harvard-crimson hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading 

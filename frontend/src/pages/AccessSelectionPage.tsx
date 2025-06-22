@@ -1,221 +1,128 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../shared/context/AuthContext';
-import { authService } from '../shared/api/auth';
-import { paymentService } from '../shared/api/payment';
-import { subscriptionService, SubscriptionStatus } from '../shared/api/subscription';
+import { useSubscription } from '../shared/context/SubscriptionContext';
+
+declare global {
+  interface Window {
+    cp: any;
+  }
+}
 
 const AccessSelectionPage: React.FC = () => {
+  const { user } = useAuth();
+  const { subscription, isLoading, cancelSubscription, refreshSubscription, startTrial } = useSubscription();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null);
 
-  useEffect(() => {
-    const checkSubscriptionStatus = async () => {
-      if (isAuthenticated) {
-        try {
-          const status = await subscriptionService.getStatus();
-          setSubscriptionStatus(status);
-        } catch (error) {
-          console.error('Error checking subscription status:', error);
-        }
+  const handlePayment = (amount: number, description: string) => {
+    if (!user) {
+      alert("Пожалуйста, войдите в систему, чтобы совершить платеж.");
+      return;
+    }
+    const widget = new window.cp.CloudPayments();
+    widget.pay('charge',
+      {
+        publicId: import.meta.env.VITE_CLOUDPAYMENTS_PUBLIC_ID,
+        description: description,
+        amount: amount,
+        currency: 'RUB',
+        accountId: user.id,
+        skin: "modern",
+      },
+      {
+        onSuccess: function () {
+          alert("Оплата прошла успешно!");
+          refreshSubscription();
+        },
+        onFail: function (reason: any) {
+          alert(`Оплата не удалась: ${reason}`);
+        },
       }
-    };
-
-    checkSubscriptionStatus();
-  }, [isAuthenticated]);
+    )
+  };
 
   const handleStartTrial = async () => {
     try {
-      setIsLoading(true);
-      setError(null);
-      
-      const { message, expiresAt } = await subscriptionService.startTrial();
-      setSubscriptionStatus({
-        hasAccess: true,
-        type: 'trial',
-        expiresAt: new Date(expiresAt)
-      });
-      navigate('/chat');
+      await startTrial();
+      alert("Пробный период успешно активирован!");
     } catch (error) {
-      console.error('Error starting trial:', error);
-      setError('Произошла ошибка при запуске пробной версии');
-    } finally {
-      setIsLoading(false);
+      console.error(error);
+      alert("Не удалось начать пробный период. Возможно, у вас уже есть активная подписка.");
     }
   };
 
-  const handleSubscribe = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-screen">Загрузка...</div>;
+  }
 
-      const { redirectUrl } = await paymentService.createPayment(990, 'RUB');
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error('Error starting subscription:', error);
-      setError('Произошла ошибка при обработке вашей подписки');
-    } finally {
-      setIsLoading(false);
+  const renderSubscriptionInfo = () => {
+    if (!subscription) {
+      return null;
     }
+    
+    const isCancelled = subscription.status === 'cancelled' || subscription.status === 'unsubscribed';
+    const expiryDate = subscription.expiresAt ? new Date(subscription.expiresAt).toLocaleDateString('ru-RU') : 'N/A';
+
+    return (
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-4">Ваш Текущий План</h2>
+        <p className="mb-2"><strong>План:</strong> <span className="capitalize">{subscription.type === 'trial' ? 'Пробный' : 'Премиум'}</span></p>
+        <p className="mb-2"><strong>Статус:</strong> <span className="capitalize">{subscription.status === 'active' ? 'Активен' : 'Неактивен'}</span></p>
+        <p className="mb-4"><strong>Истекает:</strong> {expiryDate}</p>
+        
+        {subscription.status === 'active' && (
+           <button 
+             onClick={cancelSubscription} 
+             className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
+           >
+             Отменить Подписку
+           </button>
+        )}
+         {isCancelled && <p className="text-red-500 font-semibold mt-4">Ваша подписка неактивна. Пожалуйста, оформите новый план для продолжения.</p>}
+      </div>
+    );
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Пожалуйста, войдите</h2>
-          <p className="text-gray-600 mb-6">Вам необходимо войти, чтобы получить доступ к вариантам подписки.</p>
-          <button
-            onClick={() => navigate('/auth')}
-            className="bg-harvard-crimson text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
-          >
-            Войти
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // If user already has an active subscription, show subscription info
-  if (subscriptionStatus?.hasAccess) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            {subscriptionStatus.type === 'trial' ? 'Активная пробная версия' : 'Активная подписка'}
-          </h2>
-          <p className="text-gray-600 mb-6">
-            {subscriptionStatus.type === 'trial' 
-              ? `Ваша пробная версия истекает ${new Date(subscriptionStatus.expiresAt!).toLocaleDateString()}`
-              : 'У вас полный доступ ко всем функциям'}
-          </p>
-          <button
-            onClick={() => navigate('/chat')}
-            className="bg-harvard-crimson text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
-          >
-            Перейти в чат
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full space-y-8">
-        <div className="text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Выберите ваш план доступа</h2>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-8">Выберите План Доступа</h1>
+        <div className="mb-8">{renderSubscriptionInfo()}</div>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="border p-6 rounded-lg shadow-lg bg-white">
+            <h2 className="text-2xl font-semibold mb-4">Премиум План</h2>
+            <p className="text-4xl font-bold mb-4">990 RUB <span className="text-lg font-normal">/ месяц</span></p>
+            <ul className="mb-6 space-y-2 text-gray-600">
+              <li>✓ Неограниченный доступ к AI-чату</li>
+              <li>✓ Приоритетная поддержка</li>
+              <li>✓ Доступ ко всем новым функциям</li>
+            </ul>
+            <button onClick={() => handlePayment(990, 'Премиум План - 1 месяц')} className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors">
+              Купить Премиум
+            </button>
+          </div>
+          <div className="border p-6 rounded-lg shadow-lg bg-white">
+            <h2 className="text-2xl font-semibold mb-4">Пробный План</h2>
+            <p className="text-4xl font-bold mb-4">Бесплатно <span className="text-lg font-normal">/ 7 дней</span></p>
+            <ul className="mb-6 space-y-2 text-gray-600">
+              <li>✓ Полный доступ к AI-чату</li>
+              <li>✓ Попробуйте все функции</li>
+            </ul>
+            <button onClick={handleStartTrial} disabled={subscription?.status === 'active'} className="w-full bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+              Начать пробный период
+            </button>
+          </div>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
+        {subscription?.hasAccess && (
+          <div className="text-center mt-8">
+            <button onClick={() => navigate('/chat')} className="text-blue-500 hover:underline">
+              Перейти в чат
+            </button>
           </div>
         )}
-
-        <div className="grid md:grid-cols-2 gap-8 mt-12 items-stretch">
-          {/* Free Trial Option */}
-          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-gray-200 flex flex-col justify-between">
-            <div className="flex flex-col justify-between h-full">
-              <div>
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Пробная версия</h3>
-                  <div className="mb-8">
-                    <span className="text-4xl font-bold text-gray-900">Бесплатно</span>
-                    <span className="text-gray-600 ml-2">на 7 дней</span>
-                  </div>
-                </div>
-                <ul className="text-left space-y-3 mb-8">
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Ограниченные сессии чата
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Базовая загрузка документов
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Основные рекомендации по поступлению
-                  </li>
-                </ul>
-              </div>
-              <button
-                onClick={handleStartTrial}
-                disabled={isLoading}
-                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? 'Обработка...' : 'Начать пробную версию'}
-              </button>
-            </div>
-          </div>
-
-          {/* Subscription Option */}
-          <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-harvard-crimson relative flex flex-col justify-between">
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full mt-2">
-              <span className="bg-harvard-crimson text-white px-4 py-1 rounded-full text-sm font-medium">
-                Рекомендуется
-              </span>
-            </div>
-            <div className="flex flex-col justify-between h-full">
-              <div>
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Полный доступ</h3>
-                  <div className="mb-8">
-                    <span className="text-4xl font-bold text-harvard-crimson">990₽</span>
-                    <span className="text-gray-600 ml-2">в месяц</span>
-                  </div>
-                </div>
-                <ul className="text-left space-y-3 mb-8">
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Неограниченные сессии чата
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Расширенная загрузка и анализ файлов
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Интерфейс чата в стиле GPT
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Приоритетная поддержка
-                  </li>
-                </ul>
-              </div>
-              <button
-                onClick={handleSubscribe}
-                disabled={isLoading}
-                className="w-full bg-harvard-crimson text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? 'Обработка...' : 'Подписаться сейчас'}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center mt-8">
-          {/* Removed redundant text */}
-        </div>
       </div>
     </div>
   );

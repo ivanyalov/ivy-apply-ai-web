@@ -1,10 +1,23 @@
 import { pool } from '../config/database';
 
+/**
+ * @interface Payment
+ * @description Представляет платеж в системе.
+ * @property {number} id - Уникальный идентификатор платежа.
+ * @property {string} userId - Идентификатор пользователя, совершившего платеж.
+ * @property {number} subscriptionId - Идентификатор связанной подписки.
+ * @property {string} cloudPaymentsInvoiceId - ID счета в системе CloudPayments.
+ * @property {number} amount - Сумма платежа.
+ * @property {string} currency - Валюта платежа.
+ * @property {'pending' | 'succeeded' | 'canceled' | 'failed'} status - Статус платежа.
+ * @property {string} [paymentMethodId] - Идентификатор метода оплаты.
+ * @property {Record<string, any>} [metadata] - Дополнительные данные.
+ */
 export interface Payment {
     id?: number;
     userId: string;
     subscriptionId: number;
-    yookassaPaymentId: string;
+    cloudPaymentsInvoiceId: string;
     amount: number;
     currency: string;
     status: 'pending' | 'succeeded' | 'canceled' | 'failed';
@@ -14,11 +27,11 @@ export interface Payment {
     updatedAt?: Date;
 }
 
-export const createPayment = async (payment: Payment): Promise<Payment> => {
+export const createPayment = async (payment: Omit<Payment, 'id'>): Promise<Payment> => {
     const {
         userId,
         subscriptionId,
-        yookassaPaymentId,
+        cloudPaymentsInvoiceId,
         amount,
         currency,
         status,
@@ -28,24 +41,38 @@ export const createPayment = async (payment: Payment): Promise<Payment> => {
 
     const result = await pool.query(
         `INSERT INTO payments 
-        (user_id, subscription_id, yookassa_payment_id, amount, currency, status, payment_method_id, metadata)
+        (user_id, subscription_id, cloud_payments_invoice_id, amount, currency, status, payment_method_id, metadata)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *`,
-        [userId, subscriptionId, yookassaPaymentId, amount, currency, status, paymentMethodId, metadata]
+        [userId, subscriptionId, cloudPaymentsInvoiceId, amount, currency, status, paymentMethodId, metadata]
     );
     return result.rows[0];
 };
 
-export const getPaymentByYooKassaId = async (yookassaPaymentId: string): Promise<Payment | null> => {
+/**
+ * @function getPaymentByCloudPaymentsInvoiceId
+ * @description Находит платеж в базе данных по ID счета CloudPayments.
+ * @param {string} cloudPaymentsInvoiceId - ID счета в CloudPayments.
+ * @returns {Promise<Payment | null>} - Объект платежа или null, если не найден.
+ */
+export const getPaymentByCloudPaymentsInvoiceId = async (cloudPaymentsInvoiceId: string): Promise<Payment | null> => {
     const result = await pool.query(
-        'SELECT * FROM payments WHERE yookassa_payment_id = $1',
-        [yookassaPaymentId]
+        'SELECT * FROM payments WHERE cloud_payments_invoice_id = $1',
+        [cloudPaymentsInvoiceId]
     );
     return result.rows[0] || null;
 };
 
+/**
+ * @function updatePaymentStatus
+ * @description Обновляет статус платежа в базе данных.
+ * @param {string} paymentId - ID платежа (первичный ключ в таблице).
+ * @param {Payment['status']} status - Новый статус платежа.
+ * @param {string} [paymentMethodId] - (Опционально) ID метода оплаты.
+ * @returns {Promise<Payment>} - Обновленный объект платежа.
+ */
 export const updatePaymentStatus = async (
-    paymentId: number,
+    paymentId: string,
     status: Payment['status'],
     paymentMethodId?: string
 ): Promise<Payment> => {
