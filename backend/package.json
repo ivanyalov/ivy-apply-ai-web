@@ -1,0 +1,45 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "resources/dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node resources/dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "setup-db": "ts-node src/setup-database.ts",
+    "reset-db": "ts-node src/reset-database.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:subscription": "ts-node src/test-subscription.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@coze/api": "^1.2.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.15.22",
+    "@types/pg": "^8.15.2",
+    "@types/uuid": "^10.0.0",
+    "axios": "^1.9.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.0",
+    "pg": "^8.16.0",
+    "typescript": "^5.8.3",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0"
+  }
+}

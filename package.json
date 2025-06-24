@@ -1,0 +1,24 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "## Project Overview Ivy Apply AI is a GPT-style AI assistant to help users with university admissions. It features document uploads, unlimited questions, and smart feedback.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update-frontend-build": "rimraf ./backend/resources/dist && cpy ./frontend/dist/** ./backend/resources/dist --parents"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "react-router-dom": "^7.6.1"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "vite": "^6.3.5",
+    "rimraf": "^5.0.5",
+    "cpy-cli": "^5.0.0"
+  }
+}

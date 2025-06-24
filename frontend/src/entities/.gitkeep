@@ -1,0 +1,2 @@
+// This is the entities layer according to FSD.
+// It contains business entities, such as "User", "Product", "Order".
