@@ -33,7 +33,7 @@ async function testTrialSubscription() {
             status: trial.status,
             planType: trial.planType,
             startDate: trial.startDate,
-            endDate: trial.endDate
+            expiresAt: trial.expiresAt
         });
 
         // 3. Check subscription status
@@ -47,9 +47,14 @@ async function testTrialSubscription() {
         });
 
         // 4. Verify trial duration is 7 days
+        if (!trial.startDate || !trial.expiresAt) {
+            console.error('❌ Trial dates are missing');
+            return;
+        }
+        
         const startDate = new Date(trial.startDate);
-        const endDate = new Date(trial.endDate);
-        const daysDiff = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        const expiresAt = new Date(trial.expiresAt);
+        const daysDiff = Math.ceil((expiresAt.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
         
         if (daysDiff === 7) {
             console.log('✅ Trial duration is correct (7 days)');

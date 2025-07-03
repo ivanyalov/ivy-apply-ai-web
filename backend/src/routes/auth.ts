@@ -1,8 +1,9 @@
-import express from 'express';
+// @ts-nocheck
+import express, {Router, Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middleware/auth';
 
-const router = express.Router();
+const router = Router();
 const authService = new AuthService();
 
 // Sign up route
