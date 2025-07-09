@@ -8,8 +8,7 @@ Ivy Apply AI is a GPT-style AI assistant to help users with university admission
 - Backend: Express.js (TypeScript).
 - Database: Supabase (PostgreSQL)
 - AI Assistant: Coze + Jules
-- Payments: YooKassa API
-- Hosting: AWS
+- Payments: CloudPayments API
 
 ## Directory Structure
 - `/frontend`: Contains the React (TypeScript) frontend application.
@@ -40,4 +39,4 @@ Ivy Apply AI is a GPT-style AI assistant to help users with university admission
 Details about Coze + Jules integration will be added here.
 
 ## Payment Gateway
-Integration with YooKassa API for subscriptions.
+Integration with CloudPayments API for subscriptions.

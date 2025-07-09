@@ -41,6 +41,7 @@ migrations/
 *.log
 *.tmp
 *.temp
+cloudpayments-instructions.txt
 
 # Build artifacts
 *.pyc
