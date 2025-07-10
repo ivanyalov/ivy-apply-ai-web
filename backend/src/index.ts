@@ -56,12 +56,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // Serve frontend build
-app.use(express.static(path.join(__dirname, '../resources/dist')));
+app.use(express.static(path.join(__dirname, '../resources/dist/frontend/dist')));
 
 // Fallback: serve index.html for any unknown route (for SPA routing)
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../resources/dist/index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../resources/dist/index.html'));
+});
 
 // Initialize database and start server
 async function startServer() {
