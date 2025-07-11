@@ -34,9 +34,9 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 app.use('/legal', express.static(path.join(__dirname, '../public/legal')));
 
 // Root endpoint
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Ivy Apply AI Backend (Express.js + TypeScript)' });
-});
+// app.get('/', (req: Request, res: Response) => {
+//   res.json({ message: 'Ivy Apply AI Backend (Express.js + TypeScript)' });
+// });
 
 // API Routes
 app.use('/api/chat', chatRoutes);
@@ -56,7 +56,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // Serve frontend build
-app.use(express.static(path.join(__dirname, '../resources/dist/frontend/dist')));
+app.use(express.static(path.join(__dirname, '../resources/dist')));
 
 // Fallback: serve index.html for any unknown route (for SPA routing)
 app.get('*', (req, res) => {
