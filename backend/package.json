@@ -8,7 +8,6 @@
     "start": "node resources/dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "setup-db": "ts-node src/setup-database.ts",
-    "reset-db": "ts-node src/reset-database.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:subscription": "ts-node src/test-subscription.ts"
   },
@@ -29,7 +28,7 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^4.18.2",
+    "express": "4.21.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.0",
