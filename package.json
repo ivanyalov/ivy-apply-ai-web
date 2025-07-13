@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-frontend": "npm --prefix ./frontend run build",
-    "update-frontend-build": "rimraf ./backend/resources/dist && cpy ./frontend/dist/** ./backend/resources/dist --parents",
+    "update-frontend-build": "rimraf ./backend/resources/dist && cpy \"./frontend/dist/**/*\" ./backend/resources/dist",
     "build-backend": "npm --prefix ./backend run build",
     "restart-server": "pm2 restart my-app",
     "deploy": "npm run build-frontend && npm run update-frontend-build && npm run build-backend && npm run restart-server"
