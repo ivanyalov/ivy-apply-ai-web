@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8000/api/auth';
+const BASE_URL = '/api/auth';
 const testEmail = `testuser_${Date.now()}@example.com`;
 const testPassword = 'testpassword123';
 

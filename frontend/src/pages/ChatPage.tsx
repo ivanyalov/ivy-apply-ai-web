@@ -172,7 +172,7 @@ const ChatPage: React.FC = () => {
       }
 
       // Create a POST request to the message endpoint
-      const response = await fetch('http://localhost:8000/api/chat/message', {
+      const response = await fetch('/api/chat/message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ const ChatPage: React.FC = () => {
   const handleClearChat = async () => {
     if (conversationId) {
       try {
-        const response = await fetch(`http://localhost:8000/api/chat/clear/${conversationId}`, {
+        const response = await fetch(`/api/chat/clear/${conversationId}`, {
           method: 'DELETE',
         });
 
@@ -271,7 +271,7 @@ const ChatPage: React.FC = () => {
       formData.append('file', file);
 
       // Send file to the backend upload endpoint
-      fetch('http://localhost:8000/api/chat/upload', {
+      fetch('/api/chat/upload', {
         method: 'POST',
         body: formData,
       })
