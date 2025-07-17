@@ -8,16 +8,16 @@ const UserAgreement: React.FC = () => {
     const [contact, setContact] = useState<string>('');
 
   useEffect(() => {
-    fetch('http://localhost:8000/legal/PP.md')
+    fetch('/legal/PP.md')
       .then(res => res.text())
       .then(setPrivacy);
-    fetch('http://localhost:8000/legal/ToS.md')
+    fetch('/legal/ToS.md')
       .then(res => res.text())
       .then(setTerms);
-    fetch('http://localhost:8000/legal/RP.md')
+    fetch('/legal/RP.md')
       .then(res => res.text())
       .then(setReturnPolicy);
-    fetch('http://localhost:8000/legal/contact.md')
+    fetch('/legal/Contact.md')
       .then(res => res.text())
       .then(setContact);
   }, []);

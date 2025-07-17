@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from './auth';
 
-const API_URL = 'http://localhost:8000/api/subscriptions';
+const API_URL = '/api/subscriptions';
 
 /**
  * @interface SubscriptionStatus

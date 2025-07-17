@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api/auth';
-const API_URL_SUBS = 'http://localhost:8000/api/subscriptions';
+const API_URL = '/api/auth';
+const API_URL_SUBS = '/api/subscriptions';
 
 /**
  * @interface AuthResponse
