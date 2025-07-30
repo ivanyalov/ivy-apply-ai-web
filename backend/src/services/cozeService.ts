@@ -1,4 +1,16 @@
-import { CozeAPI, Conversation, CreateConversationReq, MetaDataType } from "@coze/api";
+import {
+	CozeAPI,
+	Conversation,
+	CreateConversationReq,
+	CreateChatReq,
+	CreateChatData,
+	CreateChatPollData,
+	EnterMessage,
+	RoleType,
+	ChatV3Message,
+	ListMessageData,
+	ListMessageReq,
+} from "@coze/api";
 import dotenv from "dotenv";
 import fs from "fs";
 
@@ -50,9 +62,13 @@ class CozeService {
 		}
 	}
 
-	async sendMessage(message: string | ObjectStringItem[], conversationHistory: any[] = []) {
+	async sendMessage(
+		message: string | ObjectStringItem[],
+		conversationHistory: any[] = [],
+		conversationId?: string
+	) {
 		try {
-			const response = await this.client.chat.createAndPoll({
+			const chatParams: any = {
 				bot_id: this.botId,
 				additional_messages: [
 					...(conversationHistory as any[]),
@@ -64,7 +80,14 @@ class CozeService {
 				],
 				auto_save_history: true,
 				meta_data: {},
-			});
+			};
+
+			// Add conversation_id if provided
+			if (conversationId) {
+				chatParams.conversation_id = conversationId;
+			}
+
+			const response = await this.client.chat.createAndPoll(chatParams);
 
 			if (!response.messages || response.messages.length === 0) {
 				throw new Error("No response received from Coze API");
@@ -144,6 +167,119 @@ class CozeService {
 			};
 		} catch (error) {
 			console.error("Error in createConversation:", error);
+			return {
+				success: false,
+				error: error instanceof Error ? error.message : "Unknown error occurred",
+			};
+		}
+	}
+
+	/**
+	 * Create a new chat within a conversation using Chat API v3
+	 */
+	async createChat(
+		conversationId: string,
+		message?: string | ObjectStringItem[],
+		userId?: string
+	): Promise<{ success: true; data: CreateChatData } | { success: false; error: string }> {
+		try {
+			const chatParams: CreateChatReq = {
+				bot_id: this.botId,
+				conversation_id: conversationId,
+				auto_save_history: true,
+			};
+
+			// Add user_id if provided
+			if (userId) {
+				chatParams.user_id = userId;
+			}
+
+			// Add initial message if provided
+			if (message) {
+				const enterMessage: EnterMessage = {
+					role: RoleType.User,
+					content: typeof message === "string" ? message : JSON.stringify(message),
+					content_type: typeof message === "string" ? "text" : "object_string",
+				};
+				chatParams.additional_messages = [enterMessage];
+			}
+
+			const response = await this.client.chat.create(chatParams);
+
+			return {
+				success: true,
+				data: response,
+			};
+		} catch (error) {
+			console.error("Error in createChat:", error);
+			return {
+				success: false,
+				error: error instanceof Error ? error.message : "Unknown error occurred",
+			};
+		}
+	}
+
+	/**
+	 * Create a new chat and poll for completion using Chat API v3
+	 */
+	async createChatAndPoll(
+		conversationId: string,
+		message?: string | ObjectStringItem[],
+		userId?: string
+	): Promise<{ success: true; data: CreateChatPollData } | { success: false; error: string }> {
+		try {
+			const chatParams: CreateChatReq = {
+				bot_id: this.botId,
+				conversation_id: conversationId,
+				auto_save_history: true,
+			};
+
+			// Add user_id if provided
+			if (userId) {
+				chatParams.user_id = userId;
+			}
+
+			// Add initial message if provided
+			if (message) {
+				const enterMessage: EnterMessage = {
+					role: RoleType.User,
+					content: typeof message === "string" ? message : JSON.stringify(message),
+					content_type: typeof message === "string" ? "text" : "object_string",
+				};
+				chatParams.additional_messages = [enterMessage];
+			}
+
+			const response = await this.client.chat.createAndPoll(chatParams);
+
+			return {
+				success: true,
+				data: response,
+			};
+		} catch (error) {
+			console.error("Error in createChatAndPoll:", error);
+			return {
+				success: false,
+				error: error instanceof Error ? error.message : "Unknown error occurred",
+			};
+		}
+	}
+
+	/**
+	 * Get list of messages in a conversation
+	 */
+	async getConversationMessages(
+		conversationId: string,
+		params?: ListMessageReq
+	): Promise<{ success: true; data: ListMessageData } | { success: false; error: string }> {
+		try {
+			const response = await this.client.conversations.messages.list(conversationId, params);
+
+			return {
+				success: true,
+				data: response,
+			};
+		} catch (error) {
+			console.error("Error in getConversationMessages:", error);
 			return {
 				success: false,
 				error: error instanceof Error ? error.message : "Unknown error occurred",

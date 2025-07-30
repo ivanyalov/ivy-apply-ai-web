@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { authService, AuthResponse, SignInCredentials, SignUpCredentials } from "../api/auth";
 
 /**
@@ -38,6 +39,15 @@ export const useAuth = () => {
 		staleTime: 5 * 60 * 1000, // 5 минут
 	});
 
+	// Автоматически очищаем данные подписки при потере аутентификации
+	useEffect(() => {
+		if (!user && !isLoading) {
+			// Пользователь не аутентифицирован, очищаем данные подписки
+			queryClient.setQueryData(["subscription", "status"], null);
+			queryClient.removeQueries({ queryKey: ["subscription"] });
+		}
+	}, [user, isLoading, queryClient]);
+
 	// Mutation для входа
 	const signinMutation = useMutation({
 		mutationFn: async (credentials: SignInCredentials) => {
@@ -76,9 +86,12 @@ export const useAuth = () => {
 	const signout = () => {
 		localStorage.removeItem("token");
 		queryClient.setQueryData(["auth", "user"], null);
+		// Полностью очищаем данные подписки
+		queryClient.setQueryData(["subscription", "status"], null);
+		// Удаляем все кэшированные запросы подписки
+		queryClient.removeQueries({ queryKey: ["subscription"] });
 		// Инвалидируем все связанные запросы
 		queryClient.invalidateQueries({ queryKey: ["auth"] });
-		queryClient.invalidateQueries({ queryKey: ["subscription"] });
 	};
 
 	// Функция для входа

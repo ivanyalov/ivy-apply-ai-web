@@ -1,18 +1,18 @@
 // This file will contain utilities for interacting with the Supabase database using TypeScript.
 // Placeholder for Supabase client initialization and query functions.
 
-import { pool } from './config/database';
+import { pool } from "./config/database";
 
 /**
  * Инициализация базы данных - создание необходимых таблиц
  * Использует CREATE TABLE IF NOT EXISTS, поэтому существующие данные сохраняются
  */
 export async function initializeDatabase() {
-    try {
-        console.log('Checking database schema...');
+	try {
+		console.log("Checking database schema...");
 
-        // Создание таблицы пользователей (если не существует)
-        await pool.query(`
+		// Создание таблицы пользователей (если не существует)
+		await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 email VARCHAR(255) UNIQUE NOT NULL,
@@ -21,10 +21,10 @@ export async function initializeDatabase() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('✓ Users table ready');
+		console.log("✓ Users table ready");
 
-        // Создание таблицы подписок (если не существует)
-        await pool.query(`
+		// Создание таблицы подписок (если не существует)
+		await pool.query(`
             CREATE TABLE IF NOT EXISTS subscriptions (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -39,10 +39,10 @@ export async function initializeDatabase() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('✓ Subscriptions table ready');
+		console.log("✓ Subscriptions table ready");
 
-        // Создание таблицы платежей (если не существует)
-        await pool.query(`
+		// Создание таблицы платежей (если не существует)
+		await pool.query(`
             CREATE TABLE IF NOT EXISTS payments (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -56,10 +56,23 @@ export async function initializeDatabase() {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
-        console.log('✓ Payments table ready');
+		console.log("✓ Payments table ready");
 
-        // Создание индексов для оптимизации (если не существуют)
-        await pool.query(`
+		// Создание таблицы user_conversations (если не существует)
+		await pool.query(`
+            CREATE TABLE IF NOT EXISTS user_conversations (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                conversation_id VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(user_id)
+            )
+        `);
+		console.log("✓ User conversations table ready");
+
+		// Создание индексов для оптимизации (если не существуют)
+		await pool.query(`
             CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
@@ -67,55 +80,57 @@ export async function initializeDatabase() {
             CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
             CREATE INDEX IF NOT EXISTS idx_payments_subscription_id ON payments(subscription_id);
             CREATE INDEX IF NOT EXISTS idx_payments_invoice_id ON payments(cloudpayments_invoice_id);
+            CREATE INDEX IF NOT EXISTS idx_user_conversations_user_id ON user_conversations(user_id);
+            CREATE INDEX IF NOT EXISTS idx_user_conversations_conversation_id ON user_conversations(conversation_id);
         `);
-        console.log('✓ Database indexes ready');
+		console.log("✓ Database indexes ready");
 
-        // Миграция: переименование end_date в expires_at (если нужно)
-        try {
-            await pool.query(`
+		// Миграция: переименование end_date в expires_at (если нужно)
+		try {
+			await pool.query(`
                 ALTER TABLE subscriptions 
                 RENAME COLUMN end_date TO expires_at
             `);
-            console.log('✓ Migrated end_date to expires_at');
-        } catch (error) {
-            // Колонка уже переименована или не существует
-            console.log('ℹ️ expires_at column already exists or migration not needed');
-        }
+			console.log("✓ Migrated end_date to expires_at");
+		} catch (error) {
+			// Колонка уже переименована или не существует
+			console.log("ℹ️ expires_at column already exists or migration not needed");
+		}
 
-        // Добавление новых полей для CloudPayments (если не существуют)
-        try {
-            await pool.query(`
+		// Добавление новых полей для CloudPayments (если не существуют)
+		try {
+			await pool.query(`
                 ALTER TABLE subscriptions 
                 ADD COLUMN IF NOT EXISTS cloudpayments_subscription_id VARCHAR(255),
                 ADD COLUMN IF NOT EXISTS cloudpayments_token VARCHAR(500),
                 ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMP
             `);
-            console.log('✓ Added CloudPayments fields to subscriptions table');
-        } catch (error) {
-            console.log('ℹ️ CloudPayments fields already exist or migration not needed');
-        }
+			console.log("✓ Added CloudPayments fields to subscriptions table");
+		} catch (error) {
+			console.log("ℹ️ CloudPayments fields already exist or migration not needed");
+		}
 
-        console.log('Database schema is ready - all existing data preserved');
-    } catch (error) {
-        console.error('Database schema initialization failed:', error);
-        throw error;
-    }
+		console.log("Database schema is ready - all existing data preserved");
+	} catch (error) {
+		console.error("Database schema initialization failed:", error);
+		throw error;
+	}
 }
 
 /**
  * Проверка подключения к базе данных
  */
 export async function testDatabaseConnection() {
-    try {
-        const result = await pool.query('SELECT NOW()');
-        console.log('✓ Database connection successful');
-        return true;
-    } catch (error) {
-        console.error('✗ Database connection failed:', error);
-        return false;
-    }
+	try {
+		const result = await pool.query("SELECT NOW()");
+		console.log("✓ Database connection successful");
+		return true;
+	} catch (error) {
+		console.error("✗ Database connection failed:", error);
+		return false;
+	}
 }
 
 export const placeholderDbFunction = async (): Promise<void> => {
-  console.log('Placeholder DB function called');
+	console.log("Placeholder DB function called");
 };

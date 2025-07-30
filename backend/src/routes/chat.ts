@@ -33,8 +33,11 @@ router.post(
 // Regular message endpoint
 router.post("/message", async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { message, conversationHistory } = req.body;
-		const response = await cozeService.sendMessage(message, conversationHistory);
+		const { message, conversationHistory, conversationId } = req.body;
+		console.log("Received message for conversation:", conversationId);
+
+		// Pass conversation ID to cozeService
+		const response = await cozeService.sendMessage(message, conversationHistory, conversationId);
 		res.json(response);
 	} catch (error) {
 		console.error("Error in /message endpoint:", error);

@@ -117,44 +117,6 @@ const AccessSelectionPage: React.FC = () => {
 		);
 	};
 
-	/**
-	 * CloudPaymentsTestButton
-	 * Кнопка для тестирования соединения с CloudPayments API через https://api.cloudpayments.ru/test
-	 * См. cloudpayments-instructions.txt (раздел "Тестовый метод")
-	 */
-	const CloudPaymentsTestButton: React.FC = () => {
-		const [result, setResult] = React.useState<any>(null);
-		const [loading, setLoading] = React.useState(false);
-		const handleTest = async () => {
-			setLoading(true);
-			setResult(null);
-			try {
-				const res = await cloudPaymentsService.testConnection();
-				setResult(res);
-			} catch (e) {
-				setResult({ success: false, error: e instanceof Error ? e.message : "Unknown error" });
-			} finally {
-				setLoading(false);
-			}
-		};
-		return (
-			<div className="mt-8 flex flex-col items-center">
-				<button
-					onClick={handleTest}
-					className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors font-semibold"
-					disabled={loading}
-				>
-					{loading ? "Проверка..." : "Проверить cloud payments"}
-				</button>
-				{result && (
-					<pre className="mt-4 bg-gray-100 p-4 rounded text-left w-full max-w-xl overflow-x-auto text-sm">
-						{JSON.stringify(result, null, 2)}
-					</pre>
-				)}
-			</div>
-		);
-	};
-
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
 			<div className="w-full max-w-4xl mx-auto">
@@ -212,9 +174,6 @@ const AccessSelectionPage: React.FC = () => {
 						</button>
 					</div>
 				</div>
-
-				{/* CloudPayments Test Button*/}
-				<CloudPaymentsTestButton />
 
 				{subscription?.hasAccess && (
 					<div className="text-center mt-8">
