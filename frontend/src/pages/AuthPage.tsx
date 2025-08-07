@@ -95,15 +95,13 @@ const AuthPage: React.FC = () => {
 								required
 								style={{ marginRight: 8 }}
 							/>
-							Я принимаю&nbsp;
-							<a
-								href="/user-agreement"
+							<Link
+								to="/user-agreement"
 								target="_blank"
-								rel="noopener noreferrer"
-								style={{ color: "#b91c1c", textDecoration: "underline" }}
+								className="text-gray-600 hover:text-gray-800 underline"
 							>
-								Пользовательское соглашение
-							</a>
+								Я принимаю Пользовательское соглашение
+							</Link>
 						</label>
 					</div>
 

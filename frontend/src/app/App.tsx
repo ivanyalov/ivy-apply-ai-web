@@ -11,6 +11,7 @@ import CookieBanner from "../shared/components/CookieBanner";
 import UserAgreement from "../pages/UserAgreement";
 import Contact from "../pages/Contact";
 import MainLayout from "../shared/components/MainLayout";
+import PublicOffer from "../pages/PublicOffer";
 
 // Создаем QueryClient с настройками
 const queryClient = new QueryClient({
@@ -56,6 +57,7 @@ const App: React.FC = () => {
 						/>
 						<Route path="/user-agreement" element={<UserAgreement />} />
 						<Route path="/contact" element={<Contact />} />
+						<Route path="/public-offer" element={<PublicOffer />} />
 					</Routes>
 				</MainLayout>
 				<CookieBanner />

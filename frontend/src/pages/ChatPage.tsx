@@ -591,9 +591,6 @@ const ChatPage: React.FC = () => {
 										{message.text}
 									</ReactMarkdown>
 								)}
-								<p className={`text-xs mt-1 ${message.isUser ? "text-red-100" : "text-gray-500"}`}>
-									{message.timestamp.toLocaleTimeString()}
-								</p>
 							</div>
 						</div>
 					))}

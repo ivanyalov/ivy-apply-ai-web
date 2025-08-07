@@ -55,19 +55,21 @@ const LandingPage: React.FC = () => {
 						Ivy Apply AI — ваш персональный AI-консультант по поступлению в вузы. Загружайте
 						документы, задавайте вопросы и получайте чёткие рекомендации на русском языке.
 					</p>
-					<button
-						onClick={handleStart}
-						className="bg-harvard-crimson text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
-					>
-						Начать
-					</button>
-					<div className="mt-4">
+					<div className="w-60 mx-auto">
 						<button
-							onClick={handleSubscription}
-							className="bg-white border border-gray-300 text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+							onClick={handleStart}
+							className="w-full bg-harvard-crimson text-white py-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
 						>
-							Подписка
+							Начать Чат
 						</button>
+						<div className="mt-4">
+							<button
+								onClick={handleSubscription}
+								className="w-full bg-white border border-gray-300 text-gray-900 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+							>
+								Подписка
+							</button>
+						</div>
 					</div>
 					{subError && <div className="mt-2 text-red-600 text-sm">{subError}</div>}
 				</div>
@@ -185,6 +187,14 @@ const LandingPage: React.FC = () => {
 							className="text-gray-900 hover:text-gray-700"
 						>
 							Пользовательское соглашение
+						</a>
+						<a
+							href="/public-offer"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-gray-900 hover:text-gray-700"
+						>
+							Публичная оферта
 						</a>
 						<a
 							href="/contact"

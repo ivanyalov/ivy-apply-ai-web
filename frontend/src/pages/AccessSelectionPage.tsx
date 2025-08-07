@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth";
 import { useSubscription } from "../shared/hooks/useSubscription";
 import { cloudPaymentsService } from "../shared/services/cloudpayments.service";
@@ -19,6 +19,11 @@ const AccessSelectionPage: React.FC = () => {
 	const handleMonthlySubscription = async () => {
 		if (!user) {
 			alert("Пожалуйста, войдите в систему, чтобы совершить платеж.");
+			return;
+		}
+
+		if (!agreedToRecurring) {
+			alert("Пожалуйста, согласитесь с условиями рекуррентных платежей.");
 			return;
 		}
 
@@ -50,6 +55,7 @@ const AccessSelectionPage: React.FC = () => {
 	};
 
 	const [trialSuccess, setTrialSuccess] = React.useState(false);
+	const [agreedToRecurring, setAgreedToRecurring] = React.useState(false);
 	const handleStartTrial = async () => {
 		try {
 			await startTrial();
@@ -134,41 +140,68 @@ const AccessSelectionPage: React.FC = () => {
 						Выйти
 					</button>
 				</div>
-				<h1 className="text-4xl font-bold text-center mb-8">Выберите План Доступа</h1>
+				<h1 className="text-4xl font-bold text-center mb-8">Выберите План</h1>
 				<div className="mb-8">{renderSubscriptionInfo()}</div>
 
 				<div className="grid md:grid-cols-2 gap-8">
-					<div className="border p-6 rounded-lg shadow-lg bg-white">
-						<h2 className="text-2xl font-semibold mb-4">Премиум План</h2>
-						<p className="text-4xl font-bold mb-4">
-							990 RUB <span className="text-lg font-normal">/ месяц</span>
-						</p>
-						<ul className="mb-6 space-y-2 text-gray-600">
-							<li>✓ Неограниченный доступ к AI-чату</li>
-							<li>✓ Приоритетная поддержка</li>
-							<li>✓ Доступ ко всем новым функциям</li>
-							<li>✓ Автоматическое продление</li>
-						</ul>
+					<div className="border p-6 rounded-lg shadow-lg bg-white flex flex-col justify-between h-full">
+						<div>
+							<h2 className="text-2xl font-semibold mb-4">Премиум План</h2>
+							<p className="text-4xl font-bold mb-4">
+								990 RUB <span className="text-lg font-normal">/ месяц</span>
+							</p>
+							<ul className="mb-6 space-y-2 text-gray-600">
+								<li>✓ Неограниченный доступ к AI-чату</li>
+								<li>✓ Приоритетная поддержка</li>
+								<li>✓ Доступ ко всем новым функциям</li>
+								<li>✓ Автоматическое продление</li>
+							</ul>
+							<div className="mb-4">
+								<label style={{ display: "flex", alignItems: "center", fontSize: 12 }}>
+									<input
+										type="checkbox"
+										checked={agreedToRecurring}
+										onChange={(e) => setAgreedToRecurring(e.target.checked)}
+										required
+										style={{ marginRight: 8 }}
+									/>
+									<Link 
+										to="/public-offer" 
+										className="text-gray-700 hover:text-gray-900 underline"
+										target="_blank"
+									>
+										Я даю согласие на автоматическое продление подписки до момента отмены
+									</Link>
+								</label>
+							</div>
+						</div>
 						<button
 							onClick={handleMonthlySubscription}
-							className="w-full bg-harvard-crimson text-white py-2 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
+							disabled={!agreedToRecurring}
+							className={`w-full py-2 px-4 rounded-lg text-lg font-semibold transition-colors ${
+								agreedToRecurring 
+									? "bg-harvard-crimson text-white hover:bg-red-800" 
+									: "bg-gray-400 text-gray-600 cursor-not-allowed"
+							}`}
 						>
 							Оформить подписку
 						</button>
 					</div>
-					<div className="border p-6 rounded-lg shadow-lg bg-white">
-						<h2 className="text-2xl font-semibold mb-4">Пробный План</h2>
-						<p className="text-4xl font-bold mb-4">
-							Бесплатно <span className="text-lg font-normal">/ 7 дней</span>
-						</p>
-						<ul className="mb-6 space-y-2 text-gray-600">
-							<li>✓ Полный доступ к AI-чату</li>
-							<li>✓ Попробуйте все функции</li>
-						</ul>
+					<div className="border p-6 rounded-lg shadow-lg bg-white flex flex-col justify-between h-full">
+						<div>
+							<h2 className="text-2xl font-semibold mb-4">Пробный План</h2>
+							<p className="text-4xl font-bold mb-4">
+								Бесплатно <span className="text-lg font-normal">/ 7 дней</span>
+							</p>
+							<ul className="mb-6 space-y-2 text-gray-600">
+								<li>✓ Полный доступ к AI-чату</li>
+								<li>✓ Попробуйте все функции</li>
+							</ul>
+						</div>
 						<button
 							onClick={handleStartTrial}
 							disabled={subscription?.status === "active"}
-							className="w-full bg-gray-800 text-white py-2 px-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed mt-16"
+							className="w-full py-2 px-4 rounded-lg text-lg font-semibold transition-colors bg-gray-800 text-white hover:bg-gray-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
 						>
 							Начать пробный период
 						</button>
