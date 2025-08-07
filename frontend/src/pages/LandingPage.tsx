@@ -178,13 +178,13 @@ const LandingPage: React.FC = () => {
 			{/* Footer */}
 			<footer className="bg-white text-gray-900 py-12 px-6">
 				<div className="max-w-4xl mx-auto text-center">
-					<h3 className="text-2xl font-bold mb-4">Ivy Apply AI</h3>
-					<div className="flex justify-center space-x-8 mb-6">
+					<h3 className="text-2xl font-bold mb-6">Ivy Apply AI</h3>
+					<div className="flex justify-center space-x-8 mb-8">
 						<a
 							href="/user-agreement"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-gray-900 hover:text-gray-700"
+							className="text-gray-900 hover:text-gray-700 transition-colors"
 						>
 							Пользовательское соглашение
 						</a>
@@ -192,7 +192,7 @@ const LandingPage: React.FC = () => {
 							href="/public-offer"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-gray-900 hover:text-gray-700"
+							className="text-gray-900 hover:text-gray-700 transition-colors"
 						>
 							Публичная оферта
 						</a>
@@ -200,7 +200,7 @@ const LandingPage: React.FC = () => {
 							href="/contact"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-gray-900 hover:text-gray-700"
+							className="text-gray-900 hover:text-gray-700 transition-colors"
 						>
 							Контакты
 						</a>
