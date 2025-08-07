@@ -71,20 +71,6 @@ export async function initializeDatabase() {
         `);
 		console.log("✓ User conversations table ready");
 
-		// Создание индексов для оптимизации (если не существуют)
-		await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-            CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
-            CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
-            CREATE INDEX IF NOT EXISTS idx_subscriptions_cloudpayments_id ON subscriptions(cloudpayments_subscription_id);
-            CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
-            CREATE INDEX IF NOT EXISTS idx_payments_subscription_id ON payments(subscription_id);
-            CREATE INDEX IF NOT EXISTS idx_payments_invoice_id ON payments(cloudpayments_invoice_id);
-            CREATE INDEX IF NOT EXISTS idx_user_conversations_user_id ON user_conversations(user_id);
-            CREATE INDEX IF NOT EXISTS idx_user_conversations_conversation_id ON user_conversations(conversation_id);
-        `);
-		console.log("✓ Database indexes ready");
-
 		// Миграция: переименование end_date в expires_at (если нужно)
 		try {
 			await pool.query(`
@@ -109,6 +95,20 @@ export async function initializeDatabase() {
 		} catch (error) {
 			console.log("ℹ️ CloudPayments fields already exist or migration not needed");
 		}
+
+		// Создание индексов для оптимизации (если не существуют)
+		await pool.query(`
+            CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+            CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
+            CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
+            CREATE INDEX IF NOT EXISTS idx_subscriptions_cloudpayments_id ON subscriptions(cloudpayments_subscription_id);
+            CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
+            CREATE INDEX IF NOT EXISTS idx_payments_subscription_id ON payments(subscription_id);
+            CREATE INDEX IF NOT EXISTS idx_payments_invoice_id ON payments(cloudpayments_invoice_id);
+            CREATE INDEX IF NOT EXISTS idx_user_conversations_user_id ON user_conversations(user_id);
+            CREATE INDEX IF NOT EXISTS idx_user_conversations_conversation_id ON user_conversations(conversation_id);
+        `);
+		console.log("✓ Database indexes ready");
 
 		console.log("Database schema is ready - all existing data preserved");
 	} catch (error) {
