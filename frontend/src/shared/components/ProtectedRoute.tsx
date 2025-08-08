@@ -14,7 +14,7 @@ import { useSubscription } from "../hooks/useSubscription";
  * - Checks if user is authenticated
  * - Validates subscription access for protected routes (like /chat)
  * - Shows loading state while checking authentication/subscription
- * - Redirects unauthenticated users to /auth
+ * - Redirects unauthenticated users to /login
  * - Redirects users without subscription access to /access
  *
  * @example
@@ -48,9 +48,9 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ childr
 		);
 	}
 
-	// If the user is not authenticated, redirect to the auth page.
+	// If the user is not authenticated, redirect to the login page.
 	if (!isAuthenticated) {
-		return <Navigate to="/auth" state={{ from: location }} replace />;
+		return <Navigate to="/login" state={{ from: location }} replace />;
 	}
 
 	// If the route is '/chat' and the user doesn't have an active subscription, redirect to the access page.

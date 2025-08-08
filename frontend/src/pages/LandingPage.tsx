@@ -32,7 +32,7 @@ const LandingPage: React.FC = () => {
 		} else if (isAuthenticated && !subscription?.hasAccess) {
 			navigate("/access");
 		} else {
-			navigate("/auth");
+			navigate("/login");
 		}
 	};
 
@@ -81,11 +81,36 @@ const LandingPage: React.FC = () => {
 					<div className="flex flex-col items-center mb-8">
 						<h2 className="text-3xl font-bold text-gray-900 text-center">Что он умеет</h2>
 					</div>
-					<ul className="list-disc list-inside text-lg text-gray-600 text-center space-y-2">
-						<li>Анализирует эссе и анкеты</li>
-						<li>Помогает выбрать университет</li>
-						<li>Отвечает на вопросы в формате чата</li>
-					</ul>
+					<div className="space-y-8 w-fit mx-auto">
+						<div className="flex items-center space-x-6">
+							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+								1
+							</div>
+							<div>
+								<h3 className="text-xl font-semibold text-gray-900">Анализирует эссе и анкеты</h3>
+							</div>
+						</div>
+						<div className="flex items-center space-x-6">
+							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+								2
+							</div>
+							<div>
+								<h3 className="text-xl font-semibold text-gray-900">
+									Помогает выбрать университет
+								</h3>
+							</div>
+						</div>
+						<div className="flex items-center space-x-6">
+							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+								3
+							</div>
+							<div>
+								<h3 className="text-xl font-semibold text-gray-900">
+									Отвечает на вопросы в формате чата
+								</h3>
+							</div>
+						</div>
+					</div>
 				</div>
 			</section>
 

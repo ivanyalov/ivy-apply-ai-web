@@ -1,56 +1,57 @@
 {
-  "name": "ivy-apply-ai-frontend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@tanstack/react-query": "^5.83.0",
-    "axios": "^1.9.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.6.1",
-    "remark-gfm": "^4.0.1"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "build:css": "tailwindcss -i ./src/app/input.css -o ./src/app/output.css --watch",
-    "test": "vitest"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.15.22",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
-    "@vitejs/plugin-react": "^4.5.0",
-    "@vitest/ui": "^3.1.4",
-    "autoprefixer": "^10.4.16",
-    "jsdom": "^26.1.0",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5",
-    "vitest": "^3.1.4"
-  }
+	"name": "ivy-apply-ai-frontend",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@tanstack/react-query": "^5.83.0",
+		"axios": "^1.9.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-hook-form": "^7.62.0",
+		"react-markdown": "^10.1.0",
+		"react-router-dom": "^7.6.1",
+		"remark-gfm": "^4.0.1"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"build:css": "tailwindcss -i ./src/app/input.css -o ./src/app/output.css --watch",
+		"test": "vitest"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.3.0",
+		"@types/jest": "^29.5.14",
+		"@types/node": "^22.15.22",
+		"@types/react": "^19.1.6",
+		"@types/react-dom": "^19.1.5",
+		"@vitejs/plugin-react": "^4.5.0",
+		"@vitest/ui": "^3.1.4",
+		"autoprefixer": "^10.4.16",
+		"jsdom": "^26.1.0",
+		"postcss": "^8.4.31",
+		"tailwindcss": "^3.4.17",
+		"typescript": "^5.8.3",
+		"vite": "^6.3.5",
+		"vitest": "^3.1.4"
+	}
 }

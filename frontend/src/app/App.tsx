@@ -1,8 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedRoute } from "../shared/components/ProtectedRoute";
-import AuthPage from "../pages/AuthPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 import AccessSelectionPage from "../pages/AccessSelectionPage";
 import ChatPage from "../pages/ChatPage";
 import PaymentSuccessPage from "../pages/PaymentSuccessPage";
@@ -30,7 +31,9 @@ const App: React.FC = () => {
 				<MainLayout>
 					<Routes>
 						<Route path="/" element={<LandingPage />} />
-						<Route path="/auth" element={<AuthPage />} />
+						<Route path="/login" element={<LoginPage />} />
+						<Route path="/register" element={<RegisterPage />} />
+						<Route path="/auth" element={<Navigate to="/login" replace />} />
 						<Route
 							path="/access"
 							element={
