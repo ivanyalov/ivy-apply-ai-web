@@ -112,8 +112,12 @@ const AccessSelectionPage: React.FC = () => {
 				<h2 className="text-2xl font-bold mb-4">Ваш Текущий План</h2>
 				<p className="mb-2">
 					<strong>План:</strong>{" "}
-					<span className="capitalize">
-						{subscription.type === "trial" ? "Пробный" : "Премиум"}
+					<span>
+						{subscription.status === "unsubscribed"
+							? "Подписка не активирована"
+							: subscription.type === "trial"
+							? "Пробный"
+							: "Премиум"}
 					</span>
 				</p>
 				<p className="mb-2">

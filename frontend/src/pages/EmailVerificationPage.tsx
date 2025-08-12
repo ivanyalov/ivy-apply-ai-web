@@ -25,20 +25,42 @@ const EmailVerificationPage: React.FC = () => {
 		const verifyEmail = async () => {
 			try {
 				console.log("🔍 Starting email verification process with token:", token);
+
 				const result = await authService.verifyEmail(token);
 				console.log("✅ Email verification API call successful:", result);
+				console.log("✅ Setting status to success");
 
 				setStatus("success");
 				setMessage(result.message);
+				console.log("✅ Status and message set successfully");
 
 				// Обновляем данные пользователя в кэше с новыми данными из ответа
 				console.log("🔍 Updating user data in cache:", result.user);
-				queryClient.setQueryData(["auth", "user"], result.user);
+				try {
+					queryClient.setQueryData(["auth", "user"], result.user);
+					console.log("✅ User data updated in cache successfully");
+				} catch (cacheError) {
+					console.error("❌ Error updating cache:", cacheError);
+					// Продолжаем выполнение, так как основная верификация прошла успешно
+				}
 
-				// Также инвалидируем кэш, чтобы данные обновились везде
-				queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
+				// НЕ инвалидируем кэш для неавторизованных пользователей,
+				// так как это затрет только что установленные данные пользователя
+				const hasJwtToken = localStorage.getItem("token");
+				if (hasJwtToken) {
+					try {
+						queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
+						console.log("✅ Cache invalidated successfully");
+					} catch (invalidateError) {
+						console.error("❌ Error invalidating cache:", invalidateError);
+					}
+				} else {
+					console.log("🔍 Skipping cache invalidation - user not authenticated with JWT");
+				}
+
 				console.log("✅ Email verification completed successfully");
 			} catch (error: any) {
+				console.error("❌ CAUGHT ERROR in verifyEmail:", error);
 				setStatus("error");
 				console.error("Email verification error:", error);
 				console.error("Error details:", {
@@ -97,7 +119,11 @@ const EmailVerificationPage: React.FC = () => {
 	};
 
 	const handleContinue = () => {
-		if (user) {
+		// Если верификация прошла успешно, направляем на страницу логина
+		// чтобы пользователь мог войти в систему с подтвержденным email
+		if (status === "success") {
+			navigate("/login");
+		} else if (user) {
 			navigate("/access");
 		} else {
 			navigate("/login");
