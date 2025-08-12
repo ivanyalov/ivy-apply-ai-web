@@ -36,7 +36,9 @@ export const useAuth = () => {
 			return await authService.getMe();
 		},
 		retry: false,
-		staleTime: 5 * 60 * 1000, // 5 минут
+		staleTime: 5 * 60 * 1000, // 5 минут - данные считаются свежими
+		refetchOnMount: false, // НЕ перезапрашиваем при монтировании, если есть свежие данные
+		refetchOnWindowFocus: false, // Не перезапрашиваем при фокусе окна
 	});
 
 	// Автоматически очищаем данные подписки при потере аутентификации
@@ -51,11 +53,13 @@ export const useAuth = () => {
 	// Mutation для входа
 	const signinMutation = useMutation({
 		mutationFn: async (credentials: SignInCredentials) => {
-			const { user } = await authService.signin(credentials);
-			return user;
+			const response = await authService.signin(credentials);
+			// Сразу получаем актуальные данные пользователя
+			const currentUser = await authService.getMe();
+			return currentUser;
 		},
 		onSuccess: (user) => {
-			// Обновляем кэш с данными пользователя
+			// Обновляем кэш с актуальными данными пользователя
 			queryClient.setQueryData(["auth", "user"], user);
 		},
 		onError: () => {
@@ -68,11 +72,13 @@ export const useAuth = () => {
 	// Mutation для регистрации
 	const signupMutation = useMutation({
 		mutationFn: async (credentials: SignUpCredentials) => {
-			const { user } = await authService.signup(credentials);
-			return user;
+			const response = await authService.signup(credentials);
+			// Сразу получаем актуальные данные пользователя
+			const currentUser = await authService.getMe();
+			return currentUser;
 		},
 		onSuccess: (user) => {
-			// Обновляем кэш с данными пользователя
+			// Обновляем кэш с актуальными данными пользователя
 			queryClient.setQueryData(["auth", "user"], user);
 		},
 		onError: () => {

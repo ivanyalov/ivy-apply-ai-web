@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth";
 import { useSubscription } from "../shared/hooks/useSubscription";
 import { cloudPaymentsService } from "../shared/services/cloudpayments.service";
+import { authService } from "../shared/api/auth";
 
 declare global {
 	interface Window {
@@ -15,6 +16,7 @@ const AccessSelectionPage: React.FC = () => {
 	const { subscription, isLoading, cancelSubscription, refreshSubscription, startTrial } =
 		useSubscription();
 	const navigate = useNavigate();
+	const [resendingEmail, setResendingEmail] = React.useState(false);
 
 	const handleMonthlySubscription = async () => {
 		if (!user) {
@@ -70,6 +72,24 @@ const AccessSelectionPage: React.FC = () => {
 	const handleLogout = () => {
 		signout();
 		navigate("/");
+	};
+
+	const handleResendVerificationEmail = async () => {
+		if (!user?.email) return;
+
+		setResendingEmail(true);
+		try {
+			await authService.resendVerificationEmail(user.email);
+			alert("Письмо с подтверждением отправлено повторно. Проверьте вашу почту.");
+		} catch (error: any) {
+			if (error.response?.status === 409) {
+				alert("Email уже подтверждён");
+			} else {
+				alert("Ошибка при отправке письма. Попробуйте позже.");
+			}
+		} finally {
+			setResendingEmail(false);
+		}
 	};
 
 	if (isLoading) {
@@ -141,6 +161,42 @@ const AccessSelectionPage: React.FC = () => {
 					</button>
 				</div>
 				<h1 className="text-4xl font-bold text-center mb-8">Выберите План</h1>
+
+				{/* Email Verification Warning */}
+				{user && !user.email_verified && (
+					<div className="mb-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+						<div className="flex items-center">
+							<div className="flex-shrink-0">
+								<svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+									<path
+										fillRule="evenodd"
+										d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+										clipRule="evenodd"
+									/>
+								</svg>
+							</div>
+							<div className="ml-3 flex-1">
+								<h3 className="text-sm font-medium text-yellow-800">Подтвердите ваш email адрес</h3>
+								<div className="mt-2 text-sm text-yellow-700">
+									<p>
+										Для оформления подписки и активации пробного периода необходимо подтвердить ваш
+										email адрес. Проверьте почту {user.email} и перейдите по ссылке в письме.
+									</p>
+								</div>
+								<div className="mt-4">
+									<button
+										onClick={handleResendVerificationEmail}
+										disabled={resendingEmail}
+										className="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded hover:bg-yellow-200 disabled:opacity-50"
+									>
+										{resendingEmail ? "Отправка..." : "Отправить письмо повторно"}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
 				<div className="mb-8">{renderSubscriptionInfo()}</div>
 
 				<div className="grid md:grid-cols-2 gap-8">
@@ -163,10 +219,11 @@ const AccessSelectionPage: React.FC = () => {
 										checked={agreedToRecurring}
 										onChange={(e) => setAgreedToRecurring(e.target.checked)}
 										required
+										disabled={!user?.email_verified}
 										style={{ marginRight: 8 }}
 									/>
-									<Link 
-										to="/public-offer" 
+									<Link
+										to="/public-offer"
 										className="text-gray-700 hover:text-gray-900 underline"
 										target="_blank"
 									>
@@ -177,14 +234,14 @@ const AccessSelectionPage: React.FC = () => {
 						</div>
 						<button
 							onClick={handleMonthlySubscription}
-							disabled={!agreedToRecurring}
+							disabled={!agreedToRecurring || !user?.email_verified}
 							className={`w-full py-2 px-4 rounded-lg text-lg font-semibold transition-colors ${
-								agreedToRecurring 
-									? "bg-harvard-crimson text-white hover:bg-red-800" 
+								agreedToRecurring && user?.email_verified
+									? "bg-harvard-crimson text-white hover:bg-red-800"
 									: "bg-gray-400 text-gray-600 cursor-not-allowed"
 							}`}
 						>
-							Оформить подписку
+							{!user?.email_verified ? "Подтвердите email" : "Оформить подписку"}
 						</button>
 					</div>
 					<div className="border p-6 rounded-lg shadow-lg bg-white flex flex-col justify-between h-full">
@@ -200,10 +257,10 @@ const AccessSelectionPage: React.FC = () => {
 						</div>
 						<button
 							onClick={handleStartTrial}
-							disabled={subscription?.status === "active"}
+							disabled={subscription?.status === "active" || !user?.email_verified}
 							className="w-full py-2 px-4 rounded-lg text-lg font-semibold transition-colors bg-gray-800 text-white hover:bg-gray-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
 						>
-							Начать пробный период
+							{!user?.email_verified ? "Подтвердите email" : "Начать пробный период"}
 						</button>
 					</div>
 				</div>

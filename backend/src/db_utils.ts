@@ -96,9 +96,22 @@ export async function initializeDatabase() {
 			console.log("ℹ️ CloudPayments fields already exist or migration not needed");
 		}
 
+		// Добавление полей для email верификации (если не существуют)
+		try {
+			await pool.query(`
+                ALTER TABLE users 
+                ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE,
+                ADD COLUMN IF NOT EXISTS verification_token VARCHAR(255)
+            `);
+			console.log("✓ Added email verification fields to users table");
+		} catch (error) {
+			console.log("ℹ️ Email verification fields already exist or migration not needed");
+		}
+
 		// Создание индексов для оптимизации (если не существуют)
 		await pool.query(`
             CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+            CREATE INDEX IF NOT EXISTS idx_users_verification_token ON users(verification_token);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_cloudpayments_id ON subscriptions(cloudpayments_subscription_id);

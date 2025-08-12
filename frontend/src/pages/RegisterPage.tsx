@@ -47,7 +47,7 @@ const RegisterPage: React.FC = () => {
 	const onSubmit = async (values: RegisterFormValues) => {
 		try {
 			await signup({ email: values.email, password: values.password });
-			navigate("/access", { replace: true });
+			navigate("/registration-success", { replace: true });
 		} catch (err: any) {
 			setError("root.serverError", {
 				type: "server",

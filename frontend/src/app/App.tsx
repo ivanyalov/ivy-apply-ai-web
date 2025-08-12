@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedRoute } from "../shared/components/ProtectedRoute";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import RegistrationSuccessPage from "../pages/RegistrationSuccessPage";
+import EmailVerificationPage from "../pages/EmailVerificationPage";
 import AccessSelectionPage from "../pages/AccessSelectionPage";
 import ChatPage from "../pages/ChatPage";
 import PaymentSuccessPage from "../pages/PaymentSuccessPage";
@@ -33,6 +35,8 @@ const App: React.FC = () => {
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/register" element={<RegisterPage />} />
+						<Route path="/registration-success" element={<RegistrationSuccessPage />} />
+						<Route path="/verify" element={<EmailVerificationPage />} />
 						<Route path="/auth" element={<Navigate to="/login" replace />} />
 						<Route
 							path="/access"
