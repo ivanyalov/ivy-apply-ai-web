@@ -101,11 +101,38 @@ export async function initializeDatabase() {
 			await pool.query(`
                 ALTER TABLE users 
                 ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE,
-                ADD COLUMN IF NOT EXISTS verification_token VARCHAR(255)
+                ADD COLUMN IF NOT EXISTS verification_token VARCHAR(255),
+                ADD COLUMN IF NOT EXISTS trial_used BOOLEAN DEFAULT FALSE
             `);
-			console.log("✓ Added email verification fields to users table");
+			console.log("✓ Added email verification and trial tracking fields to users table");
 		} catch (error) {
-			console.log("ℹ️ Email verification fields already exist or migration not needed");
+			console.log(
+				"ℹ️ Email verification and trial tracking fields already exist or migration not needed"
+			);
+		}
+
+		// Миграция: установить trial_used = true для пользователей с существующими пробными подписками
+		try {
+			const result = await pool.query(`
+                UPDATE users 
+                SET trial_used = true 
+                WHERE id IN (
+                    SELECT DISTINCT user_id 
+                    FROM subscriptions 
+                    WHERE plan_type = 'trial'
+                ) 
+                AND trial_used = false
+            `);
+			const updatedRows = result.rowCount || 0;
+			if (updatedRows > 0) {
+				console.log(
+					`✓ Updated trial_used flag for ${updatedRows} existing users with trial subscriptions`
+				);
+			} else {
+				console.log("ℹ️ No existing trial users to update");
+			}
+		} catch (error) {
+			console.log("⚠️ Failed to update existing trial users:", error);
 		}
 
 		// Создание индексов для оптимизации (если не существуют)

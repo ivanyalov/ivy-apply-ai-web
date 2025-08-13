@@ -63,9 +63,16 @@ const AccessSelectionPage: React.FC = () => {
 			await startTrial();
 			setTrialSuccess(true);
 			// alert("Пробный период успешно активирован!");
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error);
-			alert("Не удалось начать пробный период. Возможно, у вас уже есть активная подписка.");
+			const errorMessage = error.response?.data?.error || error.message;
+			if (errorMessage === "User has already used their trial period.") {
+				alert("Пробный период уже был использован.");
+			} else if (errorMessage === "User already has an active subscription or trial.") {
+				alert("У вас уже есть активная подписка.");
+			} else {
+				alert("Не удалось начать пробный период. Попробуйте позже.");
+			}
 		}
 	};
 
@@ -107,6 +114,12 @@ const AccessSelectionPage: React.FC = () => {
 			? new Date(subscription.expiresAt).toLocaleDateString("ru-RU")
 			: "N/A";
 
+		// Проверяем, истекла ли подписка
+		const isExpired = subscription.expiresAt && new Date(subscription.expiresAt) <= new Date();
+
+		// Показываем дату истечения только для активных подписок
+		const shouldShowExpiryDate = subscription.status === "active";
+
 		return (
 			<div className="border p-6 rounded-lg shadow-lg bg-white">
 				<h2 className="text-2xl font-bold mb-4">Ваш Текущий План</h2>
@@ -120,15 +133,17 @@ const AccessSelectionPage: React.FC = () => {
 							: "Премиум"}
 					</span>
 				</p>
-				<p className="mb-2">
+				<p className={shouldShowExpiryDate ? "mb-2" : "mb-4"}>
 					<strong>Статус:</strong>{" "}
 					<span className="capitalize">
 						{subscription.status === "active" ? "Активен" : "Неактивен"}
 					</span>
 				</p>
-				<p className="mb-4">
-					<strong>Истекает:</strong> {expiryDate}
-				</p>
+				{shouldShowExpiryDate && (
+					<p className="mb-4">
+						<strong>Истекает:</strong> {expiryDate}
+					</p>
+				)}
 
 				{subscription.status === "active" && (
 					<button
@@ -261,10 +276,18 @@ const AccessSelectionPage: React.FC = () => {
 						</div>
 						<button
 							onClick={handleStartTrial}
-							disabled={subscription?.status === "active" || !user?.email_verified}
+							disabled={
+								subscription?.status === "active" ||
+								!user?.email_verified ||
+								subscription?.trialUsed
+							}
 							className="w-full py-2 px-4 rounded-lg text-lg font-semibold transition-colors bg-gray-800 text-white hover:bg-gray-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
 						>
-							{!user?.email_verified ? "Подтвердите email" : "Начать пробный период"}
+							{!user?.email_verified
+								? "Подтвердите email"
+								: subscription?.trialUsed
+								? "Пробный период уже использован"
+								: "Начать пробный период"}
 						</button>
 					</div>
 				</div>

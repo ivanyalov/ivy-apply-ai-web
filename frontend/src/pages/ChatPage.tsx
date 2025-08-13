@@ -638,6 +638,37 @@ const ChatPage: React.FC = () => {
 
 			{/* Input Area */}
 			<div className="border-t border-gray-200 px-6 py-4">
+				{/* Attached file display - shown above input on mobile */}
+				{attachedFile && (
+					<div className="mb-3 md:hidden">
+						<div className="flex items-center space-x-2 px-3 py-2 bg-gray-100 rounded-lg text-gray-800">
+							{/* File icon */}
+							<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded">
+								<span className="text-xs font-bold">
+									{attachedFile.file.name.split(".").pop()?.toUpperCase().substring(0, 3) ||
+										attachedFile.file.type?.split("/")[1]?.toUpperCase().substring(0, 3) ||
+										"ФАЙЛ"}
+								</span>
+							</div>
+							<div className="flex-1 min-w-0">
+								<p className="font-medium text-sm truncate">{attachedFile.file.name}</p>
+								{attachedFile.file.size !== undefined && (
+									<p className="text-xs text-gray-600">
+										{(attachedFile.file.size / 1024).toFixed(2)} KB
+									</p>
+								)}
+							</div>
+							{/* Button to remove the attached file */}
+							<button
+								onClick={() => setAttachedFile(null)}
+								className="ml-2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full text-lg leading-none"
+							>
+								×
+							</button>
+						</div>
+					</div>
+				)}
+
 				<div className="flex space-x-4">
 					{/* Hidden file input */}
 					<input type="file" id="file-upload" className="hidden" onChange={handleFileSelect} />
@@ -673,9 +704,9 @@ const ChatPage: React.FC = () => {
 						rows={1}
 						disabled={isLoading}
 					/>
+					{/* Desktop file display - shown inline on desktop */}
 					{attachedFile && (
-						// Display attached file icon, name, and size
-						<div className="flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded-lg text-gray-800">
+						<div className="hidden md:flex items-center space-x-2 px-2 py-1 bg-gray-100 rounded-lg text-gray-800">
 							{/* File icon */}
 							<div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded">
 								{/* Simple text icon based on extension or type */}

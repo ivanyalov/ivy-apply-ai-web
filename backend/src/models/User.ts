@@ -7,6 +7,7 @@ export interface User {
 	password_hash: string;
 	email_verified: boolean;
 	verification_token: string | null;
+	trial_used: boolean;
 	created_at: Date;
 	updated_at: Date;
 }
@@ -20,12 +21,12 @@ export class UserModel {
 			console.log("✅ Password hashed successfully");
 
 			const query = `
-                INSERT INTO users (email, password_hash, email_verified, verification_token)
-                VALUES ($1, $2, $3, $4)
+                INSERT INTO users (email, password_hash, email_verified, verification_token, trial_used)
+                VALUES ($1, $2, $3, $4, $5)
                 RETURNING *
             `;
 
-			const values = [email, password_hash, false, verificationToken || null];
+			const values = [email, password_hash, false, verificationToken || null, false];
 			const result = await pool.query(query, values);
 			console.log("✅ Database query executed successfully");
 			console.log("✅ User created in database:", {
@@ -70,5 +71,10 @@ export class UserModel {
 	async updateVerificationToken(userId: string, token: string): Promise<void> {
 		const query = "UPDATE users SET verification_token = $1 WHERE id = $2";
 		await pool.query(query, [token, userId]);
+	}
+
+	async markTrialUsed(userId: string): Promise<void> {
+		const query = "UPDATE users SET trial_used = true WHERE id = $1";
+		await pool.query(query, [userId]);
 	}
 }
