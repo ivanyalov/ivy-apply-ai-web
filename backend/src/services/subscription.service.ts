@@ -33,7 +33,7 @@ export class SubscriptionService {
 			status: "active",
 			planType: "trial",
 			startDate: new Date(),
-			expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // +7 дней для пробного периода
+			expiresAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // +3 дня для пробного периода
 		});
 	}
 

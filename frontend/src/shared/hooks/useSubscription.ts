@@ -33,7 +33,6 @@ export const useSubscription = () => {
 			return await subscriptionService.getStatus();
 		},
 		enabled: isAuthenticated, // Запрос выполняется только если пользователь аутентифицирован
-		retry: false,
 		staleTime: 2 * 60 * 1000, // 2 минуты
 	});
 

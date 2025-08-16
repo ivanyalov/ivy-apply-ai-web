@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { authService } from "../shared/api/auth";
@@ -12,90 +12,123 @@ const EmailVerificationPage: React.FC = () => {
 	const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
 	const [message, setMessage] = useState("");
 	const [resendLoading, setResendLoading] = useState(false);
+	const verificationAttemptedRef = useRef(false);
 
 	const token = searchParams.get("token");
 
-	useEffect(() => {
+	// Отладочная информация
+	console.log("🔍 EmailVerificationPage render:", {
+		token,
+		tokenLength: token?.length,
+		tokenType: typeof token,
+		status,
+		verificationAttempted: verificationAttemptedRef.current,
+		searchParams: Object.fromEntries(searchParams.entries()),
+		url: window.location.href,
+	});
+
+	// Функция верификации
+	const verifyEmail = async () => {
+		console.log("🔍 verifyEmail called with token:", token);
+		console.log("🔍 Token details:", {
+			token,
+			tokenLength: token?.length,
+			tokenType: typeof token,
+			isEmpty: !token,
+			isEmptyString: token === "",
+			isNull: token === null,
+			isUndefined: token === undefined,
+		});
+
 		if (!token) {
+			console.log("❌ No token found in URL");
 			setStatus("error");
 			setMessage("Отсутствует токен верификации");
 			return;
 		}
 
-		const verifyEmail = async () => {
+		if (token.trim() === "") {
+			console.log("❌ Token is empty string");
+			setStatus("error");
+			setMessage("Токен верификации пустой");
+			return;
+		}
+
+		// Дополнительная проверка через localStorage
+		const verificationKey = `verification_attempted_${token}`;
+		if (verificationAttemptedRef.current || localStorage.getItem(verificationKey)) {
+			console.log("⚠️ Verification already attempted, skipping");
+			return; // Предотвращаем повторные вызовы
+		}
+
+		console.log("✅ Starting verification process");
+		verificationAttemptedRef.current = true;
+		localStorage.setItem(verificationKey, "true");
+
+		try {
+			console.log("🔍 Starting email verification process with token:", token);
+
+			const result = await authService.verifyEmail(token);
+
+			console.log("✅ Verification successful:", result);
+			setStatus("success");
+			setMessage(result.message);
+
 			try {
-				console.log("🔍 Starting email verification process with token:", token);
-
-				const result = await authService.verifyEmail(token);
-				console.log("✅ Email verification API call successful:", result);
-				console.log("✅ Setting status to success");
-
-				setStatus("success");
-				setMessage(result.message);
-				console.log("✅ Status and message set successfully");
-
-				// Обновляем данные пользователя в кэше с новыми данными из ответа
-				console.log("🔍 Updating user data in cache:", result.user);
-				try {
-					queryClient.setQueryData(["auth", "user"], result.user);
-					console.log("✅ User data updated in cache successfully");
-				} catch (cacheError) {
-					console.error("❌ Error updating cache:", cacheError);
-					// Продолжаем выполнение, так как основная верификация прошла успешно
-				}
-
-				// НЕ инвалидируем кэш для неавторизованных пользователей,
-				// так как это затрет только что установленные данные пользователя
-				const hasJwtToken = localStorage.getItem("token");
-				if (hasJwtToken) {
-					try {
-						queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
-						console.log("✅ Cache invalidated successfully");
-					} catch (invalidateError) {
-						console.error("❌ Error invalidating cache:", invalidateError);
-					}
-				} else {
-					console.log("🔍 Skipping cache invalidation - user not authenticated with JWT");
-				}
-
-				console.log("✅ Email verification completed successfully");
-			} catch (error: any) {
-				console.error("❌ CAUGHT ERROR in verifyEmail:", error);
-				setStatus("error");
-				console.error("Email verification error:", error);
-				console.error("Error details:", {
-					status: error.response?.status,
-					statusText: error.response?.statusText,
-					data: error.response?.data,
-					message: error.message,
-				});
-
-				if (error.response?.status === 404) {
-					setMessage("Недействительная или истёкшая ссылка верификации");
-				} else if (error.response?.status === 409) {
-					// Если email уже подтверждён, это тоже успех
-					setStatus("success");
-					setMessage("Email уже подтверждён");
-
-					// Обновляем данные пользователя
-					try {
-						const currentUser = await authService.getMe();
-						queryClient.setQueryData(["auth", "user"], currentUser);
-					} catch (meError) {
-						console.error("Failed to get current user:", meError);
-					}
-				} else {
-					setMessage(
-						`Ошибка при подтверждении email (${error.response?.status || "неизвестная ошибка"}): ${
-							error.response?.data?.error || error.message
-						}`
-					);
-				}
+				queryClient.setQueryData(["auth", "user"], result.user);
+			} catch (cacheError) {
+				console.error("❌ Error updating cache:", cacheError);
 			}
-		};
 
-		verifyEmail();
-	}, [token, queryClient]);
+			const hasJwtToken = localStorage.getItem("token");
+			if (hasJwtToken) {
+				try {
+					queryClient.invalidateQueries({ queryKey: ["auth", "user"] });
+				} catch (invalidateError) {
+					console.error("❌ Error invalidating cache:", invalidateError);
+				}
+			} else {
+				console.log("🔍 Skipping cache invalidation - user not authenticated with JWT");
+			}
+
+			console.log("✅ Email verification completed successfully");
+		} catch (error: any) {
+			console.error("❌ Verification error:", error);
+			console.error("❌ Error response:", error.response);
+
+			setStatus("error");
+
+			if (error.response?.status === 404) {
+				setMessage("Недействительная или истёкшая ссылка верификации");
+			} else if (error.response?.status === 409) {
+				// Если email уже подтверждён, это тоже успех
+				setStatus("success");
+				setMessage("Email уже подтверждён");
+
+				// Обновляем данные пользователя
+				try {
+					const currentUser = await authService.getMe();
+					queryClient.setQueryData(["auth", "user"], currentUser);
+				} catch (meError) {
+					console.error("Failed to get current user:", meError);
+				}
+			} else {
+				setMessage(
+					`Ошибка при подтверждении email (${error.response?.status || "неизвестная ошибка"}): ${
+						error.response?.data?.error || error.message
+					}`
+				);
+			}
+		}
+	};
+
+	// Используем useEffect с правильной логикой
+	useEffect(() => {
+		if (token && status === "loading" && !verificationAttemptedRef.current) {
+			console.log("🔍 useEffect: Triggering verification...");
+			verifyEmail();
+		}
+	}, [token, status]); // Зависимости только от token и status
 
 	const handleResendEmail = async () => {
 		if (!user?.email) {
@@ -122,8 +155,6 @@ const EmailVerificationPage: React.FC = () => {
 		// Если верификация прошла успешно, направляем на страницу логина
 		// чтобы пользователь мог войти в систему с подтвержденным email
 		if (status === "success") {
-			navigate("/login");
-		} else if (user) {
 			navigate("/access");
 		} else {
 			navigate("/login");
