@@ -83,7 +83,7 @@ const LandingPage: React.FC = () => {
 					</div>
 					<div className="space-y-8 w-fit mx-auto">
 						<div className="flex items-center space-x-6">
-							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+							<div className="w-12 h-12 min-w-[48px] min-h-[48px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
 								1
 							</div>
 							<div>
@@ -91,7 +91,7 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 						<div className="flex items-center space-x-6">
-							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+							<div className="w-12 h-12 min-w-[48px] min-h-[48px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
 								2
 							</div>
 							<div>
@@ -101,7 +101,7 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 						<div className="flex items-center space-x-6">
-							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+							<div className="w-12 h-12 min-w-[48px] min-h-[48px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
 								3
 							</div>
 							<div>
@@ -120,7 +120,7 @@ const LandingPage: React.FC = () => {
 					<h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Как это работает</h2>
 					<div className="space-y-8">
 						<div className="flex items-center space-x-6">
-							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+							<div className="w-12 h-12 min-w-[48px] min-h-[48px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
 								1
 							</div>
 							<div>
@@ -133,7 +133,7 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 						<div className="flex items-center space-x-6">
-							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+							<div className="w-12 h-12 min-w-[48px] min-h-[48px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
 								2
 							</div>
 							<div>
@@ -146,7 +146,7 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 						<div className="flex items-center space-x-6">
-							<div className="w-12 h-12 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
+							<div className="w-12 h-12 min-w-[48px] min-h-[48px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl">
 								3
 							</div>
 							<div>
