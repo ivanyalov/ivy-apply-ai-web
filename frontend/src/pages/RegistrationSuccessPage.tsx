@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth";
+import { useTranslation } from "../shared/hooks/useTranslation";
 
 const RegistrationSuccessPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { user } = useAuth();
+	const { t } = useTranslation();
 
 	const handleContinue = () => {
 		navigate("/access");
@@ -14,7 +16,7 @@ const RegistrationSuccessPage: React.FC = () => {
 		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div className="text-center">
-					<h2 className="mt-6 text-3xl font-bold text-gray-900">Регистрация завершена!</h2>
+					<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.registrationSuccess.title}</h2>
 				</div>
 
 				<div className="bg-white p-8 rounded-lg shadow-md">
@@ -34,19 +36,17 @@ const RegistrationSuccessPage: React.FC = () => {
 								/>
 							</svg>
 						</div>
-						<h3 className="mt-4 text-lg font-medium text-gray-900">Аккаунт успешно создан!</h3>
+						<h3 className="mt-4 text-lg font-medium text-gray-900">{t.registrationSuccess.accountCreated}</h3>
 						<div className="mt-4 space-y-3 text-sm text-gray-600">
 							<p>
-								На ваш email <strong>{user?.email}</strong> отправлено письмо с подтверждением.
+								{t.registrationSuccess.emailSent} <strong>{user?.email}</strong>{t.registrationSuccess.confirmationSent && ` ${t.registrationSuccess.confirmationSent}`}
 							</p>
 							<p>
-								Пожалуйста, проверьте почту и перейдите по ссылке в письме для подтверждения вашего
-								email адреса.
+								{t.registrationSuccess.checkEmail}
 							</p>
 							<div className="bg-blue-50 p-3 rounded border border-blue-200">
 								<p className="text-blue-800 text-xs">
-									<strong>Важно:</strong> Для активации пробного периода или оформления подписки
-									необходимо подтвердить email.
+									<strong>{t.registrationSuccess.importantNote}</strong> {t.registrationSuccess.emailRequired}
 								</p>
 							</div>
 						</div>
@@ -55,11 +55,10 @@ const RegistrationSuccessPage: React.FC = () => {
 								onClick={handleContinue}
 								className="w-full bg-harvard-crimson text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
 							>
-								Продолжить к выбору плана
+								{t.registrationSuccess.continueButton}
 							</button>
 							<div className="text-xs text-gray-500">
-								Не получили письмо? Проверьте папку спам или перейдите на страницу выбора плана для
-								повторной отправки.
+								{t.registrationSuccess.noEmailReceived}
 							</div>
 						</div>
 					</div>

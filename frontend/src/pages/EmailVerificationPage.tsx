@@ -3,12 +3,14 @@ import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { authService } from "../shared/api/auth";
 import { useAuth } from "../shared/hooks/useAuth";
+import { useTranslation } from "../shared/hooks/useTranslation";
 
 const EmailVerificationPage: React.FC = () => {
 	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const { user, signout } = useAuth();
+	const { t } = useTranslation();
 	const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
 	const [message, setMessage] = useState("");
 	const [resendLoading, setResendLoading] = useState(false);
@@ -43,14 +45,14 @@ const EmailVerificationPage: React.FC = () => {
 		if (!token) {
 			console.log("❌ No token found in URL");
 			setStatus("error");
-			setMessage("Отсутствует токен верификации");
+			setMessage(t.emailVerification.noToken);
 			return;
 		}
 
 		if (token.trim() === "") {
 			console.log("❌ Token is empty string");
 			setStatus("error");
-			setMessage("Токен верификации пустой");
+			setMessage(t.emailVerification.emptyToken);
 			return;
 		}
 
@@ -99,11 +101,11 @@ const EmailVerificationPage: React.FC = () => {
 			setStatus("error");
 
 			if (error.response?.status === 404) {
-				setMessage("Недействительная или истёкшая ссылка верификации");
+				setMessage(t.emailVerification.invalidLink);
 			} else if (error.response?.status === 409) {
 				// Если email уже подтверждён, это тоже успех
 				setStatus("success");
-				setMessage("Email уже подтверждён");
+				setMessage(t.emailVerification.alreadyVerified);
 
 				// Обновляем данные пользователя
 				try {
@@ -114,7 +116,7 @@ const EmailVerificationPage: React.FC = () => {
 				}
 			} else {
 				setMessage(
-					`Ошибка при подтверждении email (${error.response?.status || "неизвестная ошибка"}): ${
+					`${t.emailVerification.verificationError} (${error.response?.status || "unknown error"}): ${
 						error.response?.data?.error || error.message
 					}`
 				);
@@ -132,19 +134,19 @@ const EmailVerificationPage: React.FC = () => {
 
 	const handleResendEmail = async () => {
 		if (!user?.email) {
-			setMessage("Не удалось определить email пользователя");
+			setMessage(t.emailVerification.emailNotFound);
 			return;
 		}
 
 		setResendLoading(true);
 		try {
 			await authService.resendVerificationEmail(user.email);
-			setMessage("Письмо с подтверждением отправлено повторно");
+			setMessage(t.emailVerification.resendSuccess);
 		} catch (error: any) {
 			if (error.response?.status === 409) {
-				setMessage("Email уже подтверждён");
+				setMessage(t.emailVerification.alreadyVerified);
 			} else {
-				setMessage("Ошибка при отправке письма");
+				setMessage(t.emailVerification.resendError);
 			}
 		} finally {
 			setResendLoading(false);
@@ -170,14 +172,14 @@ const EmailVerificationPage: React.FC = () => {
 		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div className="text-center">
-					<h2 className="mt-6 text-3xl font-bold text-gray-900">Подтверждение email</h2>
+					<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.emailVerification.title}</h2>
 				</div>
 
 				<div className="bg-white p-8 rounded-lg shadow-md">
 					{status === "loading" && (
 						<div className="text-center">
 							<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-harvard-crimson mx-auto"></div>
-							<p className="mt-4 text-gray-600">Подтверждение email...</p>
+							<p className="mt-4 text-gray-600">{t.emailVerification.verifying}</p>
 						</div>
 					)}
 
@@ -198,14 +200,14 @@ const EmailVerificationPage: React.FC = () => {
 									/>
 								</svg>
 							</div>
-							<h3 className="mt-4 text-lg font-medium text-gray-900">Email успешно подтверждён!</h3>
+							<h3 className="mt-4 text-lg font-medium text-gray-900">{t.emailVerification.successTitle}</h3>
 							<p className="mt-2 text-sm text-gray-600">{message}</p>
 							<div className="mt-6">
 								<button
 									onClick={handleContinue}
 									className="w-full bg-harvard-crimson text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
 								>
-									Продолжить
+									{t.emailVerification.continueButton}
 								</button>
 							</div>
 						</div>
@@ -228,7 +230,7 @@ const EmailVerificationPage: React.FC = () => {
 									/>
 								</svg>
 							</div>
-							<h3 className="mt-4 text-lg font-medium text-gray-900">Ошибка подтверждения</h3>
+							<h3 className="mt-4 text-lg font-medium text-gray-900">{t.emailVerification.errorTitle}</h3>
 							<p className="mt-2 text-sm text-gray-600">{message}</p>
 
 							{user && !user.email_verified && (
@@ -238,13 +240,13 @@ const EmailVerificationPage: React.FC = () => {
 										disabled={resendLoading}
 										className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 									>
-										{resendLoading ? "Отправка..." : "Отправить повторно"}
+										{resendLoading ? t.emailVerification.resendingButton : t.emailVerification.resendButton}
 									</button>
 									<button
 										onClick={handleLogout}
 										className="w-full bg-white border border-gray-300 text-gray-900 py-3 px-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
 									>
-										Выйти из аккаунта
+										{t.emailVerification.logoutButton}
 									</button>
 								</div>
 							)}
@@ -255,13 +257,13 @@ const EmailVerificationPage: React.FC = () => {
 										to="/login"
 										className="block w-full bg-harvard-crimson text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors text-center"
 									>
-										Войти в аккаунт
+										{t.emailVerification.loginButton}
 									</Link>
 									<Link
 										to="/register"
 										className="block w-full bg-white border border-gray-300 text-gray-900 py-3 px-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors text-center"
 									>
-										Зарегистрироваться
+										{t.emailVerification.registerButton}
 									</Link>
 								</div>
 							)}

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth";
 import { useSubscription } from "../shared/hooks/useSubscription";
+import { useTranslation } from "../shared/hooks/useTranslation";
 import { cloudPaymentsService } from "../shared/services/cloudpayments.service";
 import { authService } from "../shared/api/auth";
 
@@ -15,22 +16,23 @@ const AccessSelectionPage: React.FC = () => {
 	const { user, signout } = useAuth({ meRefetch: true });
 	const { subscription, isLoading, cancelSubscription, refreshSubscription, startTrial } =
 		useSubscription();
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [resendingEmail, setResendingEmail] = React.useState(false);
 
 	const handleMonthlySubscription = async () => {
 		if (!user) {
-			alert("Пожалуйста, войдите в систему, чтобы совершить платеж.");
+			alert(t.subscription.loginPrompt);
 			return;
 		}
 
 		if (!agreedToRecurring) {
-			alert("Пожалуйста, согласитесь с условиями рекуррентных платежей.");
+			alert(t.subscription.agreeRecurring);
 			return;
 		}
 
 		if (!cloudPaymentsService.isWidgetAvailable()) {
-			alert("Платежный виджет недоступен. Пожалуйста, обновите страницу.");
+			alert(t.subscription.widgetUnavailable);
 			return;
 		}
 
@@ -43,17 +45,17 @@ const AccessSelectionPage: React.FC = () => {
 				invoiceId: `subscription_${Date.now()}`,
 			});
 
-			if (result.success) {
-				alert("Подписка успешно создана! Добро пожаловать в премиум-доступ.");
-				await refreshSubscription();
-				navigate("/chat");
-			} else {
-				alert(`Ошибка создания подписки: ${result.error}`);
-			}
-		} catch (error) {
-			console.error("Subscription error:", error);
-			alert("Произошла ошибка при создании подписки.");
+					if (result.success) {
+			alert(t.subscription.subscriptionSuccess);
+			await refreshSubscription();
+			navigate("/chat");
+		} else {
+			alert(`${t.subscription.subscriptionError}: ${result.error}`);
 		}
+	} catch (error) {
+		console.error("Subscription error:", error);
+		alert(t.subscription.subscriptionError);
+	}
 	};
 
 	const [trialSuccess, setTrialSuccess] = React.useState(false);
@@ -67,11 +69,11 @@ const AccessSelectionPage: React.FC = () => {
 			console.error(error);
 			const errorMessage = error.response?.data?.error || error.message;
 			if (errorMessage === "User has already used their trial period.") {
-				alert("Пробный период уже был использован.");
+				alert(t.subscription.trialAlreadyUsed);
 			} else if (errorMessage === "User already has an active subscription or trial.") {
-				alert("У вас уже есть активная подписка.");
+				alert(t.subscription.alreadyHasSubscription);
 			} else {
-				alert("Не удалось начать пробный период. Попробуйте позже.");
+				alert(t.subscription.trialStartError);
 			}
 		}
 	};
@@ -87,12 +89,12 @@ const AccessSelectionPage: React.FC = () => {
 		setResendingEmail(true);
 		try {
 			await authService.resendVerificationEmail(user.email);
-			alert("Письмо с подтверждением отправлено повторно. Проверьте вашу почту.");
+			alert(t.subscription.emailResent);
 		} catch (error: any) {
 			if (error.response?.status === 409) {
-				alert("Email уже подтверждён");
+				alert(t.subscription.emailAlreadyVerified);
 			} else {
-				alert("Ошибка при отправке письма. Попробуйте позже.");
+				alert(t.subscription.emailResendError);
 			}
 		} finally {
 			setResendingEmail(false);
@@ -100,7 +102,7 @@ const AccessSelectionPage: React.FC = () => {
 	};
 
 	if (isLoading) {
-		return <div className="flex justify-center items-center h-screen">Загрузка...</div>;
+		return <div className="flex justify-center items-center h-screen">{t.subscription.loading}</div>;
 	}
 
 	const renderSubscriptionInfo = () => {
@@ -122,26 +124,26 @@ const AccessSelectionPage: React.FC = () => {
 
 		return (
 			<div className="border p-6 rounded-lg shadow-lg bg-white">
-				<h2 className="text-2xl font-bold mb-4">Ваш Текущий План</h2>
+				<h2 className="text-2xl font-bold mb-4">{t.subscription.currentPlan}</h2>
 				<p className="mb-2">
-					<strong>План:</strong>{" "}
+					<strong>{t.subscription.plan}</strong>{" "}
 					<span>
 						{subscription.status === "unsubscribed"
-							? "Подписка не активирована"
+							? t.subscription.notActivated
 							: subscription.type === "trial"
-							? "Пробный"
-							: "Премиум"}
+							? t.subscription.trial
+							: t.subscription.premium}
 					</span>
 				</p>
 				<p className={shouldShowExpiryDate ? "mb-2" : "mb-4"}>
-					<strong>Статус:</strong>{" "}
+					<strong>{t.subscription.status}</strong>{" "}
 					<span className="capitalize">
-						{subscription.status === "active" ? "Активен" : "Неактивен"}
+						{subscription.status === "active" ? t.subscription.active : t.subscription.inactive}
 					</span>
 				</p>
 				{shouldShowExpiryDate && (
 					<p className="mb-4">
-						<strong>Истекает:</strong> {expiryDate}
+						<strong>{t.subscription.expires}</strong> {expiryDate}
 					</p>
 				)}
 
@@ -150,12 +152,12 @@ const AccessSelectionPage: React.FC = () => {
 						onClick={cancelSubscription}
 						className="w-full bg-harvard-crimson text-white py-2 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
 					>
-						Отменить Подписку
+						{t.subscription.cancelSubscription}
 					</button>
 				)}
 				{isCancelled && (
 					<p className="text-red-500 font-semibold mt-4">
-						Ваша подписка неактивна. Пожалуйста, оформите новый план для продолжения.
+						{t.subscription.subscriptionInactive}
 					</p>
 				)}
 			</div>
@@ -170,16 +172,16 @@ const AccessSelectionPage: React.FC = () => {
 						onClick={() => navigate("/")}
 						className="bg-white border border-gray-300 text-gray-900 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
 					>
-						Назад
+						{t.subscription.back}
 					</button>
 					<button
 						onClick={handleLogout}
 						className="bg-white border border-gray-300 text-gray-900 px-6 py-2 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
 					>
-						Выйти
+						{t.subscription.logout}
 					</button>
 				</div>
-				<h1 className="text-4xl font-bold text-center mb-8">Выберите План</h1>
+				<h1 className="text-4xl font-bold text-center mb-8">{t.subscription.choosePlan}</h1>
 
 				{/* Email Verification Warning */}
 				{user && !user.email_verified && (
@@ -195,11 +197,10 @@ const AccessSelectionPage: React.FC = () => {
 								</svg>
 							</div>
 							<div className="ml-3 flex-1">
-								<h3 className="text-sm font-medium text-yellow-800">Подтвердите ваш email адрес</h3>
+								<h3 className="text-sm font-medium text-yellow-800">{t.subscription.verifyEmailTitle}</h3>
 								<div className="mt-2 text-sm text-yellow-700">
 									<p>
-										Для оформления подписки и активации пробного периода необходимо подтвердить ваш
-										email адрес. Проверьте почту {user.email} и перейдите по ссылке в письме.
+										{t.subscription.verifyEmailMessage.replace('{email}', user.email)}
 									</p>
 								</div>
 								<div className="mt-4">
@@ -208,7 +209,7 @@ const AccessSelectionPage: React.FC = () => {
 										disabled={resendingEmail}
 										className="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded hover:bg-yellow-200 disabled:opacity-50"
 									>
-										{resendingEmail ? "Отправка..." : "Отправить письмо повторно"}
+										{resendingEmail ? t.subscription.resendingEmail : t.subscription.resendEmail}
 									</button>
 								</div>
 							</div>
@@ -221,15 +222,15 @@ const AccessSelectionPage: React.FC = () => {
 				<div className="grid md:grid-cols-2 gap-8">
 					<div className="border p-6 rounded-lg shadow-lg bg-white flex flex-col justify-between h-full">
 						<div>
-							<h2 className="text-2xl font-semibold mb-4">Премиум План</h2>
+							<h2 className="text-2xl font-semibold mb-4">{t.subscription.premiumPlan}</h2>
 							<p className="text-4xl font-bold mb-4">
-								990 RUB <span className="text-lg font-normal">/ месяц</span>
+								990 RUB <span className="text-lg font-normal">{t.subscription.priceMonth}</span>
 							</p>
 							<ul className="mb-6 space-y-2 text-gray-600">
-								<li>✓ Неограниченный доступ к AI-чату</li>
-								<li>✓ Приоритетная поддержка</li>
-								<li>✓ Доступ ко всем новым функциям</li>
-								<li>✓ Автоматическое продление</li>
+								<li>✓ {t.subscription.unlimitedAccess}</li>
+								<li>✓ {t.subscription.prioritySupport}</li>
+								<li>✓ {t.subscription.allFeatures}</li>
+								<li>✓ {t.subscription.autoRenewal}</li>
 							</ul>
 							<div className="mb-4">
 								<label style={{ display: "flex", alignItems: "center", fontSize: 12 }}>
@@ -246,7 +247,7 @@ const AccessSelectionPage: React.FC = () => {
 										className="text-gray-700 hover:text-gray-900 underline"
 										target="_blank"
 									>
-										Я даю согласие на автоматическое продление подписки до момента отмены
+										{t.subscription.recurringConsent}
 									</Link>
 								</label>
 							</div>
@@ -260,18 +261,18 @@ const AccessSelectionPage: React.FC = () => {
 									: "bg-gray-400 text-gray-600 cursor-not-allowed"
 							}`}
 						>
-							{!user?.email_verified ? "Подтвердите email" : "Оформить подписку"}
+							{!user?.email_verified ? t.subscription.verifyEmailButton : t.subscription.subscribeButton}
 						</button>
 					</div>
 					<div className="border p-6 rounded-lg shadow-lg bg-white flex flex-col justify-between h-full">
 						<div>
-							<h2 className="text-2xl font-semibold mb-4">Пробный План</h2>
+							<h2 className="text-2xl font-semibold mb-4">{t.subscription.trialPlan}</h2>
 							<p className="text-4xl font-bold mb-4">
-								Бесплатно <span className="text-lg font-normal">/ 3 дня</span>
+								{t.subscription.free} <span className="text-lg font-normal">{t.subscription.days3}</span>
 							</p>
 							<ul className="mb-6 space-y-2 text-gray-600">
-								<li>✓ Полный доступ к AI-чату</li>
-								<li>✓ Попробуйте все функции</li>
+								<li>✓ {t.subscription.fullAccess}</li>
+								<li>✓ {t.subscription.tryAllFeatures}</li>
 							</ul>
 						</div>
 						<button
@@ -284,10 +285,10 @@ const AccessSelectionPage: React.FC = () => {
 							className="w-full py-2 px-4 rounded-lg text-lg font-semibold transition-colors bg-gray-800 text-white hover:bg-gray-700 disabled:bg-gray-600 disabled:cursor-not-allowed"
 						>
 							{!user?.email_verified
-								? "Подтвердите email"
+								? t.subscription.verifyEmailButton
 								: subscription?.trialUsed
-								? "Пробный период уже использован"
-								: "Начать пробный период"}
+								? t.subscription.trialAlreadyUsedButton
+								: t.subscription.startTrialButton}
 						</button>
 					</div>
 				</div>
@@ -298,14 +299,14 @@ const AccessSelectionPage: React.FC = () => {
 							onClick={() => navigate("/chat")}
 							className="bg-harvard-crimson text-white px-6 py-2 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
 						>
-							Перейти в чат
+							{t.subscription.goToChatButton}
 						</button>
 					</div>
 				)}
 
 				{trialSuccess && (
 					<div className="mt-4 text-green-600 text-center font-semibold">
-						Пробный период успешно активирован!
+						{t.subscription.trialActivatedSuccess}
 					</div>
 				)}
 			</div>

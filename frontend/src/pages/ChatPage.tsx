@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "../shared/components/HomeButton";
+import { useTranslation } from "../shared/hooks/useTranslation";
 import {
 	getUserConversation,
 	createUserConversation,
@@ -85,14 +86,8 @@ interface MessageContent extends Array<ObjectStringItem> {}
  * ```
  */
 const ChatPage: React.FC = () => {
-	const [messages, setMessages] = useState<Message[]>([
-		{
-			id: 1,
-			text: "Привет! Я ваш AI-помощник по поступлению. Я могу помочь вам с эссе, выбором школы, руководством по подаче документов и ответить на любые вопросы о поступлении в университет. Чем я могу вам помочь сегодня?",
-			isUser: false,
-			timestamp: new Date(),
-		},
-	]);
+	const { t } = useTranslation();
+	const [messages, setMessages] = useState<Message[]>([]);
 	const [inputText, setInputText] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [conversationId, setConversationId] = useState<string | null>(null);
@@ -112,6 +107,20 @@ const ChatPage: React.FC = () => {
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages, streamingText]);
+
+	// Initialize welcome message when language changes
+	useEffect(() => {
+		if (messages.length === 0) {
+			setMessages([
+				{
+					id: 1,
+					text: t.chat.welcomeMessage,
+					isUser: false,
+					timestamp: new Date(),
+				},
+			]);
+		}
+	}, [t.chat.welcomeMessage, messages.length]);
 
 	// Initialize conversation when component mounts
 	useEffect(() => {
@@ -419,7 +428,7 @@ const ChatPage: React.FC = () => {
 			setMessages([
 				{
 					id: 1,
-					text: "Чат очищен! Я готов помочь вам с вашими вопросами по поступлению в университет.",
+					text: t.chat.clearChatMessage,
 					isUser: false,
 					timestamp: new Date(),
 				},
@@ -461,12 +470,12 @@ const ChatPage: React.FC = () => {
 						// No alert needed, file name will be displayed
 					} else {
 						console.error("File upload failed:", data.error);
-						alert("Ошибка загрузки файла.");
+						alert(t.chat.fileUploadError);
 					}
 				})
 				.catch((error) => {
 					console.error("Error during file upload fetch:", error);
-					alert("Ошибка при загрузке файла.");
+					alert(t.chat.fileUploadFetchError);
 				})
 				.finally(() => {
 					setIsLoading(false); // End loading indicator
@@ -489,7 +498,7 @@ const ChatPage: React.FC = () => {
 						<div className="bg-gray-100 text-gray-900 px-6 py-4 rounded-lg">
 							<div className="flex items-center space-x-3">
 								<div className="animate-spin rounded-full h-6 w-6 border-b-2 border-harvard-crimson"></div>
-								<span>Инициализация чата...</span>
+								<span>{t.chat.initializing}</span>
 							</div>
 						</div>
 					</div>
@@ -627,7 +636,7 @@ const ChatPage: React.FC = () => {
 									<div className="w-2 h-2 bg-gray-400 rounded-full"></div>
 									<div className="w-2 h-2 bg-gray-400 rounded-full"></div>
 								</div>
-								<span className="text-sm">AI печатает...</span>
+								<span className="text-sm">{t.chat.aiTyping}</span>
 							</div>
 						</div>
 					</div>
@@ -647,7 +656,7 @@ const ChatPage: React.FC = () => {
 								<span className="text-xs font-bold">
 									{attachedFile.file.name.split(".").pop()?.toUpperCase().substring(0, 3) ||
 										attachedFile.file.type?.split("/")[1]?.toUpperCase().substring(0, 3) ||
-										"ФАЙЛ"}
+										t.chat.fileFallback}
 								</span>
 							</div>
 							<div className="flex-1 min-w-0">
@@ -699,7 +708,7 @@ const ChatPage: React.FC = () => {
 						value={inputText}
 						onChange={(e) => setInputText(e.target.value)}
 						onKeyPress={handleKeyPress}
-						placeholder="Введите ваше сообщение..."
+						placeholder={t.chat.placeholder}
 						className="flex-1 resize-none rounded-lg border border-gray-300 px-4 py-2 focus:border-harvard-crimson focus:outline-none focus:ring-1 focus:ring-harvard-crimson"
 						rows={1}
 						disabled={isLoading}
@@ -713,7 +722,7 @@ const ChatPage: React.FC = () => {
 								<span className="text-xs font-bold">
 									{attachedFile.file.name.split(".").pop()?.toUpperCase().substring(0, 3) ||
 										attachedFile.file.type?.split("/")[1]?.toUpperCase().substring(0, 3) ||
-										"ФАЙЛ"}
+										t.chat.fileFallback}
 								</span>
 							</div>
 							<div>
@@ -739,7 +748,7 @@ const ChatPage: React.FC = () => {
 						className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors
               ${isLoading || (!inputText.trim() && !attachedFile) ? "" : "hover:bg-gray-200"}
             `}
-						title="Отправить"
+						title={t.chat.send}
 					>
 						{/* Send (paper plane) icon */}
 						<svg

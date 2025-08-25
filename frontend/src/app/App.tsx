@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedRoute } from "../shared/components/ProtectedRoute";
+import { LanguageProvider } from "../shared/hooks/useLanguage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import RegistrationSuccessPage from "../pages/RegistrationSuccessPage";
@@ -29,46 +30,48 @@ const queryClient = new QueryClient({
 const App: React.FC = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Router>
-				<MainLayout>
-					<Routes>
-						<Route path="/" element={<LandingPage />} />
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/register" element={<RegisterPage />} />
-						<Route path="/registration-success" element={<RegistrationSuccessPage />} />
-						<Route path="/verify" element={<EmailVerificationPage />} />
-						<Route path="/auth" element={<Navigate to="/login" replace />} />
-						<Route
-							path="/access"
-							element={
-								<ProtectedRoute>
-									<AccessSelectionPage />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/payment/success"
-							element={
-								<ProtectedRoute>
-									<PaymentSuccessPage />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/chat"
-							element={
-								<ProtectedRoute>
-									<ChatPage />
-								</ProtectedRoute>
-							}
-						/>
-						<Route path="/user-agreement" element={<UserAgreement />} />
-						<Route path="/contact" element={<Contact />} />
-						<Route path="/public-offer" element={<PublicOffer />} />
-					</Routes>
-				</MainLayout>
-				<CookieBanner />
-			</Router>
+			<LanguageProvider>
+				<Router>
+					<MainLayout>
+						<Routes>
+							<Route path="/" element={<LandingPage />} />
+							<Route path="/login" element={<LoginPage />} />
+							<Route path="/register" element={<RegisterPage />} />
+							<Route path="/registration-success" element={<RegistrationSuccessPage />} />
+							<Route path="/verify" element={<EmailVerificationPage />} />
+							<Route path="/auth" element={<Navigate to="/login" replace />} />
+							<Route
+								path="/access"
+								element={
+									<ProtectedRoute>
+										<AccessSelectionPage />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="/payment/success"
+								element={
+									<ProtectedRoute>
+										<PaymentSuccessPage />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="/chat"
+								element={
+									<ProtectedRoute>
+										<ChatPage />
+									</ProtectedRoute>
+								}
+							/>
+							<Route path="/user-agreement" element={<UserAgreement />} />
+							<Route path="/contact" element={<Contact />} />
+							<Route path="/public-offer" element={<PublicOffer />} />
+						</Routes>
+					</MainLayout>
+					<CookieBanner />
+				</Router>
+			</LanguageProvider>
 		</QueryClientProvider>
 	);
 };
