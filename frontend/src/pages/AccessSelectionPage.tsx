@@ -12,7 +12,7 @@ declare global {
 }
 
 const AccessSelectionPage: React.FC = () => {
-	const { user, signout } = useAuth();
+	const { user, signout } = useAuth({ meRefetch: true });
 	const { subscription, isLoading, cancelSubscription, refreshSubscription, startTrial } =
 		useSubscription();
 	const navigate = useNavigate();
@@ -267,7 +267,7 @@ const AccessSelectionPage: React.FC = () => {
 						<div>
 							<h2 className="text-2xl font-semibold mb-4">Пробный План</h2>
 							<p className="text-4xl font-bold mb-4">
-								Бесплатно <span className="text-lg font-normal">/ 7 дней</span>
+								Бесплатно <span className="text-lg font-normal">/ 3 дня</span>
 							</p>
 							<ul className="mb-6 space-y-2 text-gray-600">
 								<li>✓ Полный доступ к AI-чату</li>

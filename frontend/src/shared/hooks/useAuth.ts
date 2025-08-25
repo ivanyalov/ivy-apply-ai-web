@@ -18,7 +18,7 @@ import { authService, AuthResponse, SignInCredentials, SignUpCredentials } from 
  * }
  * ```
  */
-export const useAuth = () => {
+export const useAuth = ({ meRefetch = false }: { meRefetch?: boolean } = {}) => {
 	const queryClient = useQueryClient();
 
 	// Query для получения данных пользователя
@@ -35,10 +35,7 @@ export const useAuth = () => {
 			}
 			return await authService.getMe();
 		},
-		retry: false,
-		staleTime: 5 * 60 * 1000, // 5 минут - данные считаются свежими
-		refetchOnMount: false, // НЕ перезапрашиваем при монтировании, если есть свежие данные
-		refetchOnWindowFocus: false, // Не перезапрашиваем при фокусе окна
+		refetchOnMount: meRefetch, // НЕ перезапрашиваем при монтировании, если есть свежие данные
 	});
 
 	// Автоматически очищаем данные подписки при потере аутентификации
