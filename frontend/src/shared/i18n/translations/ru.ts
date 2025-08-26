@@ -4,7 +4,8 @@ export const ru = {
       title: "Ivy Apply AI",
       description: "Ivy Apply AI — ваш персональный AI-консультант по поступлению в вузы. Загружайте документы, задавайте вопросы и получайте чёткие рекомендации на русском языке.",
       startButton: "Начать Чат",
-      subscriptionButton: "Подписка"
+      subscriptionButton: "Подписка",
+      badge: "AI-консультант по поступлению"
     },
     features: {
       title: "Что он умеет",
@@ -47,7 +48,41 @@ export const ru = {
       userAgreement: "Пользовательское соглашение",
       publicOffer: "Публичная оферта",
       contacts: "Контакты",
-      copyright: "© 2025 Ivy Apply AI. Все права защищены."
+      copyright: "© 2025 Ivy Apply AI. Все права защищены.",
+      tagline: "Ваш надежный AI-партнер для успешного поступления в университет",
+      legal: "Правовая информация",
+      support: "Поддержка",
+      features: "Возможности",
+      aiEssayAnalysis: "Анализ эссе с помощью AI",
+      universityMatching: "Подбор университетов",
+      chatSupport: "Поддержка в чате 24/7",
+      aiServicesOnline: "AI-сервисы онлайн"
+    }
+  },
+  legal: {
+    userAgreement: {
+      title: "Пользовательское соглашение",
+      subtitle: "Правовые документы и условия использования сервиса",
+      navigation: {
+        contacts: "Контакты",
+        publicOffer: "Публичная оферта"
+      }
+    },
+    publicOffer: {
+      title: "Публичная оферта",
+      subtitle: "Официальный документ о предоставлении услуг",
+      navigation: {
+        userAgreement: "Пользовательское соглашение",
+        contacts: "Контакты"
+      }
+    },
+    contact: {
+      title: "Контакты",
+      subtitle: "Свяжитесь с нами для получения поддержки",
+      navigation: {
+        publicOffer: "Публичная оферта",
+        userAgreement: "Пользовательское соглашение"
+      }
     }
   },
   common: {
@@ -113,7 +148,7 @@ export const ru = {
     errorPrefix: "Ошибка:"
   },
   subscription: {
-    title: "Выберите план",
+    title: "Подписка",
     free: "Бесплатно",
     premium: "Премиум",
     selectPlan: "Выбрать план",

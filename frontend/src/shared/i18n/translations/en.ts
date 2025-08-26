@@ -4,10 +4,11 @@ export const en = {
       title: "Ivy Apply AI",
       description: "Ivy Apply AI — your personal AI consultant for university admissions. Upload documents, ask questions, and get clear recommendations in your preferred language.",
       startButton: "Start Chat",
-      subscriptionButton: "Subscription"
+      subscriptionButton: "Subscription",
+      badge: "AI-Powered University Admissions"
     },
     features: {
-      title: "What it can do",
+      title: "What can it do",
       item1: "Analyzes essays and applications",
       item2: "Helps choose universities",
       item3: "Answers questions in chat format"
@@ -47,7 +48,41 @@ export const en = {
       userAgreement: "User Agreement",
       publicOffer: "Public Offer",
       contacts: "Contacts",
-      copyright: "© 2025 Ivy Apply AI. All rights reserved."
+      copyright: "© 2025 Ivy Apply AI. All rights reserved.",
+      tagline: "Your trusted AI partner for university admissions success",
+      legal: "Legal",
+      support: "Support",
+      features: "Features",
+      aiEssayAnalysis: "AI Essay Analysis",
+      universityMatching: "University Matching",
+      chatSupport: "24/7 Chat Support",
+      aiServicesOnline: "AI Services Online"
+    }
+  },
+  legal: {
+    userAgreement: {
+      title: "User Agreement",
+      subtitle: "Legal documents and terms of service",
+      navigation: {
+        contacts: "Contacts",
+        publicOffer: "Public Offer"
+      }
+    },
+    publicOffer: {
+      title: "Public Offer",
+      subtitle: "Official document on service provision",
+      navigation: {
+        userAgreement: "User Agreement",
+        contacts: "Contacts"
+      }
+    },
+    contact: {
+      title: "Contacts",
+      subtitle: "Contact us for support",
+      navigation: {
+        publicOffer: "Public Offer",
+        userAgreement: "User Agreement"
+      }
     }
   },
   common: {
@@ -113,7 +148,7 @@ export const en = {
     errorPrefix: "Error:"
   },
   subscription: {
-    title: "Choose a Plan",
+    title: "Subscription",
     free: "Free",
     premium: "Premium",
     selectPlan: "Select Plan",

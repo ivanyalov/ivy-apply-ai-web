@@ -40,73 +40,75 @@ const LoginPage: React.FC = () => {
 	}, [reset]);
 
 	return (
-		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
-				<div>
-					<h2 className="mt-6 text-center text-3xl font-bold text-gray-900">{t.auth.login.title}</h2>
-					<p className="mt-2 text-center text-sm text-gray-600">
-						{t.auth.login.noAccount}{" "}
-						<Link
-							to="/register"
-							className="font-semibold text-harvard-crimson hover:text-red-800 text-lg"
-						>
-							{t.auth.login.registerLink}
-						</Link>
-					</p>
-				</div>
-				<form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
 					<div>
-						<label htmlFor="email" className="sr-only">
-							{t.auth.login.email}
-						</label>
-						<input
-							id="email"
-							type="email"
-							{...register("email", {
-								required: t.auth.register.emailRequired,
-								pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t.auth.register.emailInvalid },
-							})}
-							autoComplete="username"
-							className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm"
-							placeholder={t.auth.login.email}
-						/>
-						{errors.email && (
-							<div className="text-red-500 text-xs mt-1">{errors.email.message}</div>
-						)}
+						<h2 className="mt-6 text-center text-3xl font-bold text-gray-900">{t.auth.login.title}</h2>
+						<p className="mt-2 text-center text-sm text-gray-600">
+							{t.auth.login.noAccount}{" "}
+							<Link
+								to="/register"
+								className="font-semibold text-harvard-crimson hover:text-red-800 text-lg"
+							>
+								{t.auth.login.registerLink}
+							</Link>
+						</p>
 					</div>
-					<div>
-						<label htmlFor="password" className="sr-only">
-							{t.auth.login.password}
-						</label>
-						<input
-							id="password"
-							type="password"
-							{...register("password", { required: t.auth.register.passwordRequired })}
-							autoComplete="new-password"
-							className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm"
-							placeholder={t.auth.login.password}
-						/>
-						{errors.password && (
-							<div className="text-red-500 text-xs mt-1">{errors.password.message}</div>
-						)}
-					</div>
-
-					{errors.root?.serverError?.message && (
-						<div className="text-red-500 text-sm text-center">
-							{errors.root.serverError.message}
+					<form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+						<div>
+							<label htmlFor="email" className="sr-only">
+								{t.auth.login.email}
+							</label>
+							<input
+								id="email"
+								type="email"
+								{...register("email", {
+									required: t.auth.register.emailRequired,
+									pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t.auth.register.emailInvalid },
+								})}
+								autoComplete="username"
+								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm shadow-md"
+								placeholder={t.auth.login.email}
+							/>
+							{errors.email && (
+								<div className="text-red-600 text-xs mt-1">{errors.email.message}</div>
+							)}
 						</div>
-					)}
+						<div>
+							<label htmlFor="password" className="sr-only">
+								{t.auth.login.password}
+							</label>
+							<input
+								id="password"
+								type="password"
+								{...register("password", { required: t.auth.register.passwordRequired })}
+								autoComplete="new-password"
+								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm shadow-md"
+								placeholder={t.auth.login.password}
+							/>
+							{errors.password && (
+								<div className="text-red-600 text-xs mt-1">{errors.password.message}</div>
+							)}
+						</div>
 
-					<div>
-						<button
-							type="submit"
-							disabled={isSubmitting || !isValid}
-							className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-harvard-crimson hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed"
-						>
-							{isSubmitting ? `${t.auth.login.loginButton}...` : t.auth.login.loginButton}
-						</button>
-					</div>
-				</form>
+						{errors.root?.serverError?.message && (
+							<div className="bg-red-50 border-2 border-red-200 text-red-700 text-sm text-center p-3 rounded-xl">
+								{errors.root.serverError.message}
+							</div>
+						)}
+
+						<div>
+							<button
+								type="submit"
+								disabled={isSubmitting || !isValid}
+								className="group relative w-full flex justify-center py-3 px-4 border-2 border-harvard-crimson text-lg font-semibold rounded-xl text-white bg-harvard-crimson hover:bg-red-800 hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+							>
+								{isSubmitting ? `${t.auth.login.loginButton}...` : t.auth.login.loginButton}
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

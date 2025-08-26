@@ -13,17 +13,17 @@ const RegistrationSuccessPage: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
-				<div className="text-center">
-					<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.registrationSuccess.title}</h2>
-				</div>
-
-				<div className="bg-white p-8 rounded-lg shadow-md">
+				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
 					<div className="text-center">
-						<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+						<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.registrationSuccess.title}</h2>
+					</div>
+
+					<div className="text-center mt-8">
+						<div className="mx-auto flex items-center justify-center h-16 w-16 rounded-xl bg-green-50 border-2 border-green-200 shadow-md">
 							<svg
-								className="h-6 w-6 text-green-600"
+								className="h-8 w-8 text-green-600"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -36,24 +36,24 @@ const RegistrationSuccessPage: React.FC = () => {
 								/>
 							</svg>
 						</div>
-						<h3 className="mt-4 text-lg font-medium text-gray-900">{t.registrationSuccess.accountCreated}</h3>
-						<div className="mt-4 space-y-3 text-sm text-gray-600">
+						<h3 className="mt-6 text-xl font-semibold text-gray-900">{t.registrationSuccess.accountCreated}</h3>
+						<div className="mt-6 space-y-4 text-sm text-gray-700">
 							<p>
-								{t.registrationSuccess.emailSent} <strong>{user?.email}</strong>{t.registrationSuccess.confirmationSent && ` ${t.registrationSuccess.confirmationSent}`}
+								{t.registrationSuccess.emailSent} <strong className="text-gray-900">{user?.email}</strong>{t.registrationSuccess.confirmationSent && ` ${t.registrationSuccess.confirmationSent}`}
 							</p>
 							<p>
 								{t.registrationSuccess.checkEmail}
 							</p>
-							<div className="bg-blue-50 p-3 rounded border border-blue-200">
-								<p className="text-blue-800 text-xs">
+							<div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-xl">
+								<p className="text-blue-800 text-sm">
 									<strong>{t.registrationSuccess.importantNote}</strong> {t.registrationSuccess.emailRequired}
 								</p>
 							</div>
 						</div>
-						<div className="mt-6 space-y-3">
+						<div className="mt-8 space-y-4">
 							<button
 								onClick={handleContinue}
-								className="w-full bg-harvard-crimson text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
+								className="w-full bg-harvard-crimson text-white py-3 px-4 border-2 border-red-700 rounded-xl text-lg font-semibold hover:bg-red-800 hover:border-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 							>
 								{t.registrationSuccess.continueButton}
 							</button>

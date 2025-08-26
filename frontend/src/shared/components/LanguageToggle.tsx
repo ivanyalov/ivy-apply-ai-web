@@ -9,20 +9,38 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
   const { language, toggleLanguage } = useLanguage();
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
-      <button
-        onClick={toggleLanguage}
-        className="flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-        aria-label="Toggle language"
-      >
-        <span className={`px-2 py-1 rounded ${language === 'ru' ? 'bg-harvard-crimson text-white' : 'text-gray-600'} transition-colors`}>
-          RU
-        </span>
-        <span className="mx-1 text-gray-400">|</span>
-        <span className={`px-2 py-1 rounded ${language === 'en' ? 'bg-harvard-crimson text-white' : 'text-gray-600'} transition-colors`}>
-          EN
-        </span>
-      </button>
+    <div className={`flex items-center ${className}`}>
+      <div className="relative bg-gray-100 rounded-xl p-1 shadow-inner">
+        <div 
+          className={`absolute top-1 bottom-1 w-12 bg-white rounded-lg shadow-md transition-transform duration-300 ease-out ${
+            language === 'en' ? 'transform translate-x-12' : 'transform translate-x-0'
+          }`}
+        />
+        <div className="relative flex">
+          <button
+            onClick={() => language !== 'ru' && toggleLanguage()}
+            className={`relative z-10 w-12 h-8 text-xs font-semibold rounded-lg transition-colors duration-300 ${
+              language === 'ru' 
+                ? 'text-harvard-crimson' 
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+            aria-label="Switch to Russian"
+          >
+            RU
+          </button>
+          <button
+            onClick={() => language !== 'en' && toggleLanguage()}
+            className={`relative z-10 w-12 h-8 text-xs font-semibold rounded-lg transition-colors duration-300 ${
+              language === 'en' 
+                ? 'text-harvard-crimson' 
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+            aria-label="Switch to English"
+          >
+            EN
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

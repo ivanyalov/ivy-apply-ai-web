@@ -9,13 +9,17 @@ const HomeButton: React.FC = () => {
   };
 
   return (
-    <button
-      onClick={handleClick}
-      className="bg-white border border-gray-300 rounded-lg font-semibold px-6 py-2 text-lg text-gray-900 hover:bg-gray-100 transition-colors shadow-none ml-2"
-      style={{ boxShadow: 'none' }}
-    >
-      Ivy Apply AI
-    </button>
+    <div className="flex items-center">
+      <div className="bg-gray-100 rounded-xl p-1 shadow-inner">
+        <button
+          onClick={handleClick}
+          className="w-12 h-8 text-xs font-semibold text-gray-500 hover:text-gray-700 rounded-lg transition-colors duration-300"
+          aria-label="Go to home page"
+        >
+          IVY
+        </button>
+      </div>
+    </div>
   );
 };
 
