@@ -218,6 +218,7 @@ export const en = {
     fullAccess: "Full access to AI chat",
     tryAllFeatures: "Try all features",
     trialAlreadyUsedButton: "Trial period already used",
+    trialCurrentlyUsedButton: "Trial period in use",
     startTrialButton: "Start trial period",
     goToChatButton: "Go to Chat",
     trialActivatedSuccess: "Trial period successfully activated!"

@@ -169,13 +169,12 @@ const EmailVerificationPage: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
-				<div className="text-center">
-					<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.emailVerification.title}</h2>
-				</div>
-
-				<div className="bg-white p-8 rounded-lg shadow-md">
+				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
+					<div className="text-center">
+						<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.emailVerification.title}</h2>
+					</div>
 					{status === "loading" && (
 						<div className="text-center">
 							<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-harvard-crimson mx-auto"></div>
@@ -185,7 +184,7 @@ const EmailVerificationPage: React.FC = () => {
 
 					{status === "success" && (
 						<div className="text-center">
-							<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+							<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-xl bg-green-50 border-2 border-green-200 shadow-md mb-6 mt-8">
 								<svg
 									className="h-6 w-6 text-green-600"
 									fill="none"
@@ -200,12 +199,11 @@ const EmailVerificationPage: React.FC = () => {
 									/>
 								</svg>
 							</div>
-							<h3 className="mt-4 text-lg font-medium text-gray-900">{t.emailVerification.successTitle}</h3>
-							<p className="mt-2 text-sm text-gray-600">{message}</p>
-							<div className="mt-6">
+							<h3 className="text-lg font-medium text-gray-900 mb-6">{t.emailVerification.successTitle}</h3>
+							<div>
 								<button
 									onClick={handleContinue}
-									className="w-full bg-harvard-crimson text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors"
+									className="w-full bg-harvard-crimson text-white py-3 px-4 border-2 border-red-700 rounded-xl text-lg font-semibold hover:bg-red-800 hover:border-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 								>
 									{t.emailVerification.continueButton}
 								</button>
@@ -215,7 +213,7 @@ const EmailVerificationPage: React.FC = () => {
 
 					{status === "error" && (
 						<div className="text-center">
-							<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+							<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-xl bg-red-50 border-2 border-red-200 shadow-md">
 								<svg
 									className="h-6 w-6 text-red-600"
 									fill="none"
@@ -238,13 +236,13 @@ const EmailVerificationPage: React.FC = () => {
 									<button
 										onClick={handleResendEmail}
 										disabled={resendLoading}
-										className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+										className="w-full bg-gray-600 text-white py-3 px-4 border-2 border-gray-700 rounded-xl text-lg font-semibold hover:bg-gray-700 hover:border-gray-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
 									>
 										{resendLoading ? t.emailVerification.resendingButton : t.emailVerification.resendButton}
 									</button>
 									<button
 										onClick={handleLogout}
-										className="w-full bg-white border border-gray-300 text-gray-900 py-3 px-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+										className="w-full bg-white border-2 border-gray-200 text-gray-900 py-3 px-4 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 									>
 										{t.emailVerification.logoutButton}
 									</button>
@@ -255,13 +253,13 @@ const EmailVerificationPage: React.FC = () => {
 								<div className="mt-6 space-y-3">
 									<Link
 										to="/login"
-										className="block w-full bg-harvard-crimson text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-red-800 transition-colors text-center"
+										className="block w-full bg-harvard-crimson text-white py-3 px-4 border-2 border-red-700 rounded-xl text-lg font-semibold hover:bg-red-800 hover:border-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center"
 									>
 										{t.emailVerification.loginButton}
 									</Link>
 									<Link
 										to="/register"
-										className="block w-full bg-white border border-gray-300 text-gray-900 py-3 px-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors text-center"
+										className="block w-full bg-white border-2 border-gray-200 text-gray-900 py-3 px-4 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center"
 									>
 										{t.emailVerification.registerButton}
 									</Link>

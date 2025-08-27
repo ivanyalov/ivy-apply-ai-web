@@ -218,6 +218,7 @@ export const ru = {
     fullAccess: "Полный доступ к AI-чату",
     tryAllFeatures: "Попробуйте все функции",
     trialAlreadyUsedButton: "Пробный период уже использован",
+    trialCurrentlyUsedButton: "Пробный период используется",
     startTrialButton: "Начать пробный период",
     goToChatButton: "Перейти в чат",
     trialActivatedSuccess: "Пробный период успешно активирован!"

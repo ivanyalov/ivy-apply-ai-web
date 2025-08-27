@@ -362,7 +362,9 @@ const AccessSelectionPage: React.FC = () => {
 								{!user?.email_verified
 									? t.subscription.verifyEmailButton
 									: subscription?.trialUsed
-									? t.subscription.trialAlreadyUsedButton
+									? (subscription?.status === "active" && subscription?.trialUsed
+										? t.subscription.trialCurrentlyUsedButton
+										: t.subscription.trialAlreadyUsedButton)
 									: t.subscription.startTrialButton}
 							</button>
 						</div>
