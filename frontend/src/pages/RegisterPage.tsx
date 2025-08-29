@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth";
 import { useTranslation } from "../shared/hooks/useTranslation";
@@ -20,7 +20,8 @@ const DEFAULT_VALUES: RegisterFormValues = { email: "", password: "", agreed: fa
 const RegisterPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { signup } = useAuth();
-	const { t } = useTranslation();
+	const { t, language } = useTranslation();
+	const [lastErrorType, setLastErrorType] = useState<"409" | "other" | null>(null);
 
 	const {
 		register,
@@ -48,26 +49,50 @@ const RegisterPage: React.FC = () => {
 
 	const onSubmit = async (values: RegisterFormValues) => {
 		try {
+			setLastErrorType(null); // Сбрасываем тип ошибки при новой попытке
 			await signup({ email: values.email, password: values.password });
 			navigate("/registration-success", { replace: true });
 		} catch (err: any) {
-			setError("root.serverError", {
-				type: "server",
-				message: err?.response?.data?.message || "Failed to create account",
-			});
+			// Проверяем, является ли ошибка связанной с существующим аккаунтом (код 409)
+			if (err?.response?.status === 409) {
+				setLastErrorType("409");
+				setError("root.serverError", {
+					type: "server",
+					message: t.auth.register.accountExists,
+				});
+			} else {
+				setLastErrorType("other");
+				setError("root.serverError", {
+					type: "server",
+					message: err?.response?.data?.message || "Failed to create account",
+				});
+			}
 		}
 	};
 
 	useEffect(() => {
 		reset(DEFAULT_VALUES);
+		setLastErrorType(null); // Сбрасываем тип ошибки при сбросе формы
 	}, [reset]);
+
+	// Обновляем сообщение об ошибке при изменении языка
+	useEffect(() => {
+		if (lastErrorType === "409" && errors.root?.serverError) {
+			setError("root.serverError", {
+				type: "server",
+				message: t.auth.register.accountExists,
+			});
+		}
+	}, [language, lastErrorType, t.auth.register.accountExists, setError, errors.root?.serverError]);
 
 	return (
 		<div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
 					<div>
-						<h2 className="mt-6 text-center text-3xl font-bold text-gray-900">{t.auth.register.title}</h2>
+						<h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
+							{t.auth.register.title}
+						</h2>
 						<p className="mt-2 text-center text-sm text-gray-600">
 							{t.auth.register.haveAccount}{" "}
 							<Link
@@ -88,7 +113,10 @@ const RegisterPage: React.FC = () => {
 								type="email"
 								{...register("email", {
 									required: t.auth.register.emailRequired,
-									pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t.auth.register.emailInvalid },
+									pattern: {
+										value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+										message: t.auth.register.emailInvalid,
+									},
 								})}
 								autoComplete="username"
 								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm shadow-md"
@@ -138,8 +166,8 @@ const RegisterPage: React.FC = () => {
 										className="text-gray-600 hover:text-gray-800 underline"
 									>
 										{t.auth.register.userAgreement}
-									</Link>
-									{" "}{t.auth.register.and}{" "}
+									</Link>{" "}
+									{t.auth.register.and}{" "}
 									<Link
 										to="/public-offer"
 										target="_blank"
@@ -166,7 +194,9 @@ const RegisterPage: React.FC = () => {
 								disabled={isSubmitting || !isValid}
 								className="group relative w-full flex justify-center py-3 px-4 border-2 border-harvard-crimson text-lg font-semibold rounded-xl text-white bg-harvard-crimson hover:bg-red-800 hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 							>
-								{isSubmitting ? `${t.auth.register.registerButton}...` : t.auth.register.registerButton}
+								{isSubmitting
+									? `${t.auth.register.registerButton}...`
+									: t.auth.register.registerButton}
 							</button>
 						</div>
 					</form>

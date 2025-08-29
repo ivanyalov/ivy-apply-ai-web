@@ -46,7 +46,7 @@ async function testTrialSubscription() {
 			expiresAt: status.expiresAt,
 		});
 
-		// 4. Verify trial duration is 3 days
+		// 4. Verify trial duration is 2 minutes
 		if (!trial.startDate || !trial.expiresAt) {
 			console.error("❌ Trial dates are missing");
 			return;
@@ -54,12 +54,12 @@ async function testTrialSubscription() {
 
 		const startDate = new Date(trial.startDate);
 		const expiresAt = new Date(trial.expiresAt);
-		const daysDiff = Math.ceil((expiresAt.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+		const minutesDiff = Math.ceil((expiresAt.getTime() - startDate.getTime()) / (1000 * 60));
 
-		if (daysDiff === 3) {
-			console.log("✅ Trial duration is correct (3 days)");
+		if (minutesDiff === 2) {
+			console.log("✅ Trial duration is correct (2 minutes)");
 		} else {
-			console.error("❌ Trial duration is incorrect:", daysDiff, "days");
+			console.error("❌ Trial duration is incorrect:", minutesDiff, "minutes");
 		}
 
 		// 5. Verify subscription is active

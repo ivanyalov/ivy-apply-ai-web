@@ -4,6 +4,21 @@
 
 import { authService } from "./auth";
 
+/**
+ * Обработчик ошибок API с проверкой необходимости редиректа
+ */
+const handleApiError = async (response: Response): Promise<never> => {
+	const errorData = await response.json().catch(() => ({}));
+
+	// Проверяем, нужно ли перенаправить на страницу подписки
+	if (response.status === 403 && errorData.redirectTo === "/access") {
+		window.location.href = "/access";
+		throw new Error("Subscription required - redirecting to access page");
+	}
+
+	throw new Error(`HTTP error! status: ${response.status}`);
+};
+
 export interface ConversationData {
 	conversationId: string | null;
 	hasExistingConversation?: boolean;
@@ -83,7 +98,7 @@ export const getUserConversation = async (): Promise<ConversationResponse> => {
 		});
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			await handleApiError(response);
 		}
 
 		const result = await response.json();
@@ -112,7 +127,7 @@ export const createUserConversation = async (): Promise<ConversationResponse> =>
 		});
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			await handleApiError(response);
 		}
 
 		const result = await response.json();
@@ -141,7 +156,7 @@ export const resetUserConversation = async (): Promise<ConversationResponse> => 
 		});
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			await handleApiError(response);
 		}
 
 		const result = await response.json();
@@ -177,7 +192,7 @@ export const createChat = async (
 		});
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			await handleApiError(response);
 		}
 
 		const result = await response.json();
@@ -213,7 +228,7 @@ export const createChatAndPoll = async (
 		});
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			await handleApiError(response);
 		}
 
 		const result = await response.json();
@@ -256,7 +271,7 @@ export const getConversationMessages = async (
 		});
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			await handleApiError(response);
 		}
 
 		const result = await response.json();

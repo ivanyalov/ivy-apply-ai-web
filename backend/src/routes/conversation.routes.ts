@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { UserConversationModel } from "../models/UserConversation";
 import { cozeService } from "../services/cozeService";
 import { authMiddleware } from "../middleware/auth";
+import { subscriptionMiddleware } from "../middleware/subscription";
 
 const router = express.Router();
 const userConversationModel = new UserConversationModel();
@@ -10,136 +11,151 @@ const userConversationModel = new UserConversationModel();
  * Получить conversation ID для текущего пользователя
  * GET /api/conversation/get
  */
-router.get("/get", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const userId = (req as any).user?.userId;
-		if (!userId) {
-			return res.status(401).json({ error: "User not authenticated" });
-		}
+router.get(
+	"/get",
+	authMiddleware,
+	subscriptionMiddleware,
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const userId = (req as any).user?.userId;
+			if (!userId) {
+				return res.status(401).json({ error: "User not authenticated" });
+			}
 
-		const userConversation = await userConversationModel.getByUserId(userId);
+			const userConversation = await userConversationModel.getByUserId(userId);
 
-		if (userConversation) {
-			res.json({
-				success: true,
-				data: {
-					conversationId: userConversation.conversation_id,
-					hasExistingConversation: true,
-				},
-			});
-		} else {
-			res.json({
-				success: true,
-				data: {
-					conversationId: null,
-					hasExistingConversation: false,
-				},
-			});
+			if (userConversation) {
+				res.json({
+					success: true,
+					data: {
+						conversationId: userConversation.conversation_id,
+						hasExistingConversation: true,
+					},
+				});
+			} else {
+				res.json({
+					success: true,
+					data: {
+						conversationId: null,
+						hasExistingConversation: false,
+					},
+				});
+			}
+		} catch (error) {
+			console.error("Error getting user conversation:", error);
+			next(error);
 		}
-	} catch (error) {
-		console.error("Error getting user conversation:", error);
-		next(error);
 	}
-});
+);
 
 /**
  * Создать новый conversation для пользователя
  * POST /api/conversation/create
  */
-router.post("/create", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const userId = (req as any).user?.userId;
-		if (!userId) {
-			return res.status(401).json({ error: "User not authenticated" });
-		}
+router.post(
+	"/create",
+	authMiddleware,
+	subscriptionMiddleware,
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const userId = (req as any).user?.userId;
+			if (!userId) {
+				return res.status(401).json({ error: "User not authenticated" });
+			}
 
-		// Проверяем, есть ли уже conversation у пользователя
-		const existingConversation = await userConversationModel.getByUserId(userId);
+			// Проверяем, есть ли уже conversation у пользователя
+			const existingConversation = await userConversationModel.getByUserId(userId);
 
-		if (existingConversation) {
-			return res.json({
+			if (existingConversation) {
+				return res.json({
+					success: true,
+					data: {
+						conversationId: existingConversation.conversation_id,
+						isNew: false,
+					},
+				});
+			}
+
+			// Создаем новый conversation через Coze API
+			const cozeResponse = await cozeService.createConversation();
+
+			if (!cozeResponse.success) {
+				return res.status(500).json({
+					success: false,
+					error: cozeResponse.error,
+				});
+			}
+
+			const conversationId = cozeResponse.data.id;
+
+			// Сохраняем связь в базе данных
+			await userConversationModel.create(userId, conversationId);
+
+			res.json({
 				success: true,
 				data: {
-					conversationId: existingConversation.conversation_id,
-					isNew: false,
+					conversationId: conversationId,
+					isNew: true,
 				},
 			});
+		} catch (error) {
+			console.error("Error creating user conversation:", error);
+			next(error);
 		}
-
-		// Создаем новый conversation через Coze API
-		const cozeResponse = await cozeService.createConversation();
-
-		if (!cozeResponse.success) {
-			return res.status(500).json({
-				success: false,
-				error: cozeResponse.error,
-			});
-		}
-
-		const conversationId = cozeResponse.data.id;
-
-		// Сохраняем связь в базе данных
-		await userConversationModel.create(userId, conversationId);
-
-		res.json({
-			success: true,
-			data: {
-				conversationId: conversationId,
-				isNew: true,
-			},
-		});
-	} catch (error) {
-		console.error("Error creating user conversation:", error);
-		next(error);
 	}
-});
+);
 
 /**
  * Очистить conversation пользователя (создать новый)
  * POST /api/conversation/reset
  */
-router.post("/reset", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const userId = (req as any).user?.userId;
-		if (!userId) {
-			return res.status(401).json({ error: "User not authenticated" });
-		}
+router.post(
+	"/reset",
+	authMiddleware,
+	subscriptionMiddleware,
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const userId = (req as any).user?.userId;
+			if (!userId) {
+				return res.status(401).json({ error: "User not authenticated" });
+			}
 
-		// Создаем новый conversation через Coze API
-		const cozeResponse = await cozeService.createConversation();
+			// Создаем новый conversation через Coze API
+			const cozeResponse = await cozeService.createConversation();
 
-		if (!cozeResponse.success) {
-			return res.status(500).json({
-				success: false,
-				error: cozeResponse.error,
+			if (!cozeResponse.success) {
+				return res.status(500).json({
+					success: false,
+					error: cozeResponse.error,
+				});
+			}
+
+			const conversationId = cozeResponse.data.id;
+
+			// Проверяем, есть ли существующая запись
+			const existingConversation = await userConversationModel.getByUserId(userId);
+
+			if (existingConversation) {
+				// Обновляем существующую запись
+				await userConversationModel.updateConversationId(userId, conversationId);
+			} else {
+				// Создаем новую запись
+				await userConversationModel.create(userId, conversationId);
+			}
+
+			res.json({
+				success: true,
+				data: {
+					conversationId: conversationId,
+					isNew: true,
+				},
 			});
+		} catch (error) {
+			console.error("Error resetting user conversation:", error);
+			next(error);
 		}
-
-		const conversationId = cozeResponse.data.id;
-
-		// Проверяем, есть ли существующая запись
-		const existingConversation = await userConversationModel.getByUserId(userId);
-
-		if (existingConversation) {
-			// Обновляем существующую запись
-			await userConversationModel.updateConversationId(userId, conversationId);
-		} else {
-			// Создаем новую запись
-			await userConversationModel.create(userId, conversationId);
-		}
-
-		res.json({
-			success: true,
-			data: {
-				conversationId: conversationId,
-				isNew: true,
-			},
-		});
-	} catch (error) {
-		console.error("Error resetting user conversation:", error);
-		next(error);
 	}
-});
+);
 
 /**
  * Создать новый чат в рамках conversation пользователя
@@ -148,6 +164,7 @@ router.post("/reset", authMiddleware, async (req: Request, res: Response, next: 
 router.post(
 	"/chat/create",
 	authMiddleware,
+	subscriptionMiddleware,
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const userId = (req as any).user?.userId;
@@ -208,6 +225,7 @@ router.post(
 router.post(
 	"/chat/create-and-poll",
 	authMiddleware,
+	subscriptionMiddleware,
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const userId = (req as any).user?.userId;
@@ -278,6 +296,7 @@ router.post(
 router.get(
 	"/messages/get",
 	authMiddleware,
+	subscriptionMiddleware,
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const userId = (req as any).user?.userId;

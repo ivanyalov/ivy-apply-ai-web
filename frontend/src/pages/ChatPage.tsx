@@ -532,8 +532,8 @@ const ChatPage: React.FC = () => {
 						>
 							<div
 								className={`max-w-3xl px-4 py-3 rounded-xl shadow-lg ${
-									message.isUser 
-										? "bg-harvard-crimson text-white border-2 border-red-700" 
+									message.isUser
+										? "bg-harvard-crimson text-white border-2 border-red-700"
 										: "bg-white text-gray-900 border-2 border-gray-200"
 								}`}
 							>
@@ -769,9 +769,10 @@ const ChatPage: React.FC = () => {
 						onClick={() => handleSendMessage()}
 						disabled={isLoading || (!inputText.trim() && !attachedFile)}
 						className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 border-2 shadow-md hover:shadow-lg transform hover:-translate-y-1
-              ${isLoading || (!inputText.trim() && !attachedFile) 
-								? "border-gray-200 bg-gray-50" 
-								: "border-harvard-crimson bg-white hover:bg-gray-50"
+              ${
+								isLoading || (!inputText.trim() && !attachedFile)
+									? "border-gray-200 bg-gray-50"
+									: "border-harvard-crimson bg-white hover:bg-gray-50"
 							}
             `}
 						title={t.chat.send}
