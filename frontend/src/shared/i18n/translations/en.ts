@@ -2,30 +2,30 @@ export const en = {
   landing: {
     hero: {
       title: "Ivy Apply AI",
-      description: "Ivy Apply AI — your personal AI consultant for university admissions. Upload documents, ask questions, and get clear recommendations in your preferred language.",
+      description: "Ivy Apply AI — your personal mentor for admissions. Share your documents, ask questions, and receive tailored recommendations that save you time and effort.",
       startButton: "Start Chat",
       subscriptionButton: "Subscription",
       badge: "AI-Powered University Admissions"
     },
     features: {
-      title: "What can it do",
-      item1: "Analyzes essays and applications",
-      item2: "Helps choose universities",
-      item3: "Answers questions in chat format"
+      title: "What Ivy Apply AI can do",
+      item1: "Analyzes essays and university applications",
+      item2: "Guides your university choice",
+      item3: "Real-time answers in chat"
     },
     howItWorks: {
       title: "How it works",
       step1: {
-        title: "Registration and plan selection",
-        description: "Create an account and choose a free trial or subscription."
+        title: "Sign up and choose a plan",
+        description: "Create an account and start with a free trial or subscription."
       },
       step2: {
         title: "Upload documents and ask questions",
-        description: "Share your essays, transcripts, or ask questions about application submission."
+        description: "Upload your essays, transcripts, or ask any admissions questions."
       },
       step3: {
         title: "Get personalized feedback",
-        description: "Receive instant, detailed guidance tailored to your specific needs."
+        description: "Receive instant, tailored guidance for your goals and needs."
       }
     },
     faq: {
@@ -49,7 +49,7 @@ export const en = {
       publicOffer: "Public Offer",
       contacts: "Contacts",
       copyright: "© 2025 Ivy Apply AI. All rights reserved.",
-      tagline: "Your trusted AI partner for university admissions success",
+      tagline: "Your trusted AI mentor for university admissions success",
       legal: "Legal",
       support: "Support",
       features: "Features",
