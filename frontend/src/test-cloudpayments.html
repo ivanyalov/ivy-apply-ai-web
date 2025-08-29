@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>CloudPayments Test</title>
+		<script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
+	</head>
+	<body>
+		<h1>CloudPayments Widget Test</h1>
+		<button onclick="testWidget()">Test CloudPayments Widget</button>
+		<div id="result"></div>
+
+		<script>
+			function testWidget() {
+				const resultDiv = document.getElementById("result");
+
+				// Проверяем доступность виджета
+				if (typeof window.cp === "undefined") {
+					resultDiv.innerHTML = '<p style="color: red;">❌ CloudPayments widget not loaded</p>';
+					return;
+				}
+
+				resultDiv.innerHTML =
+					'<p style="color: green;">✅ CloudPayments widget loaded successfully</p>';
+
+				// Тестируем создание виджета
+				try {
+					const widget = new window.cp.CloudPayments();
+					resultDiv.innerHTML +=
+						'<p style="color: green;">✅ Widget instance created successfully</p>';
+
+					// Тестируем метод charge
+					if (typeof widget.charge === "function") {
+						resultDiv.innerHTML += '<p style="color: green;">✅ Widget.charge method available</p>';
+					} else {
+						resultDiv.innerHTML += '<p style="color: red;">❌ Widget.charge method not found</p>';
+					}
+				} catch (error) {
+					resultDiv.innerHTML += `<p style="color: red;">❌ Error creating widget: ${error.message}</p>`;
+				}
+			}
+
+			// Автоматический тест при загрузке
+			window.onload = function () {
+				setTimeout(testWidget, 1000);
+			};
+		</script>
+	</body>
+</html>
