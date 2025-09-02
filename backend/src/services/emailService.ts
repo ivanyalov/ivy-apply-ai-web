@@ -110,12 +110,14 @@ export class EmailService {
                         border-bottom: 2px solid #ffffff;
                     }
                     .header h1 { 
+						color: white;
                         margin: 0; 
                         font-size: 32px; 
                         font-weight: 700; 
                         letter-spacing: -0.025em;
                     }
                     .header p { 
+						color: white;
                         margin: 12px 0 0 0; 
                         opacity: 0.9; 
                         font-size: 16px;
