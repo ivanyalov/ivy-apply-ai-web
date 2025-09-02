@@ -16,6 +16,9 @@ interface EmailConfig {
 	pool?: boolean;
 	debug?: boolean;
 	logger?: boolean;
+	connectionTimeout?: number;
+	greetingTimeout?: number;
+	socketTimeout?: number;
 }
 
 interface VerificationEmailData {
@@ -31,11 +34,11 @@ export class EmailService {
 	constructor() {
 		// Загружаем переменные окружения
 		dotenv.config();
-		// Настройка SMTP для Яндекса с SSL
+		// Настройка SMTP для Яндекса с STARTTLS
 		const emailConfig: EmailConfig = {
 			host: process.env.SMTP_HOST || "smtp.yandex.ru",
-			port: 465, // Используем порт 465 для SSL
-			secure: true, // SSL соединение
+			port: parseInt(process.env.SMTP_PORT || "587"), // Используем порт из .env или 587 по умолчанию
+			secure: false, // STARTTLS соединение
 			auth: {
 				user: process.env.SMTP_USER || "",
 				pass: process.env.SMTP_PASS || "",
@@ -44,6 +47,10 @@ export class EmailService {
 			tls: {
 				rejectUnauthorized: false,
 			},
+			// Добавляем таймауты для стабильности
+			connectionTimeout: 60000, // 60 секунд
+			greetingTimeout: 30000, // 30 секунд
+			socketTimeout: 60000, // 60 секунд
 			// Настройки для отладки (можно отключить в продакшене)
 			debug: false,
 			logger: false,
