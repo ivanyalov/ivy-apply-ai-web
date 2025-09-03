@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { subscriptionService, SubscriptionStatus } from "../api/subscription";
+import { paymentService, PaymentSuccessRequest } from "../api/payment";
 import { useAuth } from "./useAuth";
 
 /**
@@ -39,7 +40,7 @@ export const useSubscription = () => {
 	// Mutation для отмены подписки
 	const cancelSubscriptionMutation = useMutation({
 		mutationFn: async () => {
-			return await subscriptionService.cancel();
+			return await paymentService.cancelSubscription();
 		},
 		onSuccess: () => {
 			// Инвалидируем кэш подписки после отмены
@@ -64,6 +65,20 @@ export const useSubscription = () => {
 		},
 	});
 
+	// Mutation для обработки успешного платежа CloudPayments
+	const handlePaymentSuccessMutation = useMutation({
+		mutationFn: async (data: PaymentSuccessRequest) => {
+			return await paymentService.processPaymentSuccess(data);
+		},
+		onSuccess: () => {
+			// Инвалидируем кэш подписки после успешного платежа
+			queryClient.invalidateQueries({ queryKey: ["subscription"] });
+		},
+		onError: (error) => {
+			console.error("Failed to handle payment success:", error);
+		},
+	});
+
 	// Функция для отмены подписки
 	const cancelSubscription = async () => {
 		return await cancelSubscriptionMutation.mutateAsync();
@@ -72,6 +87,11 @@ export const useSubscription = () => {
 	// Функция для начала пробного периода
 	const startTrial = async () => {
 		return await startTrialMutation.mutateAsync();
+	};
+
+	// Функция для обработки успешного платежа CloudPayments
+	const handlePaymentSuccess = async (data: PaymentSuccessRequest) => {
+		return await handlePaymentSuccessMutation.mutateAsync(data);
 	};
 
 	return {
@@ -85,5 +105,8 @@ export const useSubscription = () => {
 		isStartingTrial: startTrialMutation.isPending,
 		cancelError: cancelSubscriptionMutation.error,
 		startTrialError: startTrialMutation.error,
+		handlePaymentSuccess,
+		isHandlingPaymentSuccess: handlePaymentSuccessMutation.isPending,
+		paymentSuccessError: handlePaymentSuccessMutation.error,
 	};
 };

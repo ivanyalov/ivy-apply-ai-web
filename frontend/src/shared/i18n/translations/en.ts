@@ -219,6 +219,7 @@ export const en = {
 		recurringConsent: "I consent to automatic subscription renewal until cancellation",
 		verifyEmailButton: "Verify email",
 		subscribeButton: "Subscribe",
+		processing: "Processing...",
 		trialPlan: "Trial Plan",
 		days3: "/ 3 days",
 		fullAccess: "Full access to AI chat",

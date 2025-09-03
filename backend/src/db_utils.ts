@@ -89,6 +89,7 @@ export async function initializeDatabase() {
                 ALTER TABLE subscriptions 
                 ADD COLUMN IF NOT EXISTS cloudpayments_subscription_id VARCHAR(255),
                 ADD COLUMN IF NOT EXISTS cloudpayments_token VARCHAR(500),
+                ADD COLUMN IF NOT EXISTS cloudpayments_transaction_id VARCHAR(255),
                 ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMP
             `);
 			console.log("✓ Added CloudPayments fields to subscriptions table");
@@ -142,6 +143,7 @@ export async function initializeDatabase() {
             CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
             CREATE INDEX IF NOT EXISTS idx_subscriptions_cloudpayments_id ON subscriptions(cloudpayments_subscription_id);
+            CREATE INDEX IF NOT EXISTS idx_subscriptions_cloudpayments_transaction_id ON subscriptions(cloudpayments_transaction_id);
             CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
             CREATE INDEX IF NOT EXISTS idx_payments_subscription_id ON payments(subscription_id);
             CREATE INDEX IF NOT EXISTS idx_payments_invoice_id ON payments(cloudpayments_invoice_id);

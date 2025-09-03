@@ -9,7 +9,6 @@ import RegistrationSuccessPage from "../pages/RegistrationSuccessPage";
 import EmailVerificationPage from "../pages/EmailVerificationPage";
 import AccessSelectionPage from "../pages/AccessSelectionPage";
 import ChatPage from "../pages/ChatPage";
-import PaymentSuccessPage from "../pages/PaymentSuccessPage";
 import LandingPage from "../pages/LandingPage";
 import CookieBanner from "../shared/components/CookieBanner";
 import UserAgreement from "../pages/UserAgreement";
@@ -45,14 +44,6 @@ const App: React.FC = () => {
 								element={
 									<ProtectedRoute>
 										<AccessSelectionPage />
-									</ProtectedRoute>
-								}
-							/>
-							<Route
-								path="/payment/success"
-								element={
-									<ProtectedRoute>
-										<PaymentSuccessPage />
 									</ProtectedRoute>
 								}
 							/>

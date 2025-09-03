@@ -109,22 +109,31 @@ router.post("/change", authMiddleware, (req, res) => {
 });
 
 // Get subscription status
-router.get("/status", authMiddleware, (req: Request, res: Response) => {
+router.get("/status", authMiddleware, async (req: Request, res: Response) => {
 	const userId = req.user?.userId;
 	if (!userId) {
 		res.status(401).json({ error: "User not authenticated" });
 		return;
 	}
 
-	subscriptionService
-		.getSubscriptionStatus(userId)
-		.then((status) => {
-			res.json(status);
-		})
-		.catch((error) => {
-			console.error("Error getting subscription status:", error);
-			res.status(500).json({ error: "Failed to get subscription status" });
-		});
+	try {
+		const status = await subscriptionService.getSubscriptionStatus(userId);
+
+		// Получаем дополнительную информацию о подписке
+		const subscription = await getSubscriptionByUserId(userId);
+
+		const response = {
+			...status,
+			cloudPaymentsTransactionId: subscription?.cloudPaymentsTransactionId || null,
+			cloudPaymentsSubscriptionId: subscription?.cloudPaymentsSubscriptionId || null,
+			lastChecked: new Date().toISOString(),
+		};
+
+		res.json(response);
+	} catch (error) {
+		console.error("Error getting subscription status:", error);
+		res.status(500).json({ error: "Failed to get subscription status" });
+	}
 });
 
 export default router;

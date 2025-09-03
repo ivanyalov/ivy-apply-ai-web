@@ -220,6 +220,7 @@ export const ru = {
 		recurringConsent: "Я даю согласие на автоматическое продление подписки до момента отмены",
 		verifyEmailButton: "Подтвердите email",
 		subscribeButton: "Оформить подписку",
+		processing: "Обработка...",
 		trialPlan: "Пробный План",
 		days3: "/ 3 дня",
 		fullAccess: "Полный доступ к AI-чату",
