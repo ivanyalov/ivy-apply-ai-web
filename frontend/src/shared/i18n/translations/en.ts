@@ -188,6 +188,11 @@ export const en = {
 		goToChat: "Go to Chat",
 		cancelSubscription: "Cancel Subscription",
 		confirmCancel: "Are you sure you want to cancel your subscription?",
+		confirmCancelTitle: "Cancel Subscription",
+		confirmCancelMessage:
+			"Are you sure you want to cancel your subscription? This action cannot be undone, and your access to premium features will end at the end of the current period.",
+		confirmCancelButton: "Yes, cancel subscription",
+		confirmCancelCancel: "No, keep subscription",
 		cancelSuccess: "Subscription canceled.",
 		cancelError: "Error canceling subscription.",
 		logout: "Logout",

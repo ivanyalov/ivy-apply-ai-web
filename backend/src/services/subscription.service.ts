@@ -32,7 +32,7 @@ export class SubscriptionService {
 			status: "active",
 			planType: "trial",
 			startDate: new Date(),
-			expiresAt: new Date(Date.now() + 2 * 60 * 1000), // +2 минуты для тестирования
+			expiresAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // +3 дня
 		});
 	}
 
@@ -124,7 +124,8 @@ export class SubscriptionService {
 			status: subscription.status,
 			expiresAt: subscription.expiresAt,
 			trialUsed: user?.trial_used || false,
-			cloudPaymentsSubscriptionId: subscription.cloudPaymentsSubscriptionId,
+			// Возвращаем CloudPayments ID только для активных подписок
+			cloudPaymentsSubscriptionId: hasAccess ? subscription.cloudPaymentsSubscriptionId : null,
 			lastChecked: new Date().toISOString(),
 		};
 	}

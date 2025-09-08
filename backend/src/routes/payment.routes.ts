@@ -307,43 +307,6 @@ router.post("/cloudpayments/test", async (req, res) => {
 	}
 });
 
-// CloudPayments: отмена подписки через API CloudPayments
-router.post("/cloudpayments/cancel-subscription", async (req, res) => {
-	try {
-		const { subscriptionId } = req.body;
-		const publicId = process.env.CLOUD_PAYMENTS_PUBLIC_ID;
-		const secretKey = process.env.CLOUD_PAYMENTS_SECRET_KEY;
-		const credentials = Buffer.from(`${publicId}:${secretKey}`).toString("base64");
-
-		const response = await axios.post(
-			"https://api.cloudpayments.ru/subscriptions/cancel",
-			{
-				Id: subscriptionId,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Basic ${credentials}`,
-				},
-			}
-		);
-		res.json(response.data);
-	} catch (error) {
-		console.error(
-			"CloudPayments cancel subscription error:",
-			error.response?.data || error.message
-		);
-		if (error.response?.data) {
-			res.status(400).json(error.response.data);
-		} else {
-			res.status(500).json({
-				Success: false,
-				Message: "Internal server error",
-			});
-		}
-	}
-});
-
 // CloudPayments: получение статуса подписки через API CloudPayments
 router.post("/cloudpayments/get-subscription", async (req, res) => {
 	try {
@@ -517,43 +480,33 @@ router.post("/cloudpayments/payment-success", authMiddleware, async (req, res) =
 			let subscription = await getSubscriptionByUserId(userId);
 			const currentDate = new Date();
 
-			if (subscription && subscription.id) {
-				// Если есть активная подписка (включая пробную), завершаем её
-				if (
-					subscription.status === "active" &&
-					subscription.expiresAt &&
-					subscription.expiresAt > currentDate
-				) {
-					await updateSubscription(subscription.id, {
-						status: "cancelled",
-						expiresAt: currentDate,
-						cancelledAt: currentDate,
-					});
-					console.log(`Previous subscription ${subscription.id} cancelled for user ${userId}`);
-				}
-
-				// Обновляем существующую подписку на premium
+			// Если есть активная подписка (включая пробную), завершаем её
+			if (subscription && subscription.id && subscription.status === "active") {
 				await updateSubscription(subscription.id, {
-					planType: "premium",
-					status: "active",
-					cloudPaymentsSubscriptionId: cloudPaymentsSubscriptionId,
-					cloudPaymentsToken: transactionToken,
-					cloudPaymentsTransactionId: transactionId,
-					expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 дней
+					status: "cancelled",
+					expiresAt: currentDate,
+					cancelledAt: currentDate,
 				});
-			} else {
-				// Создаем новую подписку
-				subscription = await createSubscription({
-					userId,
-					planType: "premium",
-					status: "active",
-					cloudPaymentsSubscriptionId: cloudPaymentsSubscriptionId,
-					cloudPaymentsToken: transactionToken,
-					cloudPaymentsTransactionId: transactionId,
-					startDate: currentDate,
-					expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 дней
-				});
+				console.log(`Previous subscription ${subscription.id} cancelled for user ${userId}`);
 			}
+
+			// ВСЕГДА создаем новую подписку для нового платежа (не обновляем старую)
+			subscription = await createSubscription({
+				userId,
+				planType: "premium",
+				status: "active",
+				cloudPaymentsSubscriptionId: cloudPaymentsSubscriptionId,
+				cloudPaymentsToken: transactionToken,
+				cloudPaymentsTransactionId: transactionId,
+				startDate: currentDate,
+				expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 дней
+			});
+
+			// Отмечаем что пользователь использовал пробный период
+			await pool.query("UPDATE users SET trial_used = true WHERE id = $1 AND trial_used = false", [
+				userId,
+			]);
+			console.log(`✅ Пользователь ${userId} отмечен как использовавший пробный период`);
 
 			// Создаем запись о платеже
 			await createPayment({

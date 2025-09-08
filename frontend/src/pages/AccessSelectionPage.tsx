@@ -6,6 +6,7 @@ import { useTranslation } from "../shared/hooks/useTranslation";
 import { cloudPaymentsService } from "../shared/services/cloudpayments.service";
 import { authService } from "../shared/api/auth";
 import SubscribeButton from "../features/Subscription/SubscribeButton";
+import ConfirmModal from "../shared/components/ConfirmModal";
 
 declare global {
 	interface Window {
@@ -15,11 +16,18 @@ declare global {
 
 const AccessSelectionPage: React.FC = () => {
 	const { user, signout } = useAuth({ meRefetch: true });
-	const { subscription, isLoading, cancelSubscription, refreshSubscription, startTrial } =
-		useSubscription();
+	const {
+		subscription,
+		isLoading,
+		cancelSubscription,
+		refreshSubscription,
+		startTrial,
+		isCancelling,
+	} = useSubscription();
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [resendingEmail, setResendingEmail] = React.useState(false);
+	const [showCancelModal, setShowCancelModal] = React.useState(false);
 
 	const handleMonthlySubscription = async () => {
 		if (!user) {
@@ -61,6 +69,19 @@ const AccessSelectionPage: React.FC = () => {
 
 	const [trialSuccess, setTrialSuccess] = React.useState(false);
 	const [agreedToRecurring, setAgreedToRecurring] = React.useState(false);
+
+	const handleCancelSubscription = async () => {
+		try {
+			await cancelSubscription();
+			setShowCancelModal(false);
+			alert(t.subscription.cancelSuccess);
+			window.location.reload(); // Перезагружаем страницу
+		} catch (error) {
+			console.error("Ошибка отмены подписки:", error);
+			alert(t.subscription.cancelError);
+		}
+	};
+
 	const handleStartTrial = async () => {
 		try {
 			await startTrial();
@@ -162,7 +183,7 @@ const AccessSelectionPage: React.FC = () => {
 				<div className="space-y-3">
 					{subscription.status === "active" && (
 						<button
-							onClick={cancelSubscription}
+							onClick={() => setShowCancelModal(true)}
 							className="w-full bg-harvard-crimson text-white py-3 px-6 rounded-xl text-lg font-semibold hover:bg-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 						>
 							{t.subscription.cancelSubscription}
@@ -360,7 +381,7 @@ const AccessSelectionPage: React.FC = () => {
 									</div>
 								</div>
 
-								<SubscribeButton agreedToRecurring={agreedToRecurring} />
+								<SubscribeButton agreedToRecurring={true} />
 							</div>
 
 							{/* Neo-Brutalism Trial Plan - показываем только если не "premium-only" */}
@@ -437,7 +458,6 @@ const AccessSelectionPage: React.FC = () => {
 							)}
 						</div>
 					)}
-
 					{/* Neo-Brutalism Go to Chat Button */}
 					{subscription?.hasAccess && (
 						<div className="text-center mt-8">
@@ -473,6 +493,19 @@ const AccessSelectionPage: React.FC = () => {
 					)}
 				</div>
 			</div>
+
+			{/* Модальное окно подтверждения отмены подписки */}
+			<ConfirmModal
+				isOpen={showCancelModal}
+				onClose={() => setShowCancelModal(false)}
+				onConfirm={handleCancelSubscription}
+				title={t.subscription.confirmCancelTitle}
+				message={t.subscription.confirmCancelMessage}
+				confirmText={t.subscription.confirmCancelButton}
+				cancelText={t.subscription.confirmCancelCancel}
+				isLoading={isCancelling}
+				isDangerous={true}
+			/>
 		</div>
 	);
 };

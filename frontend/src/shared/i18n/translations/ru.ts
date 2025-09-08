@@ -188,6 +188,11 @@ export const ru = {
 		goToChat: "Перейти к чату",
 		cancelSubscription: "Отменить подписку",
 		confirmCancel: "Вы уверены, что хотите отменить подписку?",
+		confirmCancelTitle: "Отмена подписки",
+		confirmCancelMessage:
+			"Вы действительно хотите отменить подписку? Это действие нельзя будет отменить, и ваш доступ к премиум-функциям прекратится в конце текущего периода.",
+		confirmCancelButton: "Да, отменить подписку",
+		confirmCancelCancel: "Нет, оставить подписку",
 		cancelSuccess: "Подписка отменена.",
 		cancelError: "Ошибка при отмене подписки.",
 		logout: "Выйти",

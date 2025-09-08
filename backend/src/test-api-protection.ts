@@ -76,11 +76,11 @@ async function testApiProtection() {
 			console.log("ℹ️ API test skipped (server not running)");
 		}
 
-		// 6. Wait for trial to expire
-		console.log("\n6. Waiting for trial to expire...");
-		const waitTime = 2 * 60 * 1000 + 10 * 1000; // 2 минуты + 10 секунд
-		console.log(`Waiting ${waitTime / 1000} seconds...`);
-		await new Promise((resolve) => setTimeout(resolve, waitTime));
+		// 6. Wait for trial to expire (Note: Trial is now 3 days, so this test won't wait for expiration)
+		console.log("\n6. Trial expiration test skipped (trial period is now 3 days)...");
+		console.log("Note: Trial period has been changed from 2 minutes to 3 days");
+		// Skipping wait time as 3 days is too long for automated testing
+		// const waitTime = 3 * 24 * 60 * 60 * 1000; // 3 дня
 
 		// 7. Test API after subscription expired (should fail)
 		console.log("\n7. Testing API after subscription expired...");
