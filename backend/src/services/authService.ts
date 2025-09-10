@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { UserModel, User } from "../models/User";
-import { emailService } from "./emailService";
+import { emailServiceUnisender } from "./emailServiceUnisender";
 
 export class AuthService {
 	private userModel: UserModel;
@@ -26,7 +26,7 @@ export class AuthService {
 			console.log("✅ User does not exist, proceeding with creation...");
 
 			// Generate verification token
-			const verificationToken = emailService.generateVerificationToken();
+			const verificationToken = emailServiceUnisender.generateVerificationToken();
 			console.log("🔍 Generated verification token");
 
 			// Create new user with verification token
@@ -36,7 +36,7 @@ export class AuthService {
 
 			// Send verification email
 			try {
-				await emailService.sendVerificationEmail({
+				await emailServiceUnisender.sendVerificationEmail({
 					email: user.email,
 					verificationToken,
 				});
@@ -103,7 +103,7 @@ export class AuthService {
 	async verifyEmail(verificationToken: string): Promise<{ user: User; message: string }> {
 		try {
 			console.log(`🔍 Attempting to verify email with token: ${verificationToken}`);
-			
+
 			// Find user by verification token
 			const user = await this.userModel.findByVerificationToken(verificationToken);
 			if (!user) {
@@ -111,7 +111,9 @@ export class AuthService {
 				throw new Error("Invalid verification token");
 			}
 
-			console.log(`✅ Found user for verification: ${user.email}, current email_verified: ${user.email_verified}`);
+			console.log(
+				`✅ Found user for verification: ${user.email}, current email_verified: ${user.email_verified}`
+			);
 
 			if (user.email_verified) {
 				console.log(`⚠️ Email already verified for user: ${user.email}`);
@@ -129,7 +131,9 @@ export class AuthService {
 				throw new Error("User not found after verification");
 			}
 
-			console.log(`✅ Email verified successfully for user: ${user.email}, new email_verified: ${updatedUser.email_verified}`);
+			console.log(
+				`✅ Email verified successfully for user: ${user.email}, new email_verified: ${updatedUser.email_verified}`
+			);
 			return {
 				user: updatedUser,
 				message: "Email successfully verified",
@@ -153,11 +157,11 @@ export class AuthService {
 			}
 
 			// Generate new verification token
-			const verificationToken = emailService.generateVerificationToken();
+			const verificationToken = emailServiceUnisender.generateVerificationToken();
 			await this.userModel.updateVerificationToken(user.id, verificationToken);
 
 			// Send verification email
-			await emailService.sendVerificationEmail({
+			await emailServiceUnisender.sendVerificationEmail({
 				email: user.email,
 				verificationToken,
 			});

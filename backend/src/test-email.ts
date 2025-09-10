@@ -1,13 +1,13 @@
-import { getEmailService } from "./services/emailService";
+import { getEmailServiceUnisender } from "./services/emailServiceUnisender";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-async function testEmailService() {
-	console.log("Testing email service...");
+async function testEmailServiceUnisender() {
+	console.log("Testing email service (Unisender)...");
 
-	// Получаем экземпляр сервиса после загрузки переменных окружения
-	const emailService = getEmailService();
+	// Получаем экземпляр сервиса Unisender
+	const emailService = getEmailServiceUnisender();
 
 	try {
 		// 1. Проверяем подключение к SMTP
@@ -55,4 +55,4 @@ async function testEmailService() {
 }
 
 // Run the tests
-testEmailService();
+testEmailServiceUnisender();
