@@ -161,7 +161,7 @@ const RegisterPage: React.FC = () => {
 								<span className="text-gray-600">
 									{t.auth.register.agreeToTerms}{" "}
 									<Link
-										to="/user-agreement"
+										to="/privacy-policy"
 										target="_blank"
 										className="text-gray-600 hover:text-gray-800 underline"
 									>

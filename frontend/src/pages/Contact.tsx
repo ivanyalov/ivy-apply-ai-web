@@ -71,7 +71,7 @@ const Contact: React.FC = () => {
           </button>
           
           <button
-            onClick={() => navigate('/user-agreement')}
+            onClick={() => navigate('/privacy-policy')}
             className="flex items-center space-x-2 px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 hover:text-harvard-crimson hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             <span>{t.legal.contact.navigation.userAgreement}</span>

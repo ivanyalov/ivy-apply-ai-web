@@ -60,7 +60,7 @@ const PublicOffer: React.FC = () => {
         {/* Neo-Brutalism Navigation */}
         <div className="mt-8 flex justify-between items-center">
           <button
-            onClick={() => navigate('/user-agreement')}
+            onClick={() => navigate('/privacy-policy')}
             className="flex items-center space-x-2 px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 hover:text-harvard-crimson hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

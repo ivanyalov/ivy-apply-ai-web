@@ -49,7 +49,7 @@ export const ru = {
 		},
 		footer: {
 			title: "Ivy Apply AI",
-			userAgreement: "Пользовательское соглашение",
+			userAgreement: "Политика конфиденциальности",
 			publicOffer: "Публичная оферта",
 			contacts: "Контакты",
 			copyright: "© 2025 Ivy Apply AI. Все права защищены.",
@@ -65,7 +65,7 @@ export const ru = {
 	},
 	legal: {
 		userAgreement: {
-			title: "Пользовательское соглашение",
+			title: "Политика Конфиденциальности",
 			subtitle: "Правовые документы и условия использования сервиса",
 			navigation: {
 				contacts: "Контакты",
@@ -76,7 +76,7 @@ export const ru = {
 			title: "Публичная оферта",
 			subtitle: "Официальный документ о предоставлении услуг",
 			navigation: {
-				userAgreement: "Пользовательское соглашение",
+				userAgreement: "Политика конфиденциальности",
 				contacts: "Контакты",
 			},
 		},
@@ -85,7 +85,7 @@ export const ru = {
 			subtitle: "Свяжитесь с нами для получения поддержки",
 			navigation: {
 				publicOffer: "Публичная оферта",
-				userAgreement: "Пользовательское соглашение",
+				userAgreement: "Политика конфиденциальности",
 			},
 		},
 	},
@@ -120,7 +120,7 @@ export const ru = {
 			loginLink: "Войти",
 			haveAccount: "Уже есть аккаунт?",
 			agreeToTerms: "Я соглашаюсь с",
-			userAgreement: "Пользовательским соглашением",
+			userAgreement: "Политикой конфиденциальности",
 			and: "и",
 			publicOffer: "Публичной офертой",
 			passwordRequirements: "Пароль должен содержать:",

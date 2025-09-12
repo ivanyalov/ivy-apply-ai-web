@@ -271,7 +271,7 @@ const LandingPage: React.FC = () => {
 							<h4 className="text-lg font-semibold mb-4 text-white">{t.landing.footer.legal}</h4>
 							<div className="space-y-3">
 								<a
-									href="/user-agreement"
+									href="/privacy-policy"
 									target="_blank"
 									rel="noopener noreferrer"
 									className="block text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300"

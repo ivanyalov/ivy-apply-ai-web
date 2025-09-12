@@ -49,7 +49,7 @@ export const en = {
 		},
 		footer: {
 			title: "Ivy Apply AI",
-			userAgreement: "User Agreement",
+			userAgreement: "Privacy Policy",
 			publicOffer: "Public Offer",
 			contacts: "Contacts",
 			copyright: "© 2025 Ivy Apply AI. All rights reserved.",
@@ -65,7 +65,7 @@ export const en = {
 	},
 	legal: {
 		userAgreement: {
-			title: "User Agreement",
+			title: "Privacy Policy",
 			subtitle: "Legal documents and terms of service",
 			navigation: {
 				contacts: "Contacts",
@@ -76,7 +76,7 @@ export const en = {
 			title: "Public Offer",
 			subtitle: "Official document on service provision",
 			navigation: {
-				userAgreement: "User Agreement",
+				userAgreement: "Privacy Policy",
 				contacts: "Contacts",
 			},
 		},
@@ -85,7 +85,7 @@ export const en = {
 			subtitle: "Contact us for support",
 			navigation: {
 				publicOffer: "Public Offer",
-				userAgreement: "User Agreement",
+				userAgreement: "Privacy Policy",
 			},
 		},
 	},
@@ -120,7 +120,7 @@ export const en = {
 			loginLink: "Sign in",
 			haveAccount: "Already have an account?",
 			agreeToTerms: "I agree to the",
-			userAgreement: "User Agreement",
+			userAgreement: "Privacy Policy",
 			and: "and",
 			publicOffer: "Public Offer",
 			passwordRequirements: "Password must contain:",

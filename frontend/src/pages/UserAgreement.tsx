@@ -5,9 +5,6 @@ import { useTranslation } from '../shared/hooks/useTranslation';
 
 const UserAgreement: React.FC = () => {
   const [privacy, setPrivacy] = useState<string>('');
-  const [terms, setTerms] = useState<string>('');
-  const [returnPolicy, setReturnPolicy] = useState<string>('');
-  const [contact, setContact] = useState<string>('');
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -15,19 +12,10 @@ const UserAgreement: React.FC = () => {
     fetch('/legal/PP.md')
       .then(res => res.text())
       .then(setPrivacy);
-    fetch('/legal/ToS.md')
-      .then(res => res.text())
-      .then(setTerms);
-    fetch('/legal/RP.md')
-      .then(res => res.text())
-      .then(setReturnPolicy);
-    fetch('/legal/Contact.md')
-      .then(res => res.text())
-      .then(setContact);
   }, []);
 
-  // Combine all documents into one
-  const allContent = [privacy, terms, returnPolicy, contact].filter(content => content.trim()).join('\n\n---\n\n');
+  // Use only privacy policy content
+  const allContent = privacy;
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
