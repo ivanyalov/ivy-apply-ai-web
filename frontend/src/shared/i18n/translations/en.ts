@@ -3,16 +3,30 @@ export const en = {
 		hero: {
 			title: "Ivy Apply AI",
 			description:
-				"Ivy Apply AI — your personal mentor for admissions. Share your documents, ask questions, and receive tailored recommendations that save you time and effort.",
+				"We'll analyze your goals and values, edit your essays, match programs, and create a plan — all based on our knowledge base",
+			subtitle: "Apply quickly and confidently",
 			startButton: "Start Chat",
 			subscriptionButton: "Subscription",
 			badge: "AI-Powered University Admissions",
 		},
 		features: {
-			title: "What Ivy Apply AI can do",
-			item1: "Analyzes essays and university applications",
-			item2: "Guides your university choice",
-			item3: "Real-time answers in chat",
+			title: "What you'll get",
+			item1: {
+				title: "Personalized program list",
+				description: "tailored to your profile with requirements and verified links"
+			},
+			item2: {
+				title: "Plan and deadlines",
+				description: "what to do next and in what order"
+			},
+			item3: {
+				title: "Essay edits",
+				description: "ready edits with explanation why this makes it stronger"
+			},
+			item4: {
+				title: "Chat support",
+				description: "quick answers while you work"
+			}
 		},
 		howItWorks: {
 			title: "How it works",

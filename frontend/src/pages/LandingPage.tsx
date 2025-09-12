@@ -58,12 +58,16 @@ const LandingPage: React.FC = () => {
 						<span className="text-sm font-medium text-gray-700">{t.landing.hero.badge}</span>
 					</div>
 					
-					<h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+					<h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-12 leading-tight">
 						{t.landing.hero.title}
 					</h1>
 					
-					<p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+					<p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
 						{t.landing.hero.description}
+					</p>
+					
+					<p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed">
+						{t.landing.hero.subtitle}
 					</p>
 					
 					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
@@ -89,45 +93,74 @@ const LandingPage: React.FC = () => {
 				</div>
 			</section>
 
-			{/* Feature Highlights - Neo-Brutalism */}
+			{/* What you'll get - Unified Rectangle */}
 			<section className="py-20 px-6 relative z-10">
-				<div className="max-w-4xl mx-auto">
+				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-16">
 						<h2 className="text-4xl font-bold text-gray-900 mb-4">{t.landing.features.title}</h2>
 						<div className="w-24 h-1 bg-harvard-crimson mx-auto"></div>
 					</div>
-					<div className="space-y-12 max-w-3xl mx-auto">
-						<div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[160px] flex items-center">
-							<div className="flex items-start space-x-6 w-full">
-								<div className="w-14 h-14 min-w-[56px] min-h-[56px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
+					
+					{/* Large unified rectangle with 4 items */}
+					<div className="bg-white border-2 border-gray-200 rounded-xl p-6 md:p-8 shadow-lg max-w-4xl mx-auto">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 gap-y-10 md:gap-y-12">
+							{/* Item 1 - Programs */}
+							<div className="flex items-start space-x-4 h-[100px]">
+								<div className="w-11 h-11 min-w-[44px] min-h-[44px] flex-shrink-0 bg-harvard-crimson text-white rounded-lg flex items-center justify-center font-bold text-xl shadow-lg mt-0.5">
 									1
 								</div>
-								<div className="flex-1 pt-2">
-									<h3 className="text-2xl font-semibold text-gray-900 leading-tight">{t.landing.features.item1}</h3>
+								<div className="flex-1 max-w-[400px]">
+									<h3 className="text-2xl font-semibold text-gray-900 mb-2 leading-tight">
+										{t.landing.features.item1.title}
+									</h3>
+									<p className="text-gray-600 text-lg leading-relaxed">
+										{t.landing.features.item1.description}
+									</p>
 								</div>
 							</div>
-						</div>
-						<div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[160px] flex items-center">
-							<div className="flex items-start space-x-6 w-full">
-								<div className="w-14 h-14 min-w-[56px] min-h-[56px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
+							
+							{/* Item 2 - Plan */}
+							<div className="flex items-start space-x-4 h-[100px]">
+								<div className="w-11 h-11 min-w-[44px] min-h-[44px] flex-shrink-0 bg-harvard-crimson text-white rounded-lg flex items-center justify-center font-bold text-xl shadow-lg mt-0.5">
 									2
 								</div>
-								<div className="flex-1 pt-2">
-									<h3 className="text-2xl font-semibold text-gray-900 leading-tight">
-										{t.landing.features.item2}
+								<div className="flex-1 max-w-[400px]">
+									<h3 className="text-2xl font-semibold text-gray-900 mb-2 leading-tight">
+										{t.landing.features.item2.title}
 									</h3>
+									<p className="text-gray-600 text-lg leading-relaxed">
+										{t.landing.features.item2.description}
+									</p>
 								</div>
 							</div>
-						</div>
-						<div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[160px] flex items-center">
-							<div className="flex items-start space-x-6 w-full">
-								<div className="w-14 h-14 min-w-[56px] min-h-[56px] flex-shrink-0 bg-harvard-crimson text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
+							
+							{/* Item 3 - Edits */}
+							<div className="flex items-start space-x-4 h-[100px]">
+								<div className="w-11 h-11 min-w-[44px] min-h-[44px] flex-shrink-0 bg-harvard-crimson text-white rounded-lg flex items-center justify-center font-bold text-xl shadow-lg mt-0.5">
 									3
 								</div>
-								<div className="flex-1 pt-2">
-									<h3 className="text-2xl font-semibold text-gray-900 leading-tight">
-										{t.landing.features.item3}
+								<div className="flex-1 max-w-[400px]">
+									<h3 className="text-2xl font-semibold text-gray-900 mb-2 leading-tight">
+										{t.landing.features.item3.title}
 									</h3>
+									<p className="text-gray-600 text-lg leading-relaxed">
+										{t.landing.features.item3.description}
+									</p>
+								</div>
+							</div>
+							
+							{/* Item 4 - Support */}
+							<div className="flex items-start space-x-4 h-[100px]">
+								<div className="w-11 h-11 min-w-[44px] min-h-[44px] flex-shrink-0 bg-harvard-crimson text-white rounded-lg flex items-center justify-center font-bold text-xl shadow-lg mt-0.5">
+									4
+								</div>
+								<div className="flex-1 max-w-[400px]">
+									<h3 className="text-2xl font-semibold text-gray-900 mb-2 leading-tight">
+										{t.landing.features.item4.title}
+									</h3>
+									<p className="text-gray-600 text-lg leading-relaxed">
+										{t.landing.features.item4.description}
+									</p>
 								</div>
 							</div>
 						</div>
