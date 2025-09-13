@@ -57,7 +57,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 						disabled={isLoading}
 						className={`px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
 							isDangerous
-								? "bg-harvard-crimson text-white hover:bg-red-800"
+								? "bg-gradient-to-r from-harvard-crimson to-red-600 text-white hover:from-red-700 hover:to-red-800"
 								: "bg-blue-600 text-white hover:bg-blue-700"
 						}`}
 					>

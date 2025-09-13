@@ -12,7 +12,7 @@ const LanguageToggle: React.FC<LanguageToggleProps> = ({ className = '' }) => {
     <div className={`flex items-center ${className}`}>
       <div className="relative bg-white border-2 border-gray-200 rounded-xl p-1 shadow-md">
         <div 
-          className={`absolute top-1 bottom-1 w-12 bg-harvard-crimson rounded-lg shadow-md transition-transform duration-300 ease-out ${
+          className={`absolute top-1 bottom-1 w-12 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-lg shadow-md transition-transform duration-300 ease-out ${
             language === 'en' ? 'transform translate-x-12' : 'transform translate-x-0'
           }`}
         />

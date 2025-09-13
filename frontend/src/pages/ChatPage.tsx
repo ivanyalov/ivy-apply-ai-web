@@ -518,7 +518,7 @@ const ChatPage: React.FC = () => {
 					<div className="flex justify-center items-center h-full">
 						<div className="bg-white border-2 border-gray-200 text-gray-900 px-6 py-4 rounded-xl shadow-lg">
 							<div className="flex items-center space-x-3">
-								<div className="animate-spin rounded-full h-6 w-6 border-b-2 border-harvard-crimson"></div>
+								<div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gradient-to-r from-harvard-crimson to-red-600"></div>
 								<span>{t.chat.initializing}</span>
 							</div>
 						</div>
@@ -533,7 +533,7 @@ const ChatPage: React.FC = () => {
 							<div
 								className={`max-w-3xl px-4 py-3 rounded-xl shadow-lg ${
 									message.isUser
-										? "bg-harvard-crimson text-white border-2 border-red-700"
+										? "bg-gradient-to-r from-harvard-crimson to-red-600 text-white border-2 border-gradient-to-r border-from-red-700 border-to-red-800"
 										: "bg-white text-gray-900 border-2 border-gray-200"
 								}`}
 							>
@@ -612,7 +612,7 @@ const ChatPage: React.FC = () => {
 											),
 											a: ({ node, ...props }) => (
 												<a
-													className="text-harvard-crimson hover:text-red-800 underline"
+													className="text-gradient-to-r from-harvard-crimson to-red-600 hover:from-red-700 hover:to-red-800 underline"
 													target="_blank"
 													rel="noopener noreferrer"
 													{...props}
@@ -675,7 +675,7 @@ const ChatPage: React.FC = () => {
 					<div className="mb-3 md:hidden">
 						<div className="flex items-center space-x-2 px-3 py-2 bg-white border-2 border-gray-200 rounded-xl text-gray-800 shadow-md">
 							{/* File icon */}
-							<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-harvard-crimson text-white rounded shadow-md">
+							<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gradient-to-r from-harvard-crimson to-red-600 text-white rounded shadow-md">
 								<span className="text-xs font-bold">
 									{attachedFile.file.name.split(".").pop()?.toUpperCase().substring(0, 3) ||
 										attachedFile.file.type?.split("/")[1]?.toUpperCase().substring(0, 3) ||
@@ -732,7 +732,7 @@ const ChatPage: React.FC = () => {
 						onChange={(e) => setInputText(e.target.value)}
 						onKeyPress={handleKeyPress}
 						placeholder={t.chat.placeholder}
-						className="flex-1 resize-none rounded-xl border-2 border-gray-200 px-4 py-2 focus:border-harvard-crimson focus:outline-none focus:ring-1 focus:ring-harvard-crimson shadow-md"
+						className="flex-1 resize-none rounded-xl border-2 border-gray-200 px-4 py-2 focus:border-gradient-to-r focus:border-from-harvard-crimson focus:border-to-red-600 focus:outline-none focus:ring-1 focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600 shadow-md"
 						rows={1}
 						disabled={isLoading}
 					/>
@@ -740,7 +740,7 @@ const ChatPage: React.FC = () => {
 					{attachedFile && (
 						<div className="hidden md:flex items-center space-x-2 px-2 py-1 bg-white border-2 border-gray-200 rounded-xl text-gray-800 shadow-md">
 							{/* File icon */}
-							<div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-harvard-crimson text-white rounded">
+							<div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-gradient-to-r from-harvard-crimson to-red-600 text-white rounded">
 								{/* Simple text icon based on extension or type */}
 								<span className="text-xs font-bold">
 									{attachedFile.file.name.split(".").pop()?.toUpperCase().substring(0, 3) ||
@@ -772,7 +772,7 @@ const ChatPage: React.FC = () => {
               ${
 								isLoading || (!inputText.trim() && !attachedFile)
 									? "border-gray-200 bg-gray-50"
-									: "border-harvard-crimson bg-white hover:bg-gray-50"
+									: "border-gradient-to-r border-from-harvard-crimson border-to-red-600 bg-white hover:bg-gray-50"
 							}
             `}
 						title={t.chat.send}
@@ -788,7 +788,7 @@ const ChatPage: React.FC = () => {
               ${
 								isLoading || (!inputText.trim() && !attachedFile)
 									? "text-gray-400"
-									: "text-harvard-crimson"
+									: "text-gradient-to-r from-harvard-crimson to-red-600"
 							}
             `}
 						>

@@ -49,7 +49,7 @@ const LoginPage: React.FC = () => {
 							{t.auth.login.noAccount}{" "}
 							<Link
 								to="/register"
-								className="font-semibold text-harvard-crimson hover:text-red-800 text-lg"
+								className="font-semibold text-gradient-to-r from-harvard-crimson to-red-600 hover:from-red-700 hover:to-red-800 text-lg"
 							>
 								{t.auth.login.registerLink}
 							</Link>
@@ -68,7 +68,7 @@ const LoginPage: React.FC = () => {
 									pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: t.auth.register.emailInvalid },
 								})}
 								autoComplete="username"
-								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm shadow-md"
+								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600 focus:border-gradient-to-r focus:border-from-harvard-crimson focus:border-to-red-600 focus:z-10 sm:text-sm shadow-md"
 								placeholder={t.auth.login.email}
 							/>
 							{errors.email && (
@@ -84,7 +84,7 @@ const LoginPage: React.FC = () => {
 								type="password"
 								{...register("password", { required: t.auth.register.passwordRequired })}
 								autoComplete="new-password"
-								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-harvard-crimson focus:border-harvard-crimson focus:z-10 sm:text-sm shadow-md"
+								className="relative block w-full px-4 py-3 border-2 border-gray-200 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-1 focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600 focus:border-gradient-to-r focus:border-from-harvard-crimson focus:border-to-red-600 focus:z-10 sm:text-sm shadow-md"
 								placeholder={t.auth.login.password}
 							/>
 							{errors.password && (
@@ -102,7 +102,7 @@ const LoginPage: React.FC = () => {
 							<button
 								type="submit"
 								disabled={isSubmitting || !isValid}
-								className="group relative w-full flex justify-center py-3 px-4 border-2 border-harvard-crimson text-lg font-semibold rounded-xl text-white bg-harvard-crimson hover:bg-red-800 hover:border-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-harvard-crimson disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+								className="group relative w-full flex justify-center py-3 px-4 border-2 border-gradient-to-r border-from-harvard-crimson border-to-red-600 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-harvard-crimson to-red-600 hover:from-red-700 hover:to-red-800 hover:border-gradient-to-r hover:border-from-red-700 hover:border-to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 							>
 								{isSubmitting ? `${t.auth.login.loginButton}...` : t.auth.login.loginButton}
 							</button>

@@ -10,37 +10,38 @@ export const en = {
 			badge: "AI-Powered University Admissions",
 		},
 		features: {
-			title: "What you'll get",
+			title: "What you get",
 			item1: {
-				title: "Personalized program list",
-				description: "tailored to your profile with requirements and verified links"
+				title: "Program list"
 			},
 			item2: {
-				title: "Plan and deadlines",
-				description: "what to do next and in what order"
+				title: "Plan and deadlines"
 			},
 			item3: {
-				title: "Essay edits",
-				description: "ready edits with explanation why this makes it stronger"
+				title: "Essay edits"
 			},
 			item4: {
-				title: "Chat support",
-				description: "quick answers while you work"
-			}
+				title: "Chat support"
+			},
+			bottomTagline: "All this and much more in one service"
 		},
 		howItWorks: {
 			title: "How it works",
 			step1: {
-				title: "Sign up and choose a plan",
-				description: "Create an account and start with a free trial or subscription.",
+				title: "Understand goals",
+				description: "formulate goals and context",
 			},
 			step2: {
-				title: "Upload documents and ask questions",
-				description: "Upload your essays, transcripts, or ask any admissions questions.",
+				title: "Upload materials",
+				description: "attach essays/resume or describe questions",
 			},
 			step3: {
-				title: "Get personalized feedback",
-				description: "Receive instant, tailored guidance for your goals and needs.",
+				title: "Analysis",
+				description: "identify strengths/weaknesses and set priorities",
+			},
+			step4: {
+				title: "Mentor support",
+				description: "application iterations until submission",
 			},
 		},
 		faq: {

@@ -208,7 +208,7 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 			onClick={handleCloudPayments}
 			className={`w-full py-3 px-6 rounded-xl text-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 ${
 				agreedToRecurring && user?.email_verified && !isLoading
-					? "bg-harvard-crimson text-white hover:bg-red-800"
+					? "bg-gradient-to-r from-harvard-crimson to-red-600 text-white hover:from-red-700 hover:to-red-800"
 					: "bg-gray-300 text-gray-500 cursor-not-allowed"
 			}`}
 		>
