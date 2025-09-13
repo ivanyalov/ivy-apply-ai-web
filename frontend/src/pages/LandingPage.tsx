@@ -48,9 +48,9 @@ const LandingPage: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-white relative overflow-hidden">
+		<div className="min-h-screen bg-gray-50 relative overflow-hidden">
 			{/* Hero Section */}
-			<section className="py-24 px-6 text-center relative z-10">
+			<section className="py-24 px-6 text-center relative z-10 bg-gray-50">
 				<div className="max-w-5xl mx-auto relative z-10">
 					{/* Neo-Brutalism Brand badge */}
 					<div className="inline-flex items-center px-4 py-2 bg-white border-2 border-gray-200 rounded-full shadow-lg mb-8">
@@ -94,7 +94,7 @@ const LandingPage: React.FC = () => {
 			</section>
 
 			{/* What you'll get - Enhanced Design */}
-			<section className="py-24 px-6 relative z-10 bg-gradient-to-br from-gray-50 to-white">
+			<section className="py-24 px-6 relative z-10 bg-gray-50">
 				<div className="max-w-7xl mx-auto">
 					<div className="text-center mb-20">
 						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -185,7 +185,7 @@ const LandingPage: React.FC = () => {
 			</section>
 
 			{/* How It Works - Staircase Design */}
-			<section className="py-24 px-6 relative z-10 bg-gradient-to-br from-gray-50 to-white">
+			<section className="py-24 px-6 relative z-10 bg-gray-50">
 				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-20">
 						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -199,7 +199,7 @@ const LandingPage: React.FC = () => {
 						{/* Step 1 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -226,7 +226,7 @@ const LandingPage: React.FC = () => {
 						{/* Step 2 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -253,7 +253,7 @@ const LandingPage: React.FC = () => {
 						{/* Step 3 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -280,7 +280,7 @@ const LandingPage: React.FC = () => {
 						{/* Step 4 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -302,7 +302,7 @@ const LandingPage: React.FC = () => {
 			</section>
 
 			{/* For You Section */}
-			<section className="py-24 px-6 relative z-10 bg-white">
+			<section className="py-24 px-6 relative z-10 bg-gray-50">
 				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-20">
 						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -316,7 +316,7 @@ const LandingPage: React.FC = () => {
 						{/* Benefit 1 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -335,17 +335,17 @@ const LandingPage: React.FC = () => {
 						{/* Benefit 2 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
 										</svg>
 									</div>
-											<div className="flex-1 text-left flex items-center">
-												<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-													__html: t.landing.forYou.benefit2.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-												}} />
-											</div>
+									<div className="flex-1 text-left flex items-center">
+										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+											__html: t.landing.forYou.benefit2.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+										}} />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -353,17 +353,17 @@ const LandingPage: React.FC = () => {
 						{/* Benefit 3 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
 										</svg>
 									</div>
-											<div className="flex-1 text-left flex items-center">
-												<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-													__html: t.landing.forYou.benefit3.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-												}} />
-											</div>
+									<div className="flex-1 text-left flex items-center">
+										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+											__html: t.landing.forYou.benefit3.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+										}} />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -371,17 +371,17 @@ const LandingPage: React.FC = () => {
 						{/* Benefit 4 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
 										</svg>
 									</div>
-											<div className="flex-1 text-left flex items-center">
-												<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-													__html: t.landing.forYou.benefit4.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-												}} />
-											</div>
+									<div className="flex-1 text-left flex items-center">
+										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+											__html: t.landing.forYou.benefit4.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+										}} />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -390,7 +390,7 @@ const LandingPage: React.FC = () => {
 			</section>
 
 			{/* Why Us Section */}
-			<section className="py-24 px-6 relative z-10 bg-gradient-to-br from-gray-50 to-white">
+			<section className="py-24 px-6 relative z-10 bg-gray-50">
 				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-20">
 						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -404,7 +404,7 @@ const LandingPage: React.FC = () => {
 						{/* Benefit 1 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[220px] flex flex-col">
-								<div className="flex items-start space-x-6 flex-1">
+								<div className="flex items-center space-x-6 flex-1">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -427,7 +427,7 @@ const LandingPage: React.FC = () => {
 						{/* Benefit 2 */}
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[220px] flex flex-col">
-								<div className="flex items-start space-x-6 flex-1">
+								<div className="flex items-center space-x-6 flex-1">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
@@ -451,7 +451,7 @@ const LandingPage: React.FC = () => {
 			</section>
 
 			{/* FAQ - Modern Design */}
-			<section className="py-24 px-6 relative z-10 bg-gradient-to-br from-gray-50 to-white">
+			<section className="py-24 px-6 relative z-10 bg-gray-50">
 				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-20">
 						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -462,7 +462,7 @@ const LandingPage: React.FC = () => {
 					<div className="max-w-xl mx-auto space-y-5">
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<span className="text-white font-bold text-xl">F</span>
 								</div>
@@ -479,7 +479,7 @@ const LandingPage: React.FC = () => {
 						</div>
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<span className="text-white font-bold text-xl">A</span>
 								</div>
@@ -496,7 +496,7 @@ const LandingPage: React.FC = () => {
 						</div>
 						<div className="group relative">
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
-								<div className="flex items-start space-x-6 w-full">
+								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<span className="text-white font-bold text-xl">Q</span>
 								</div>
