@@ -28,21 +28,33 @@ export const en = {
 		howItWorks: {
 			title: "How it works",
 			step1: {
-				title: "Understand goals",
-				description: "formulate goals and context",
+				title: "Define goals",
+				description: "establish country, deadlines, budget and priorities",
 			},
 			step2: {
-				title: "Upload materials",
-				description: "attach essays/resume or describe questions",
+				title: "Analyze materials",
+				description: "essays/resume/questions, check admission criteria alignment",
 			},
 			step3: {
-				title: "Analysis",
-				description: "identify strengths/weaknesses and set priorities",
+				title: "Provide recommendations",
+				description: "identify application strengths/weaknesses and help improve it",
 			},
 			step4: {
-				title: "Mentor support",
-				description: "application iterations until submission",
+				title: "Guide to application",
+				description: "application iterations, chat support and final package review",
 			},
+		},
+		forYou: {
+			title: "For you",
+			benefit1: "applying for **undergraduate** or **graduate** programs",
+			benefit2: "targeting **USA, UK, Canada, Australia**",
+			benefit3: "applying independently — need guidance on **real requirements**",
+			benefit4: "have **draft essays, resume** or questions — need a **clear plan**",
+		},
+		whyUs: {
+			title: "Why us",
+			benefit1: "**Mentor, not just a chat** First we clarify goals and context, then guide you step by step",
+			benefit2: "**Knowledge base instead of guesses** Recommendations are based on program requirements, essay criteria and proven references",
 		},
 		faq: {
 			title: "Frequently Asked Questions",
@@ -54,7 +66,7 @@ export const en = {
 			q2: {
 				question: "Is my data secure?",
 				answer:
-					"Yes, we take data security seriously. All uploaded documents and conversations are encrypted and securely stored.",
+					"Yes, we take data security seriously. All uploaded documents and conversations are encrypted.",
 			},
 			q3: {
 				question: "What types of documents can I upload?",

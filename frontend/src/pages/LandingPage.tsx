@@ -194,14 +194,14 @@ const LandingPage: React.FC = () => {
 						<div className="w-32 h-2 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto rounded-full shadow-lg"></div>
 					</div>
 					
-					{/* Staircase Steps - Equal Width Design */}
-					<div className="max-w-3xl mx-auto space-y-5">
+					{/* Steps - Equal Width Design */}
+					<div className="max-w-2xl mx-auto space-y-6">
 						{/* Step 1 */}
 						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-5 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30">
-								<div className="flex items-center space-x-4">
-									<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
-										<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 										</svg>
 									</div>
@@ -223,12 +223,12 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 
-							{/* Step 2 - Slightly smaller */}
-							<div className="group relative mx-6">
-								<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 min-h-[100px] flex items-center">
-									<div className="flex items-center space-x-4 w-full">
-										<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
-											<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						{/* Step 2 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
 											</svg>
 										</div>
@@ -250,12 +250,12 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 
-							{/* Step 3 - Smaller */}
-							<div className="group relative mx-12">
-								<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 min-h-[100px] flex items-center">
-									<div className="flex items-center space-x-4 w-full">
-										<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
-											<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						{/* Step 3 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
 											</svg>
 										</div>
@@ -277,12 +277,12 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 
-							{/* Step 4 - Smallest */}
-							<div className="group relative mx-18">
-								<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 min-h-[100px] flex items-center">
-									<div className="flex items-center space-x-4 w-full">
-										<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
-											<svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						{/* Step 4 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
 											</svg>
 										</div>
@@ -301,58 +301,87 @@ const LandingPage: React.FC = () => {
 				</div>
 			</section>
 
-			{/* FAQ - Neo-Brutalism */}
-			<section className="py-24 px-6 relative z-10">
-				<div className="max-w-4xl mx-auto">
-					<div className="text-center mb-16">
-						<h2 className="text-4xl font-bold text-gray-900 mb-4">
-							{t.landing.faq.title}
+			{/* For You Section */}
+			<section className="py-24 px-6 relative z-10 bg-white">
+				<div className="max-w-6xl mx-auto">
+					<div className="text-center mb-20">
+						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+							{t.landing.forYou.title}
 						</h2>
-						<div className="w-24 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto"></div>
+						<div className="w-32 h-2 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto rounded-full shadow-lg"></div>
 					</div>
-					<div className="space-y-8 max-w-3xl mx-auto">
-						<div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-							<div className="flex items-start space-x-4">
-								<div className="w-8 h-8 min-w-[32px] min-h-[32px] flex-shrink-0 bg-gradient-to-br from-harvard-crimson to-red-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
-									F
-								</div>
-								<div className="flex-1">
-									<h3 className="text-xl font-semibold text-gray-900 mb-4 leading-tight">
-										{t.landing.faq.q1.question}
-									</h3>
-									<p className="text-gray-600 text-lg leading-relaxed">
-										{t.landing.faq.q1.answer}
-									</p>
-								</div>
-							</div>
-						</div>
-						<div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-							<div className="flex items-start space-x-4">
-								<div className="w-8 h-8 min-w-[32px] min-h-[32px] flex-shrink-0 bg-gradient-to-br from-harvard-crimson to-red-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
-									A
-								</div>
-								<div className="flex-1">
-									<h3 className="text-xl font-semibold text-gray-900 mb-4 leading-tight">
-										{t.landing.faq.q2.question}
-									</h3>
-									<p className="text-gray-600 text-lg leading-relaxed">
-										{t.landing.faq.q2.answer}
-									</p>
+					
+					{/* Benefits Grid */}
+					<div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+						{/* Benefit 1 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+										</svg>
+									</div>
+									<div className="flex-1 text-left flex items-center">
+										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+											__html: t.landing.forYou.benefit1.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+										}} />
+									</div>
 								</div>
 							</div>
 						</div>
-						<div className="bg-white border-2 border-gray-200 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-							<div className="flex items-start space-x-4">
-								<div className="w-8 h-8 min-w-[32px] min-h-[32px] flex-shrink-0 bg-gradient-to-br from-harvard-crimson to-red-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
-									Q
+
+						{/* Benefit 2 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+										</svg>
+									</div>
+											<div className="flex-1 text-left flex items-center">
+												<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+													__html: t.landing.forYou.benefit2.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+												}} />
+											</div>
 								</div>
-								<div className="flex-1">
-									<h3 className="text-xl font-semibold text-gray-900 mb-4 leading-tight">
-										{t.landing.faq.q3.question}
-									</h3>
-									<p className="text-gray-600 text-lg leading-relaxed">
-										{t.landing.faq.q3.answer}
-									</p>
+							</div>
+						</div>
+
+						{/* Benefit 3 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+										</svg>
+									</div>
+											<div className="flex-1 text-left flex items-center">
+												<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+													__html: t.landing.forYou.benefit3.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+												}} />
+											</div>
+								</div>
+							</div>
+						</div>
+
+						{/* Benefit 4 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+										</svg>
+									</div>
+											<div className="flex-1 text-left flex items-center">
+												<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
+													__html: t.landing.forYou.benefit4.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+												}} />
+											</div>
 								</div>
 							</div>
 						</div>
@@ -360,72 +389,257 @@ const LandingPage: React.FC = () => {
 				</div>
 			</section>
 
-			{/* Footer - Neo-Brutalism */}
-			<footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 px-6 relative overflow-hidden">
-				{/* Enhanced Background decorative elements */}
-				<div className="absolute top-10 right-20 w-32 h-32 bg-gradient-to-br from-harvard-crimson/10 to-red-600/10 rounded-full blur-3xl animate-pulse"></div>
-				<div className="absolute bottom-10 left-20 w-40 h-40 bg-white/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
-				
-				<div className="max-w-6xl mx-auto relative z-10">
-					<div className="text-center mb-12">
-						<h3 className="text-3xl font-bold mb-4">{t.landing.footer.title}</h3>
-						<p className="text-gray-300 text-lg max-w-2xl mx-auto">
-							{t.landing.footer.tagline}
-						</p>
+			{/* Why Us Section */}
+			<section className="py-24 px-6 relative z-10 bg-gradient-to-br from-gray-50 to-white">
+				<div className="max-w-6xl mx-auto">
+					<div className="text-center mb-20">
+						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+							{t.landing.whyUs.title}
+						</h2>
+						<div className="w-32 h-2 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto rounded-full shadow-lg"></div>
 					</div>
 					
+					{/* Benefits Grid - Fixed Height Design */}
+					<div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+						{/* Benefit 1 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[220px] flex flex-col">
+								<div className="flex items-start space-x-6 flex-1">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+										</svg>
+									</div>
+									<div className="flex-1 text-left">
+										<h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+											{t.landing.whyUs.benefit1.split('**')[1]}
+										</h3>
+										<p className="text-gray-600 text-base leading-relaxed">
+											{t.landing.whyUs.benefit1.split('**')[2]}
+										</p>
+									</div>
+								</div>
+								{/* Decorative line */}
+								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+							</div>
+						</div>
+
+						{/* Benefit 2 */}
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[220px] flex flex-col">
+								<div className="flex items-start space-x-6 flex-1">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+										</svg>
+									</div>
+									<div className="flex-1 text-left">
+										<h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+											{t.landing.whyUs.benefit2.split('**')[1]}
+										</h3>
+										<p className="text-gray-600 text-base leading-relaxed">
+											{t.landing.whyUs.benefit2.split('**')[2]}
+										</p>
+									</div>
+								</div>
+								{/* Decorative line */}
+								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* FAQ - Modern Design */}
+			<section className="py-24 px-6 relative z-10 bg-gradient-to-br from-gray-50 to-white">
+				<div className="max-w-6xl mx-auto">
+					<div className="text-center mb-20">
+						<h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+							{t.landing.faq.title}
+						</h2>
+						<div className="w-32 h-2 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto rounded-full shadow-lg"></div>
+					</div>
+					<div className="max-w-xl mx-auto space-y-5">
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<span className="text-white font-bold text-xl">F</span>
+								</div>
+									<div className="flex-1 text-left">
+										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+										{t.landing.faq.q1.question}
+									</h3>
+										<p className="text-gray-600 text-base leading-relaxed">
+										{t.landing.faq.q1.answer}
+									</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<span className="text-white font-bold text-xl">A</span>
+								</div>
+									<div className="flex-1 text-left">
+										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+										{t.landing.faq.q2.question}
+									</h3>
+										<p className="text-gray-600 text-base leading-relaxed">
+										{t.landing.faq.q2.answer}
+									</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="group relative">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								<div className="flex items-start space-x-6 w-full">
+									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
+										<span className="text-white font-bold text-xl">Q</span>
+								</div>
+									<div className="flex-1 text-left">
+										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+										{t.landing.faq.q3.question}
+									</h3>
+										<p className="text-gray-600 text-base leading-relaxed">
+										{t.landing.faq.q3.answer}
+									</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* Footer - Modern Design */}
+			<footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-12 px-6 relative overflow-hidden">
+				{/* Enhanced Background decorative elements */}
+				<div className="absolute top-10 right-20 w-32 h-32 bg-gradient-to-br from-harvard-crimson/20 to-red-600/20 rounded-full blur-3xl animate-pulse"></div>
+				<div className="absolute bottom-10 left-20 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+				<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-harvard-crimson/5 to-red-600/5 rounded-full blur-3xl"></div>
+				
+				
+				<div className="max-w-7xl mx-auto relative z-10">
+					{/* Header Section */}
+					<div className="text-center mb-12">
+						<h3 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+							{t.landing.footer.title}
+						</h3>
+						<p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
+							{t.landing.footer.tagline}
+						</p>
+						{/* Decorative line */}
+						<div className="w-24 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto mt-6 rounded-full"></div>
+					</div>
+					
+					{/* Links Grid */}
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-						{/* Links Section */}
-						<div className="text-center md:text-left">
-							<h4 className="text-lg font-semibold mb-4 text-white">{t.landing.footer.legal}</h4>
-							<div className="space-y-3">
+						{/* Legal Section */}
+						<div className="text-center md:text-left group">
+							<div className="flex items-center justify-center md:justify-start mb-6">
+								<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson/20 to-red-600/20 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+									<svg className="w-6 h-6 text-harvard-crimson" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+									</svg>
+								</div>
+								<h4 className="text-xl font-bold text-white group-hover:text-harvard-crimson transition-colors duration-300">
+									{t.landing.footer.legal}
+								</h4>
+							</div>
+							<div className="space-y-4">
 								<a
 									href="/privacy-policy"
 									target="_blank"
 									rel="noopener noreferrer"
-									className="block text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300"
+									className="block text-gray-300 hover:text-white hover:translate-x-2 transition-all duration-300 group/link"
 								>
-									{t.landing.footer.userAgreement}
+									<span className="flex items-center">
+										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
+										{t.landing.footer.userAgreement}
+									</span>
 								</a>
 								<a
 									href="/public-offer"
 									target="_blank"
 									rel="noopener noreferrer"
-									className="block text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300"
+									className="block text-gray-300 hover:text-white hover:translate-x-2 transition-all duration-300 group/link"
 								>
-									{t.landing.footer.publicOffer}
+									<span className="flex items-center">
+										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
+										{t.landing.footer.publicOffer}
+									</span>
 								</a>
 							</div>
 						</div>
 						
-						{/* Contact Section */}
-						<div className="text-center">
-							<h4 className="text-lg font-semibold mb-4 text-white">{t.landing.footer.support}</h4>
-							<div className="space-y-3">
+						{/* Support Section */}
+						<div className="text-center group">
+							<div className="flex items-center justify-center mb-6">
+								<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson/20 to-red-600/20 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+									<svg className="w-6 h-6 text-harvard-crimson" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z" />
+									</svg>
+								</div>
+								<h4 className="text-xl font-bold text-white group-hover:text-harvard-crimson transition-colors duration-300">
+									{t.landing.footer.support}
+								</h4>
+							</div>
+							<div className="space-y-4">
 								<a
 									href="/contact"
 									target="_blank"
 									rel="noopener noreferrer"
-									className="block text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-300"
+									className="block text-gray-300 hover:text-white hover:translate-x-2 transition-all duration-300 group/link"
 								>
-									{t.landing.footer.contacts}
+									<span className="flex items-center justify-center">
+										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
+										{t.landing.footer.contacts}
+									</span>
 								</a>
 							</div>
 						</div>
 						
 						{/* Features Section */}
-						<div className="text-center md:text-right">
-							<h4 className="text-lg font-semibold mb-4 text-white">{t.landing.footer.features}</h4>
-							<div className="space-y-3">
-								<div className="text-gray-300">{t.landing.footer.aiEssayAnalysis}</div>
-								<div className="text-gray-300">{t.landing.footer.universityMatching}</div>
-								<div className="text-gray-300">{t.landing.footer.chatSupport}</div>
+						<div className="text-center md:text-right group">
+							<div className="flex items-center justify-center md:justify-end mb-6">
+								<h4 className="text-xl font-bold text-white group-hover:text-harvard-crimson transition-colors duration-300 mr-4">
+									{t.landing.footer.features}
+								</h4>
+								<div className="w-12 h-12 bg-gradient-to-br from-harvard-crimson/20 to-red-600/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+									<svg className="w-6 h-6 text-harvard-crimson" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+									</svg>
+								</div>
+							</div>
+							<div className="space-y-4">
+								<div className="text-gray-300 hover:text-white transition-colors duration-300 group/feature">
+									<span className="flex items-center justify-center md:justify-end">
+										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/feature:opacity-100 transition-opacity duration-300"></span>
+										{t.landing.footer.aiEssayAnalysis}
+									</span>
+								</div>
+								<div className="text-gray-300 hover:text-white transition-colors duration-300 group/feature">
+									<span className="flex items-center justify-center md:justify-end">
+										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/feature:opacity-100 transition-opacity duration-300"></span>
+										{t.landing.footer.universityMatching}
+									</span>
+								</div>
+								<div className="text-gray-300 hover:text-white transition-colors duration-300 group/feature">
+									<span className="flex items-center justify-center md:justify-end">
+										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/feature:opacity-100 transition-opacity duration-300"></span>
+										{t.landing.footer.chatSupport}
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>
 					
 					{/* Bottom Section */}
-					<div className="border-t border-gray-700 pt-8">
+					<div className="border-t border-gradient-to-r from-transparent via-gray-700 to-transparent pt-8">
 						<div className="flex justify-center items-center">
 							<p className="text-gray-400 text-sm">{t.landing.footer.copyright}</p>
 						</div>
