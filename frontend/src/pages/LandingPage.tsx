@@ -49,40 +49,48 @@ const LandingPage: React.FC = () => {
 
 	return (
 		<div className="min-h-screen bg-gray-50 relative overflow-visible">
-			{/* Hero Section */}
-			<section className="pt-48 pb-32 px-6 text-center relative z-10 bg-gray-50 overflow-visible">
-				<div className="max-w-5xl mx-auto relative z-40">
-					{/* Neo-Brutalism Brand badge */}
-					<div className="inline-flex items-center px-4 py-2 bg-white border-2 border-gray-200 rounded-full shadow-lg mb-12">
-						<div className="w-2 h-2 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full mr-2"></div>
-						<span className="text-sm font-medium text-gray-700">{t.landing.hero.badge}</span>
+			{/* Hero Section - Modern Design */}
+			<section className="pt-40 pb-40 px-6 text-center relative z-10 bg-gray-50 overflow-visible">
+				<div className="max-w-6xl mx-auto relative z-40 overflow-visible">
+					{/* Modern Brand badge */}
+					<div className="inline-flex items-center px-6 py-3 bg-white border border-gray-200 rounded-2xl shadow-sm mb-12">
+						<div className="w-3 h-3 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full mr-3"></div>
+						<span className="text-sm font-semibold text-gray-800">{t.landing.hero.badge}</span>
 					</div>
 					
-					<h1 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-harvard-crimson to-red-600 bg-clip-text text-transparent mb-8 leading-tight">
+					<h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-12 leading-tight font-sans relative">
+						<span className="bg-gradient-to-r from-harvard-crimson to-red-600 bg-clip-text text-transparent" style={{
+							display: 'inline-block',
+							lineHeight: '1.1',
+							paddingBottom: '0.1em'
+						}}>
 						{t.landing.hero.title}
+						</span>
 					</h1>
 					
-					<p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-						{t.landing.hero.description}
-					</p>
-					
-					<p className="text-xl md:text-2xl text-gray-600 mb-16 leading-relaxed">
-						{t.landing.hero.subtitle}
-					</p>
-					
-					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+					<div className="max-w-4xl mx-auto">
+						<p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-12 leading-relaxed">
+							{t.landing.hero.description}
+						</p>
+						
+						<p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-16 leading-relaxed">
+							{t.landing.hero.subtitle}
+						</p>
+						
+						<div className="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-lg mx-auto">
 						<button
 							onClick={handleStart}
-							className="w-full sm:w-auto bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-4 px-8 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:shadow-red-500/25"
+							className="w-full sm:w-auto bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-5 px-10 rounded-2xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:shadow-red-500/25"
 						>
 							{t.landing.hero.startButton}
 						</button>
 						<button
 							onClick={handleSubscription}
-							className="w-full sm:w-auto bg-white border-2 border-gray-200 text-gray-900 py-4 px-8 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-harvard-crimson/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+							className="w-full sm:w-auto bg-white border border-gray-200 text-gray-900 py-5 px-10 rounded-2xl text-lg font-semibold hover:bg-gray-50 hover:border-harvard-crimson/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
 						>
 							{t.landing.hero.subscriptionButton}
 						</button>
+					</div>
 					</div>
 					
 					{subError && (

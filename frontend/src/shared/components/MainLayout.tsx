@@ -20,7 +20,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </header>
       )}
       {isLandingPage && (
-        <header className="bg-white px-6 py-4">
+        <header className="bg-gray-50 px-6 py-4">
           <div className="flex justify-end">
             <LanguageToggle />
           </div>

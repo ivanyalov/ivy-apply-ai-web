@@ -46,10 +46,10 @@ export const en = {
 		},
 		forYou: {
 			title: "For you",
-			benefit1: "applying for **undergraduate** or **graduate** programs",
-			benefit2: "targeting **USA, UK, Canada, Australia**",
-			benefit3: "applying independently — need guidance on **real requirements**",
-			benefit4: "have **draft essays, resume** or questions — need a **clear plan**",
+			benefit1: "**Undergraduate and Graduate**",
+			benefit2: "**Study Abroad**",
+			benefit3: "**Independent Application**",
+			benefit4: "**Need a Clear Plan**",
 		},
 		whyUs: {
 			title: "Why us",
