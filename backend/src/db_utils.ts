@@ -1,7 +1,43 @@
 // This file will contain utilities for interacting with the Supabase database using TypeScript.
 // Placeholder for Supabase client initialization and query functions.
 
-import { pool } from "./config/database";
+import { Pool } from "pg";
+import { pool, dbConfig } from "./config/database";
+
+/**
+ * Проверка существования базы данных и её создание при необходимости
+ */
+export async function ensureDatabaseExists() {
+	// Создаем временное подключение к базе postgres для проверки существования нашей БД
+	const adminPool = new Pool({
+		...dbConfig,
+		database: "postgres", // Подключаемся к стандартной БД postgres
+	});
+
+	try {
+		console.log(`Checking if database '${dbConfig.database}' exists...`);
+
+		// Проверяем существование базы данных
+		const result = await adminPool.query("SELECT 1 FROM pg_database WHERE datname = $1", [
+			dbConfig.database,
+		]);
+
+		if (result.rows.length === 0) {
+			console.log(`Database '${dbConfig.database}' does not exist. Creating...`);
+
+			// Создаем базу данных
+			await adminPool.query(`CREATE DATABASE "${dbConfig.database}"`);
+			console.log(`✓ Database '${dbConfig.database}' created successfully`);
+		} else {
+			console.log(`✓ Database '${dbConfig.database}' already exists`);
+		}
+	} catch (error) {
+		console.error("Error checking/creating database:", error);
+		throw error;
+	} finally {
+		await adminPool.end();
+	}
+}
 
 /**
  * Инициализация базы данных - создание необходимых таблиц
