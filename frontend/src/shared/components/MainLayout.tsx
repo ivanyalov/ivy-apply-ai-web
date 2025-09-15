@@ -7,7 +7,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const showButton = location.pathname !== '/' && location.pathname !== '/chat';
   const isLandingPage = location.pathname === '/';
-  const isGrayHeader = location.pathname === '/user-agreement' || location.pathname === '/contact' || location.pathname === '/access' || location.pathname === '/public-offer';
+  const isGrayHeader = location.pathname === '/privacy-policy' || location.pathname === '/contact' || location.pathname === '/access' || location.pathname === '/public-offer';
 
   return (
     <>
@@ -20,7 +20,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </header>
       )}
       {isLandingPage && (
-        <header className="bg-white px-6 py-4">
+        <header className="bg-gray-50 px-6 py-4">
           <div className="flex justify-end">
             <LanguageToggle />
           </div>

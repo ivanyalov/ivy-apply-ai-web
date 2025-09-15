@@ -126,7 +126,7 @@ const AccessSelectionPage: React.FC = () => {
 		return (
 			<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex justify-center items-center">
 				<div className="text-center">
-					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-harvard-crimson mx-auto mb-4"></div>
+					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gradient-to-r from-harvard-crimson to-red-600 mx-auto mb-4"></div>
 					<p className="text-gray-600 text-lg">{t.subscription.loading}</p>
 				</div>
 			</div>
@@ -184,7 +184,7 @@ const AccessSelectionPage: React.FC = () => {
 					{subscription.status === "active" && (
 						<button
 							onClick={() => setShowCancelModal(true)}
-							className="w-full bg-harvard-crimson text-white py-3 px-6 rounded-xl text-lg font-semibold hover:bg-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+							className="w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-6 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 						>
 							{t.subscription.cancelSubscription}
 						</button>
@@ -247,7 +247,7 @@ const AccessSelectionPage: React.FC = () => {
 						<h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
 							{t.subscription.title}
 						</h1>
-						<div className="w-24 h-1 bg-harvard-crimson mx-auto rounded-full shadow-lg"></div>
+						<div className="w-24 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto rounded-full shadow-lg"></div>
 					</div>
 
 					{/* Neo-Brutalism Email Verification Warning */}
@@ -311,7 +311,7 @@ const AccessSelectionPage: React.FC = () => {
 
 									<ul className="mb-4 space-y-2">
 										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-harvard-crimson rounded-full flex items-center justify-center mr-2 shadow-sm">
+											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -323,7 +323,7 @@ const AccessSelectionPage: React.FC = () => {
 											{t.subscription.unlimitedAccess}
 										</li>
 										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-harvard-crimson rounded-full flex items-center justify-center mr-2 shadow-sm">
+											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -335,7 +335,7 @@ const AccessSelectionPage: React.FC = () => {
 											{t.subscription.prioritySupport}
 										</li>
 										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-harvard-crimson rounded-full flex items-center justify-center mr-2 shadow-sm">
+											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -347,7 +347,7 @@ const AccessSelectionPage: React.FC = () => {
 											{t.subscription.allFeatures}
 										</li>
 										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-harvard-crimson rounded-full flex items-center justify-center mr-2 shadow-sm">
+											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -368,7 +368,7 @@ const AccessSelectionPage: React.FC = () => {
 												onChange={(e) => setAgreedToRecurring(e.target.checked)}
 												required
 												disabled={!user?.email_verified}
-												className="mt-1 mr-3 h-4 w-4 text-harvard-crimson border-gray-300 rounded focus:ring-harvard-crimson"
+												className="mt-1 mr-3 h-4 w-4 text-gradient-to-r from-harvard-crimson to-red-600 border-gray-300 rounded focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600"
 											/>
 											<Link
 												to="/public-offer"
@@ -463,7 +463,7 @@ const AccessSelectionPage: React.FC = () => {
 						<div className="text-center mt-8">
 							<button
 								onClick={() => navigate("/chat")}
-								className="bg-harvard-crimson text-white py-4 px-8 rounded-2xl text-lg font-semibold hover:bg-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+								className="bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-4 px-8 rounded-2xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
 							>
 								{t.subscription.goToChatButton}
 							</button>

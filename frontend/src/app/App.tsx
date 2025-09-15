@@ -55,7 +55,7 @@ const App: React.FC = () => {
 									</ProtectedRoute>
 								}
 							/>
-							<Route path="/user-agreement" element={<UserAgreement />} />
+							<Route path="/privacy-policy" element={<UserAgreement />} />
 							<Route path="/contact" element={<Contact />} />
 							<Route path="/public-offer" element={<PublicOffer />} />
 						</Routes>

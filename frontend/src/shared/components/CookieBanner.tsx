@@ -42,7 +42,7 @@ const CookieBanner: React.FC = () => {
         <div style={{ textAlign: 'center', color: '#222', fontSize: 16 }}>
           Мы используем файлы cookie для корректной работы сайта.{' '}
           <a
-            href="/user-agreement"
+            href="/privacy-policy"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: '#b91c1c', textDecoration: 'underline' }}

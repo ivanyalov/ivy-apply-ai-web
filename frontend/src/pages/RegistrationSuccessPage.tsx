@@ -53,7 +53,7 @@ const RegistrationSuccessPage: React.FC = () => {
 						<div className="mt-8 space-y-4">
 							<button
 								onClick={handleContinue}
-								className="w-full bg-harvard-crimson text-white py-3 px-4 border-2 border-red-700 rounded-xl text-lg font-semibold hover:bg-red-800 hover:border-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+								className="w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-4 border-2 border-gradient-to-r border-from-red-700 border-to-red-800 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 hover:border-gradient-to-r hover:border-from-red-700 hover:border-to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
 							>
 								{t.registrationSuccess.continueButton}
 							</button>

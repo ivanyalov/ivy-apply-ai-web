@@ -3,31 +3,58 @@ export const en = {
 		hero: {
 			title: "Ivy Apply AI",
 			description:
-				"Ivy Apply AI — your personal mentor for admissions. Share your documents, ask questions, and receive tailored recommendations that save you time and effort.",
+				"We'll analyze your goals and values, edit your essays, match programs, and create a plan — all based on our knowledge base",
+			subtitle: "Apply quickly and confidently",
 			startButton: "Start Chat",
 			subscriptionButton: "Subscription",
 			badge: "AI-Powered University Admissions",
 		},
 		features: {
-			title: "What Ivy Apply AI can do",
-			item1: "Analyzes essays and university applications",
-			item2: "Guides your university choice",
-			item3: "Real-time answers in chat",
+			title: "What you get",
+			item1: {
+				title: "Program list"
+			},
+			item2: {
+				title: "Plan and deadlines"
+			},
+			item3: {
+				title: "Essay edits"
+			},
+			item4: {
+				title: "Chat support"
+			},
+			bottomTagline: "All this and much more in one service"
 		},
 		howItWorks: {
 			title: "How it works",
 			step1: {
-				title: "Sign up and choose a plan",
-				description: "Create an account and start with a free trial or subscription.",
+				title: "Define goals",
+				description: "establish country, deadlines, budget and priorities",
 			},
 			step2: {
-				title: "Upload documents and ask questions",
-				description: "Upload your essays, transcripts, or ask any admissions questions.",
+				title: "Analyze materials",
+				description: "essays/resume/questions, check admission criteria alignment",
 			},
 			step3: {
-				title: "Get personalized feedback",
-				description: "Receive instant, tailored guidance for your goals and needs.",
+				title: "Provide recommendations",
+				description: "identify application strengths/weaknesses and help improve it",
 			},
+			step4: {
+				title: "Guide to application",
+				description: "application iterations, chat support and final package review",
+			},
+		},
+		forYou: {
+			title: "For you",
+			benefit1: "**Undergraduate and Graduate**",
+			benefit2: "**Study Abroad**",
+			benefit3: "**Independent Application**",
+			benefit4: "**Need a Clear Plan**",
+		},
+		whyUs: {
+			title: "Why us",
+			benefit1: "**Mentor, not just a chat** First we clarify goals and context, then guide you step by step",
+			benefit2: "**Knowledge base instead of guesses** Recommendations are based on program requirements, essay criteria and proven references",
 		},
 		faq: {
 			title: "Frequently Asked Questions",
@@ -39,7 +66,7 @@ export const en = {
 			q2: {
 				question: "Is my data secure?",
 				answer:
-					"Yes, we take data security seriously. All uploaded documents and conversations are encrypted and securely stored.",
+					"Yes, we take data security seriously. All uploaded documents and conversations are encrypted.",
 			},
 			q3: {
 				question: "What types of documents can I upload?",
@@ -49,7 +76,7 @@ export const en = {
 		},
 		footer: {
 			title: "Ivy Apply AI",
-			userAgreement: "User Agreement",
+			userAgreement: "Privacy Policy",
 			publicOffer: "Public Offer",
 			contacts: "Contacts",
 			copyright: "© 2025 Ivy Apply AI. All rights reserved.",
@@ -65,7 +92,7 @@ export const en = {
 	},
 	legal: {
 		userAgreement: {
-			title: "User Agreement",
+			title: "Privacy Policy",
 			subtitle: "Legal documents and terms of service",
 			navigation: {
 				contacts: "Contacts",
@@ -76,7 +103,7 @@ export const en = {
 			title: "Public Offer",
 			subtitle: "Official document on service provision",
 			navigation: {
-				userAgreement: "User Agreement",
+				userAgreement: "Privacy Policy",
 				contacts: "Contacts",
 			},
 		},
@@ -85,7 +112,7 @@ export const en = {
 			subtitle: "Contact us for support",
 			navigation: {
 				publicOffer: "Public Offer",
-				userAgreement: "User Agreement",
+				userAgreement: "Privacy Policy",
 			},
 		},
 	},
@@ -120,7 +147,7 @@ export const en = {
 			loginLink: "Sign in",
 			haveAccount: "Already have an account?",
 			agreeToTerms: "I agree to the",
-			userAgreement: "User Agreement",
+			userAgreement: "Privacy Policy",
 			and: "and",
 			publicOffer: "Public Offer",
 			passwordRequirements: "Password must contain:",
