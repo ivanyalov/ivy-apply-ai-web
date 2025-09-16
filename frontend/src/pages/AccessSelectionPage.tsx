@@ -149,7 +149,7 @@ const AccessSelectionPage: React.FC = () => {
 
 		return (
 			<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-				<h2 className="text-2xl font-bold text-gray-900 mb-4">{t.subscription.currentPlan}</h2>
+				<h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-4">{t.subscription.currentPlan}</h2>
 
 				<div className="space-y-3 mb-4">
 					<div className="flex justify-between items-center py-2 border-b border-gray-200">
@@ -240,7 +240,7 @@ const AccessSelectionPage: React.FC = () => {
 	return (
 		<div className="min-h-screen bg-white relative overflow-hidden">
 			{/* Main Content */}
-			<div className="py-12 px-6 relative z-10">
+			<div className="py-8 md:py-12 px-4 md:px-6 relative z-10">
 				<div className="max-w-6xl mx-auto">
 					{/* Neo-Brutalism Hero Section */}
 					<div className="text-center mb-12">
@@ -297,7 +297,7 @@ const AccessSelectionPage: React.FC = () => {
 							{/* Neo-Brutalism Premium Plan */}
 							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
 								<div>
-									<h2 className="text-2xl font-bold text-gray-900 mb-4">
+									<h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-4">
 										{t.subscription.premiumPlan}
 									</h2>
 
@@ -388,7 +388,7 @@ const AccessSelectionPage: React.FC = () => {
 							{shouldShowPlans() !== "premium-only" && (
 								<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
 									<div>
-										<h2 className="text-2xl font-bold text-gray-900 mb-4">
+										<h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-4">
 											{t.subscription.trialPlan}
 										</h2>
 

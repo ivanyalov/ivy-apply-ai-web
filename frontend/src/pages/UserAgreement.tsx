@@ -19,13 +19,13 @@ const UserAgreement: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+														<div className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12 relative z-10">
         <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
           {/* Neo-Brutalism Document Header */}
           <div className="bg-gradient-to-r from-harvard-crimson to-red-600 px-8 py-6 border-b-2 border-white">
             <div className="flex items-center space-x-3">
               <span className="text-2xl">📋</span>
-              <h1 className="text-2xl font-bold text-white">{t.legal.userAgreement.title}</h1>
+														<h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white">{t.legal.userAgreement.title}</h1>
             </div>
             <p className="text-red-100 mt-2">
               {t.legal.userAgreement.subtitle}
@@ -33,7 +33,7 @@ const UserAgreement: React.FC = () => {
           </div>
 
           {/* Neo-Brutalism Content */}
-          <div className="p-8 bg-white">
+														<div className="p-4 md:p-8 bg-white">
             <div className="prose prose-lg max-w-none">
               <div className="markdown-content text-gray-700 leading-relaxed">
                 <ReactMarkdown
