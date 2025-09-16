@@ -553,7 +553,7 @@ const LandingPage: React.FC = () => {
 									rel="noopener noreferrer"
 									className="block text-gray-300 hover:text-white hover:translate-x-2 transition-all duration-300 group/link"
 								>
-									<span className="flex items-center">
+									<span className="flex items-center justify-center md:justify-start">
 										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
 										{t.landing.footer.userAgreement}
 									</span>
@@ -564,7 +564,7 @@ const LandingPage: React.FC = () => {
 									rel="noopener noreferrer"
 									className="block text-gray-300 hover:text-white hover:translate-x-2 transition-all duration-300 group/link"
 								>
-									<span className="flex items-center">
+									<span className="flex items-center justify-center md:justify-start">
 										<span className="w-2 h-2 bg-harvard-crimson rounded-full mr-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300"></span>
 										{t.landing.footer.publicOffer}
 									</span>

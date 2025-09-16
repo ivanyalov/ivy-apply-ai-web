@@ -169,7 +169,7 @@ const EmailVerificationPage: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
 					<div className="text-center">
@@ -259,7 +259,7 @@ const EmailVerificationPage: React.FC = () => {
 									</Link>
 									<Link
 										to="/register"
-										className="block w-full bg-white border-2 border-gray-200 text-gray-900 py-3 px-4 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center"
+										className="block w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-4 border-2 border-gradient-to-r border-from-red-700 border-to-red-800 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 hover:border-gradient-to-r hover:border-from-red-700 hover:border-to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center"
 									>
 										{t.emailVerification.registerButton}
 									</Link>

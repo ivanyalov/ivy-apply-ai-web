@@ -485,9 +485,9 @@ const ChatPage: React.FC = () => {
 	};
 
 	return (
-		<div className="h-screen flex flex-col bg-white">
+		<div className="h-screen flex flex-col bg-gray-50">
 			{/* Neo-Brutalism Header */}
-			<div className="bg-white border-b-2 border-gray-200 px-6 py-4 flex justify-between items-center shadow-lg">
+			<div className="bg-gray-50 border-b-2 border-gray-200 px-6 py-4 flex justify-between items-center shadow-lg">
 				<HomeButton />
 				<button
 					onClick={handleClearChat}

@@ -15,7 +15,7 @@ const Contact: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
 														<div className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12 relative z-10">
         <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
           {/* Neo-Brutalism Document Header */}

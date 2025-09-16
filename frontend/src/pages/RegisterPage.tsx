@@ -86,7 +86,7 @@ const RegisterPage: React.FC = () => {
 	}, [language, lastErrorType, t.auth.register.accountExists, setError, errors.root?.serverError]);
 
 	return (
-		<div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
 					<div>
@@ -97,7 +97,7 @@ const RegisterPage: React.FC = () => {
 							{t.auth.register.haveAccount}{" "}
 							<Link
 								to="/login"
-								className="font-semibold text-gradient-to-r from-harvard-crimson to-red-600 hover:from-red-700 hover:to-red-800 text-lg"
+								className="font-semibold bg-gradient-to-r from-harvard-crimson to-red-600 bg-clip-text text-transparent hover:from-red-700 hover:to-red-800 text-lg transition-all duration-300"
 							>
 								{t.auth.register.loginLink}
 							</Link>

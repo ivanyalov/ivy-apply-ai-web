@@ -7,7 +7,14 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const showButton = location.pathname !== '/' && location.pathname !== '/chat';
   const isLandingPage = location.pathname === '/';
-  const isGrayHeader = location.pathname === '/privacy-policy' || location.pathname === '/contact' || location.pathname === '/access' || location.pathname === '/public-offer';
+  const isGrayHeader = location.pathname === '/privacy-policy' || 
+                      location.pathname === '/contact' || 
+                      location.pathname === '/access' || 
+                      location.pathname === '/public-offer' ||
+                      location.pathname === '/login' ||
+                      location.pathname === '/register' ||
+                      location.pathname === '/email-verification' ||
+                      location.pathname === '/registration-success';
 
   return (
     <>

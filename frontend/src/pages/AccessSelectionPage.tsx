@@ -238,7 +238,7 @@ const AccessSelectionPage: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-white relative overflow-hidden">
+		<div className="min-h-screen bg-gray-50 relative overflow-hidden">
 			{/* Main Content */}
 			<div className="py-8 md:py-12 px-4 md:px-6 relative z-10">
 				<div className="max-w-6xl mx-auto">
