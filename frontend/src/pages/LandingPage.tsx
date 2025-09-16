@@ -115,7 +115,7 @@ const LandingPage: React.FC = () => {
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
 						{/* Item 1 - Programs */}
 						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-full">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-full">
 								{/* Icon with gradient background */}
 								<div className="mb-6">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
@@ -124,17 +124,15 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 								</div>
-								<h3 className="text-2xl font-bold text-gray-900 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+								<h3 className="text-2xl font-bold text-gray-900 leading-tight">
 									{t.landing.features.item1.title}
 								</h3>
-								{/* Decorative line */}
-								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 							</div>
 						</div>
 						
-						{/* Item 2 - Plan */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-full">
+								{/* Item 2 - Plan */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-full">
 								{/* Icon with gradient background */}
 								<div className="mb-6">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
@@ -143,17 +141,15 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 								</div>
-								<h3 className="text-2xl font-bold text-gray-900 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-									{t.landing.features.item2.title}
-								</h3>
-								{/* Decorative line */}
-								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+										<h3 className="text-2xl font-bold text-gray-900 leading-tight">
+											{t.landing.features.item2.title}
+										</h3>
 							</div>
 						</div>
 						
-						{/* Item 3 - Edits */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-full">
+								{/* Item 3 - Edits */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-full">
 								{/* Icon with gradient background */}
 								<div className="mb-6">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
@@ -162,17 +158,15 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 								</div>
-								<h3 className="text-2xl font-bold text-gray-900 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-									{t.landing.features.item3.title}
-								</h3>
-								{/* Decorative line */}
-								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+										<h3 className="text-2xl font-bold text-gray-900 leading-tight">
+											{t.landing.features.item3.title}
+										</h3>
 							</div>
 						</div>
 						
-						{/* Item 4 - Support */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-full">
+								{/* Item 4 - Support */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-full">
 								{/* Icon with gradient background */}
 								<div className="mb-6">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
@@ -181,11 +175,9 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 								</div>
-								<h3 className="text-2xl font-bold text-gray-900 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-									{t.landing.features.item4.title}
-								</h3>
-								{/* Decorative line */}
-								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+										<h3 className="text-2xl font-bold text-gray-900 leading-tight">
+											{t.landing.features.item4.title}
+										</h3>
 							</div>
 						</div>
 					</div>
@@ -204,9 +196,9 @@ const LandingPage: React.FC = () => {
 					
 					{/* Steps - Equal Width Design */}
 					<div className="max-w-2xl mx-auto space-y-6">
-						{/* Step 1 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								{/* Step 1 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,9 +206,9 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left">
-										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-											{t.landing.howItWorks.step1.title}
-										</h3>
+													<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
+														{t.landing.howItWorks.step1.title}
+													</h3>
 										<p className="text-gray-600 text-base leading-relaxed">
 											{t.landing.howItWorks.step1.description}
 										</p>
@@ -231,9 +223,9 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 
-						{/* Step 2 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								{/* Step 2 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,9 +233,9 @@ const LandingPage: React.FC = () => {
 											</svg>
 										</div>
 										<div className="flex-1 text-left">
-											<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-												{t.landing.howItWorks.step2.title}
-											</h3>
+														<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
+															{t.landing.howItWorks.step2.title}
+														</h3>
 											<p className="text-gray-600 text-base leading-relaxed">
 												{t.landing.howItWorks.step2.description}
 											</p>
@@ -258,9 +250,9 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 
-						{/* Step 3 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								{/* Step 3 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,9 +260,9 @@ const LandingPage: React.FC = () => {
 											</svg>
 										</div>
 										<div className="flex-1 text-left">
-											<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-												{t.landing.howItWorks.step3.title}
-											</h3>
+														<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
+															{t.landing.howItWorks.step3.title}
+														</h3>
 											<p className="text-gray-600 text-base leading-relaxed">
 												{t.landing.howItWorks.step3.description}
 											</p>
@@ -285,9 +277,9 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 
-						{/* Step 4 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+								{/* Step 4 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 											<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,9 +287,9 @@ const LandingPage: React.FC = () => {
 											</svg>
 										</div>
 										<div className="flex-1 text-left">
-											<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-												{t.landing.howItWorks.step4.title}
-											</h3>
+														<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
+															{t.landing.howItWorks.step4.title}
+														</h3>
 											<p className="text-gray-600 text-base leading-relaxed">
 												{t.landing.howItWorks.step4.description}
 											</p>
@@ -321,9 +313,9 @@ const LandingPage: React.FC = () => {
 					
 					{/* Benefits Grid */}
 					<div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-						{/* Benefit 1 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								{/* Benefit 1 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg h-[160px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -332,17 +324,17 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left flex items-center">
-										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-											__html: t.landing.forYou.benefit1.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-										}} />
+															<p className="text-gray-700 text-2xl leading-relaxed font-bold" dangerouslySetInnerHTML={{
+																__html: t.landing.forYou.benefit1.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+															}} />
 									</div>
 								</div>
 							</div>
 						</div>
 
-						{/* Benefit 2 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								{/* Benefit 2 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg h-[160px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -350,17 +342,17 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left flex items-center">
-										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-											__html: t.landing.forYou.benefit2.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-										}} />
+															<p className="text-gray-700 text-2xl leading-relaxed font-bold" dangerouslySetInnerHTML={{
+																__html: t.landing.forYou.benefit2.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+															}} />
 									</div>
 								</div>
 							</div>
 						</div>
 
-						{/* Benefit 3 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								{/* Benefit 3 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg h-[160px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -368,17 +360,17 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left flex items-center">
-										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-											__html: t.landing.forYou.benefit3.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-										}} />
+															<p className="text-gray-700 text-2xl leading-relaxed font-bold" dangerouslySetInnerHTML={{
+																__html: t.landing.forYou.benefit3.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+															}} />
 									</div>
 								</div>
 							</div>
 						</div>
 
-						{/* Benefit 4 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[160px] flex items-center">
+								{/* Benefit 4 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg h-[160px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,9 +378,9 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left flex items-center">
-										<p className="text-gray-700 text-2xl leading-relaxed font-bold group-hover:text-harvard-crimson transition-colors duration-300" dangerouslySetInnerHTML={{
-											__html: t.landing.forYou.benefit4.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900 group-hover:text-harvard-crimson transition-colors duration-300">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
-										}} />
+															<p className="text-gray-700 text-2xl leading-relaxed font-bold" dangerouslySetInnerHTML={{
+																__html: t.landing.forYou.benefit4.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>').replace(/^([а-яёa-z])/i, '<span class="uppercase">$1</span>')
+															}} />
 									</div>
 								</div>
 							</div>
@@ -409,9 +401,9 @@ const LandingPage: React.FC = () => {
 					
 					{/* Benefits Grid - Fixed Height Design */}
 					<div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-						{/* Benefit 1 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[220px] flex items-center">
+								{/* Benefit 1 */}
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[220px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -419,22 +411,20 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left">
-										<h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-											{t.landing.whyUs.benefit1.split('**')[1]}
-										</h3>
+														<h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
+															{t.landing.whyUs.benefit1.split('**')[1]}
+														</h3>
 										<p className="text-gray-600 text-base leading-relaxed">
 											{t.landing.whyUs.benefit1.split('**')[2]}
 										</p>
 									</div>
 								</div>
-								{/* Decorative line */}
-								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 							</div>
 						</div>
 
 						{/* Benefit 2 */}
-						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[220px] flex items-center">
+								<div className="group relative">
+									<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[220px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -442,16 +432,14 @@ const LandingPage: React.FC = () => {
 										</svg>
 									</div>
 									<div className="flex-1 text-left">
-										<h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
-											{t.landing.whyUs.benefit2.split('**')[1]}
-										</h3>
+														<h3 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
+															{t.landing.whyUs.benefit2.split('**')[1]}
+														</h3>
 										<p className="text-gray-600 text-base leading-relaxed">
 											{t.landing.whyUs.benefit2.split('**')[2]}
 										</p>
 									</div>
 								</div>
-								{/* Decorative line */}
-								<div className="mt-6 w-12 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 							</div>
 						</div>
 					</div>
@@ -469,13 +457,13 @@ const LandingPage: React.FC = () => {
 					</div>
 					<div className="max-w-xl mx-auto space-y-5">
 						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<span className="text-white font-bold text-xl">F</span>
 								</div>
 									<div className="flex-1 text-left">
-										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
 										{t.landing.faq.q1.question}
 									</h3>
 										<p className="text-gray-600 text-base leading-relaxed">
@@ -486,13 +474,13 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<span className="text-white font-bold text-xl">A</span>
 								</div>
 									<div className="flex-1 text-left">
-										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
 										{t.landing.faq.q2.question}
 									</h3>
 										<p className="text-gray-600 text-base leading-relaxed">
@@ -503,13 +491,13 @@ const LandingPage: React.FC = () => {
 							</div>
 						</div>
 						<div className="group relative">
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:border-harvard-crimson/30 h-[200px] flex items-center">
+							<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg h-[200px] flex items-center">
 								<div className="flex items-center space-x-6 w-full">
 									<div className="w-16 h-16 bg-gradient-to-br from-harvard-crimson to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 flex-shrink-0">
 										<span className="text-white font-bold text-xl">Q</span>
 								</div>
 									<div className="flex-1 text-left">
-										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight group-hover:text-harvard-crimson transition-colors duration-300">
+										<h3 className="text-2xl font-bold text-gray-900 mb-1 leading-tight">
 										{t.landing.faq.q3.question}
 									</h3>
 										<p className="text-gray-600 text-base leading-relaxed">
