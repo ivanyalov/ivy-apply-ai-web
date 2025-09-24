@@ -144,6 +144,12 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 					data: data,
 				})
 				.then((result: any) => {
+					if (result.type === "cancel" || result.type === "error") {
+						console.log("❌ Платеж отменен", result);
+						setIsLoading(false);
+						return;
+					}
+
 					// Виджет НЕ создает подписку, только получает токен
 					console.log("✅ Первый платеж успешен, токен сохранен!", result);
 
@@ -183,7 +189,7 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 			console.log("💾 Processing payment success:", paymentData);
 
 			// Используем хук для отправки данных на бэкэнд
-			await handlePaymentSuccess({
+			const result = await handlePaymentSuccess({
 				...paymentData,
 				accountId: user?.id || "",
 			});
@@ -191,7 +197,7 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 			console.log("✅ Payment processed successfully");
 
 			// Показываем уведомление об успешном сохранении
-			alert("Подписка успешно оформлена! TransactionId сохранен в базе данных.");
+			alert("Подписка успешно оформлена!");
 
 			// Обновляем страницу или состояние приложения
 			window.location.reload();
