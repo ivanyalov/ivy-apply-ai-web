@@ -544,7 +544,7 @@ router.post("/cloudpayments/payment-success", authMiddleware, async (req, res) =
 	}
 });
 
-// Отмена подписки через CloudPayments API
+// Универсальная отмена подписки (пробной или премиум)
 router.post("/cloudpayments/cancel-subscription", authMiddleware, async (req, res) => {
 	try {
 		const userId = req.user?.userId;
@@ -557,14 +557,31 @@ router.post("/cloudpayments/cancel-subscription", authMiddleware, async (req, re
 
 		// Получаем подписку пользователя
 		const subscription = await getSubscriptionByUserId(userId);
-		if (!subscription || !subscription.cloudPaymentsSubscriptionId) {
+		if (!subscription || subscription.status !== "active") {
 			return res.status(400).json({
 				success: false,
 				message: "No active subscription found",
 			});
 		}
 
-		// Отменяем подписку в CloudPayments
+		// Если это пробная подписка - просто отменяем локально
+		if (subscription.planType === "trial" || !subscription.cloudPaymentsSubscriptionId) {
+			await updateSubscription(subscription.id!, {
+				status: "cancelled",
+				cancelledAt: new Date(),
+			});
+
+			console.log(`✅ Trial subscription ${subscription.id} cancelled for user ${userId}`);
+
+			return res.json({
+				success: true,
+				message: "Trial subscription cancelled successfully",
+				subscriptionId: subscription.id,
+				subscriptionType: "trial",
+			});
+		}
+
+		// Если это премиум подписка - отменяем через CloudPayments API
 		try {
 			const cloudPaymentsResponse = await axios.post(
 				"https://api.cloudpayments.ru/subscriptions/cancel",
@@ -589,13 +606,14 @@ router.post("/cloudpayments/cancel-subscription", authMiddleware, async (req, re
 				});
 
 				console.log(
-					`✅ Subscription ${subscription.cloudPaymentsSubscriptionId} cancelled in CloudPayments for user ${userId}`
+					`✅ Premium subscription ${subscription.cloudPaymentsSubscriptionId} cancelled in CloudPayments for user ${userId}`
 				);
 
 				res.json({
 					success: true,
-					message: "Subscription cancelled successfully",
+					message: "Premium subscription cancelled successfully",
 					subscriptionId: subscription.id,
+					subscriptionType: "premium",
 				});
 			} else {
 				console.error(

@@ -20,7 +20,12 @@
 		"test:create-subscription": "ts-node test-create-subscription-from-transaction.ts",
 		"test:trial-used": "ts-node test-trial-used-logic.ts",
 		"test:cancelled-status": "ts-node test-cancelled-subscription-status.ts",
-		"update:expired": "ts-node update-expired-subscriptions.ts"
+		"update:expired": "ts-node update-expired-subscriptions.ts",
+		"stats": "ts-node src/user-stats.ts",
+		"test:trial-cancel-api": "ts-node test-trial-cancel-api.ts",
+		"test:premium-cancel-api": "ts-node test-premium-cancel-api.ts",
+		"test:both-cancellations": "ts-node test-both-cancellations.ts",
+		"debug:users": "ts-node debug-users.ts"
 	},
 	"keywords": [],
 	"author": "",
