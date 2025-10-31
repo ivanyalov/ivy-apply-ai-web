@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../shared/hooks/useAuth";
 import { useSubscription } from "../shared/hooks/useSubscription";
 import { useTranslation } from "../shared/hooks/useTranslation";
+import { useLanguage } from "../shared/hooks/useLanguage";
 import { cloudPaymentsService } from "../shared/services/cloudpayments.service";
 import { authService } from "../shared/api/auth";
 import SubscribeButton from "../features/Subscription/SubscribeButton";
@@ -25,6 +26,7 @@ const AccessSelectionPage: React.FC = () => {
 		isCancelling,
 	} = useSubscription();
 	const { t } = useTranslation();
+	const { language, toggleLanguage } = useLanguage();
 	const navigate = useNavigate();
 	const [resendingEmail, setResendingEmail] = React.useState(false);
 	const [showCancelModal, setShowCancelModal] = React.useState(false);
@@ -122,12 +124,26 @@ const AccessSelectionPage: React.FC = () => {
 		}
 	};
 
+	const handleStart = () => {
+		if (user && subscription?.hasAccess) {
+			navigate('/chat');
+		} else if (user && !subscription?.hasAccess) {
+			// Already on access page
+		} else {
+			navigate('/login');
+		}
+	};
+
+	const handleSubscription = () => {
+		// Already on access page
+	};
+
 	if (isLoading) {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex justify-center items-center">
+			<div className="min-h-screen bg-notion-gray-50 flex justify-center items-center">
 				<div className="text-center">
-					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gradient-to-r from-harvard-crimson to-red-600 mx-auto mb-4"></div>
-					<p className="text-gray-600 text-lg">{t.subscription.loading}</p>
+					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-notion-gray-700 mx-auto mb-4"></div>
+					<p className="text-notion-gray-600 text-lg">{t.subscription.loading}</p>
 				</div>
 			</div>
 		);
@@ -148,13 +164,13 @@ const AccessSelectionPage: React.FC = () => {
 		const shouldShowExpiryDate = subscription.status === "active";
 
 		return (
-			<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-				<h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-4">{t.subscription.currentPlan}</h2>
+			<div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm hover:shadow-md transition-all duration-300">
+				<h2 className="text-2xl font-bold text-notion-gray-700 mb-6 font-dm-sans">{t.subscription.currentPlan}</h2>
 
-				<div className="space-y-3 mb-4">
-					<div className="flex justify-between items-center py-2 border-b border-gray-200">
-						<span className="text-gray-600 font-medium">{t.subscription.plan}</span>
-						<span className="font-semibold text-gray-900">
+				<div className="space-y-4 mb-6">
+					<div className="flex justify-between items-center py-3 border-b border-gray-100">
+						<span className="text-notion-gray-600 font-medium text-base">{t.subscription.plan}</span>
+						<span className="font-semibold text-notion-gray-700 text-base">
 							{subscription.status === "unsubscribed"
 								? t.subscription.notActivated
 								: subscription.type === "trial"
@@ -162,10 +178,10 @@ const AccessSelectionPage: React.FC = () => {
 								: t.subscription.premium}
 						</span>
 					</div>
-					<div className="flex justify-between items-center py-2 border-b border-gray-200">
-						<span className="text-gray-600 font-medium">{t.subscription.status}</span>
+					<div className="flex justify-between items-center py-3 border-b border-gray-100">
+						<span className="text-notion-gray-600 font-medium text-base">{t.subscription.status}</span>
 						<span
-							className={`font-semibold capitalize ${
+							className={`font-semibold capitalize text-base ${
 								subscription.status === "active" ? "text-green-600" : "text-red-600"
 							}`}
 						>
@@ -173,9 +189,9 @@ const AccessSelectionPage: React.FC = () => {
 						</span>
 					</div>
 					{shouldShowExpiryDate && (
-						<div className="flex justify-between items-center py-2">
-							<span className="text-gray-600 font-medium">{t.subscription.expires}</span>
-							<span className="font-semibold text-gray-900">{expiryDate}</span>
+						<div className="flex justify-between items-center py-3">
+							<span className="text-notion-gray-600 font-medium text-base">{t.subscription.expires}</span>
+							<span className="font-semibold text-notion-gray-700 text-base">{expiryDate}</span>
 						</div>
 					)}
 				</div>
@@ -184,22 +200,25 @@ const AccessSelectionPage: React.FC = () => {
 					{subscription.status === "active" && (
 						<button
 							onClick={() => setShowCancelModal(true)}
-							className="w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-6 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+							className="w-full bg-white text-red-600 border border-red-200 py-3 px-6 rounded-md text-base font-medium hover:bg-red-50 hover:border-red-300 transition-all duration-300"
 						>
-							{t.subscription.cancelSubscription}
+							{subscription.type === "trial" 
+								? t.subscription.cancelTrial 
+								: t.subscription.cancelSubscriptionText
+							}
 						</button>
 					)}
 					<button
 						onClick={handleLogout}
-						className="w-full bg-gray-800 text-white py-3 px-6 rounded-xl text-lg font-semibold hover:bg-gray-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+						className="w-full bg-notion-gray-700 text-white py-3 px-6 rounded-md text-base font-medium hover:bg-notion-gray-600 transition-all duration-300"
 					>
 						{t.subscription.logout}
 					</button>
 				</div>
 
 				{isCancelled && (
-					<div className="bg-red-50 border-2 border-red-200 rounded-xl p-3 mt-4 shadow-md">
-						<p className="text-red-700 font-semibold text-center">
+					<div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-6">
+						<p className="text-red-700 font-medium text-center text-base">
 							{t.subscription.subscriptionInactive}
 						</p>
 					</div>
@@ -238,25 +257,64 @@ const AccessSelectionPage: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-gray-50 relative overflow-hidden">
+		<div className="min-h-screen bg-notion-gray-50">
+			{/* Navigation */}
+			<nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50">
+				<div className="w-full px-6 py-4 flex justify-between items-center">
+					{/* Home Icon */}
+					<button
+						onClick={() => navigate('/')}
+						className="text-notion-gray-700 hover:text-notion-gray-600 transition-colors"
+						aria-label="Go to home page"
+					>
+						<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+						</svg>
+					</button>
+
+					<div className="flex items-center gap-4">
+						<button
+							onClick={toggleLanguage}
+							className="px-3 py-1.5 text-sm text-notion-gray-600 hover:text-notion-gray-700 hover:bg-notion-gray-50 rounded-md transition-colors"
+						>
+							{language === 'ru' ? 'EN' : 'RU'}
+						</button>
+						<button
+							onClick={handleSubscription}
+							className="px-4 py-1.5 text-sm font-medium text-notion-gray-700 bg-white border border-notion-gray-300 hover:bg-notion-gray-50 rounded-md transition-colors"
+						>
+							{t.landing.hero.subscriptionButton}
+						</button>
+						<button
+							onClick={handleStart}
+							className="px-4 py-1.5 text-sm font-medium text-white bg-notion-gray-700 hover:bg-notion-gray-600 rounded-md transition-colors"
+						>
+							{user ? t.landing.hero.startButton : t.landing.hero.startButton}
+						</button>
+					</div>
+				</div>
+			</nav>
+
 			{/* Main Content */}
-			<div className="py-8 md:py-12 px-4 md:px-6 relative z-10">
+			<div className="pt-32 pb-20 px-6 relative z-10">
 				<div className="max-w-6xl mx-auto">
-					{/* Neo-Brutalism Hero Section */}
-					<div className="text-center mb-12">
-						<h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
-							{t.subscription.title}
+					{/* Hero Section */}
+					<div className="text-center mb-16">
+						<h1 className="text-4xl md:text-5xl font-extralight text-notion-gray-700 mb-6 leading-tight tracking-tight font-dm-sans">
+							<span className="bg-gradient-to-r from-notion-gray-700 via-notion-gray-600 to-notion-gray-700 bg-clip-text text-transparent">
+								{t.subscription.title}
+							</span>
 						</h1>
-						<div className="w-24 h-1 bg-gradient-to-r from-harvard-crimson to-red-600 mx-auto rounded-full shadow-lg"></div>
+						<div className="w-24 h-1 bg-notion-gray-700 mx-auto rounded-full"></div>
 					</div>
 
-					{/* Neo-Brutalism Email Verification Warning */}
+					{/* Email Verification Warning */}
 					{user && !user.email_verified && (
-						<div className="mb-8 bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6 max-w-2xl mx-auto shadow-lg">
+						<div className="mb-8 bg-white rounded-lg border border-gray-100 p-10 max-w-2xl mx-auto shadow-sm hover:shadow-md transition-all duration-300">
 							<div className="flex items-start">
 								<div className="flex-shrink-0">
-									<div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-md">
-										<svg className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+									<div className="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center">
+										<svg className="h-7 w-7 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
 											<path
 												fillRule="evenodd"
 												d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -265,17 +323,17 @@ const AccessSelectionPage: React.FC = () => {
 										</svg>
 									</div>
 								</div>
-								<div className="ml-4 flex-1">
-									<h3 className="text-lg font-semibold text-yellow-800 mb-2">
+								<div className="ml-6 flex-1">
+									<h3 className="text-xl font-bold text-notion-gray-700 font-dm-sans mb-3">
 										{t.subscription.verifyEmailTitle}
 									</h3>
-									<p className="text-yellow-700 mb-4 text-base">
+									<p className="text-notion-gray-600 mb-6 text-base leading-relaxed">
 										{t.subscription.verifyEmailMessage.replace("{email}", user.email)}
 									</p>
 									<button
 										onClick={handleResendVerificationEmail}
 										disabled={resendingEmail}
-										className="bg-yellow-500 text-white px-4 py-2 rounded-xl hover:bg-yellow-600 disabled:opacity-50 transition-all duration-300 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-1"
+										className="bg-amber-500/90 text-white px-8 py-4 rounded-lg hover:bg-amber-600/90 disabled:opacity-50 transition-all duration-300 font-medium"
 									>
 										{resendingEmail ? t.subscription.resendingEmail : t.subscription.resendEmail}
 									</button>
@@ -294,24 +352,24 @@ const AccessSelectionPage: React.FC = () => {
 								shouldShowPlans() === "premium-only" ? "md:grid-cols-1" : "md:grid-cols-2"
 							}`}
 						>
-							{/* Neo-Brutalism Premium Plan */}
-							<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+							{/* Premium Plan */}
+							<div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
 								<div>
-									<h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-4">
+									<h2 className="text-2xl font-bold text-notion-gray-700 mb-6 font-dm-sans">
 										{t.subscription.premiumPlan}
 									</h2>
 
-									<div className="mb-4">
-										<div className="flex items-baseline mb-1">
-											<span className="text-4xl font-bold text-gray-900">990</span>
-											<span className="text-lg text-gray-600 ml-2">RUB</span>
+									<div className="mb-6">
+										<div className="flex items-baseline mb-2">
+											<span className="text-5xl font-bold text-notion-gray-700 font-dm-sans">990</span>
+											<span className="text-xl text-notion-gray-600 ml-2">RUB</span>
 										</div>
-										<span className="text-gray-600">{t.subscription.priceMonth}</span>
+										<span className="text-notion-gray-600 text-base">{t.subscription.priceMonth}</span>
 									</div>
 
-									<ul className="mb-4 space-y-2">
-										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+									<ul className="mb-6 space-y-3">
+										<li className="flex items-center text-notion-gray-600 text-base">
+											<div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -322,8 +380,8 @@ const AccessSelectionPage: React.FC = () => {
 											</div>
 											{t.subscription.unlimitedAccess}
 										</li>
-										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+										<li className="flex items-center text-notion-gray-600 text-base">
+											<div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -334,8 +392,8 @@ const AccessSelectionPage: React.FC = () => {
 											</div>
 											{t.subscription.prioritySupport}
 										</li>
-										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+										<li className="flex items-center text-notion-gray-600 text-base">
+											<div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -346,8 +404,8 @@ const AccessSelectionPage: React.FC = () => {
 											</div>
 											{t.subscription.allFeatures}
 										</li>
-										<li className="flex items-center text-gray-700">
-											<div className="w-5 h-5 bg-gradient-to-r from-harvard-crimson to-red-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+										<li className="flex items-center text-notion-gray-600 text-base">
+											<div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
 												<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 													<path
 														fillRule="evenodd"
@@ -360,19 +418,19 @@ const AccessSelectionPage: React.FC = () => {
 										</li>
 									</ul>
 
-									<div className="mb-4">
-										<label className="flex items-start text-sm">
+									<div className="mb-6">
+										<label className="flex items-start text-base">
 											<input
 												type="checkbox"
 												checked={agreedToRecurring}
 												onChange={(e) => setAgreedToRecurring(e.target.checked)}
 												required
 												disabled={!user?.email_verified}
-												className="mt-1 mr-3 h-4 w-4 text-gradient-to-r from-harvard-crimson to-red-600 border-gray-300 rounded focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600"
+												className="mt-1 mr-3 h-4 w-4 text-notion-gray-700 border-gray-300 rounded focus:ring-notion-gray-700"
 											/>
 											<Link
 												to="/public-offer"
-												className="text-gray-700 hover:text-gray-900 underline"
+												className="text-notion-gray-600 hover:text-notion-gray-700 underline"
 												target="_blank"
 											>
 												{t.subscription.recurringConsent}
@@ -381,29 +439,29 @@ const AccessSelectionPage: React.FC = () => {
 									</div>
 								</div>
 
-								<SubscribeButton agreedToRecurring={true} />
+								<SubscribeButton agreedToRecurring={agreedToRecurring} />
 							</div>
 
-							{/* Neo-Brutalism Trial Plan - показываем только если не "premium-only" */}
+							{/* Trial Plan - показываем только если не "premium-only" */}
 							{shouldShowPlans() !== "premium-only" && (
-								<div className="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+								<div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between">
 									<div>
-										<h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-4">
+										<h2 className="text-2xl font-bold text-notion-gray-700 mb-6 font-dm-sans">
 											{t.subscription.trialPlan}
 										</h2>
 
-										<div className="mb-4">
-											<div className="flex items-baseline mb-1">
-												<span className="text-4xl font-bold text-gray-900">
+										<div className="mb-6">
+											<div className="flex items-baseline mb-2">
+												<span className="text-5xl font-bold text-notion-gray-700 font-dm-sans">
 													{t.subscription.free}
 												</span>
 											</div>
-											<span className="text-gray-600">{t.subscription.days3}</span>
+											<span className="text-notion-gray-600 text-base">{t.subscription.days3}</span>
 										</div>
 
-										<ul className="mb-4 space-y-2">
-											<li className="flex items-center text-gray-700">
-												<div className="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+										<ul className="mb-6 space-y-3">
+											<li className="flex items-center text-notion-gray-600 text-base">
+												<div className="w-6 h-6 bg-notion-gray-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
 													<svg
 														className="w-3 h-3 text-white"
 														fill="currentColor"
@@ -418,8 +476,8 @@ const AccessSelectionPage: React.FC = () => {
 												</div>
 												{t.subscription.fullAccess}
 											</li>
-											<li className="flex items-center text-gray-700">
-												<div className="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center mr-2 shadow-sm">
+											<li className="flex items-center text-notion-gray-600 text-base">
+												<div className="w-6 h-6 bg-notion-gray-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
 													<svg
 														className="w-3 h-3 text-white"
 														fill="currentColor"
@@ -434,6 +492,22 @@ const AccessSelectionPage: React.FC = () => {
 												</div>
 												{t.subscription.tryAllFeatures}
 											</li>
+											<li className="flex items-center text-notion-gray-600 text-base">
+												<div className="w-6 h-6 bg-notion-gray-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+													<svg
+														className="w-3 h-3 text-white"
+														fill="currentColor"
+														viewBox="0 0 20 20"
+													>
+														<path
+															fillRule="evenodd"
+															d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+															clipRule="evenodd"
+														/>
+													</svg>
+												</div>
+												{t.subscription.noCardRequired}
+											</li>
 										</ul>
 									</div>
 
@@ -444,7 +518,7 @@ const AccessSelectionPage: React.FC = () => {
 											!user?.email_verified ||
 											subscription?.trialUsed
 										}
-										className="w-full py-3 px-6 rounded-xl text-lg font-semibold transition-all duration-300 bg-gray-800 text-white hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-md hover:shadow-lg transform hover:-translate-y-1"
+										className="w-full py-3 px-6 rounded-lg text-base font-medium transition-all duration-300 bg-notion-gray-700 text-white hover:bg-notion-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
 									>
 										{!user?.email_verified
 											? t.subscription.verifyEmailButton
@@ -458,33 +532,33 @@ const AccessSelectionPage: React.FC = () => {
 							)}
 						</div>
 					)}
-					{/* Neo-Brutalism Go to Chat Button */}
+					{/* Go to Chat Button */}
 					{subscription?.hasAccess && (
 						<div className="text-center mt-8">
 							<button
 								onClick={() => navigate("/chat")}
-								className="bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-4 px-8 rounded-2xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+								className="bg-notion-gray-700 text-white py-4 px-8 rounded-lg text-base font-medium hover:bg-notion-gray-600 transition-all duration-300"
 							>
 								{t.subscription.goToChatButton}
 							</button>
 						</div>
 					)}
 
-					{/* Neo-Brutalism Success Message */}
+					{/* Success Message - Green Rectangular */}
 					{trialSuccess && (
 						<div className="mt-6 text-center">
-							<div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 max-w-md mx-auto shadow-lg">
-								<div className="flex items-center justify-center mb-2">
-									<div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-2 shadow-sm">
-										<svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+							<div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-md mx-auto shadow-sm">
+								<div className="flex items-center justify-center">
+									<div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-3">
+										<svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
 											<path
 												fillRule="evenodd"
-												d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+												d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
 												clipRule="evenodd"
 											/>
 										</svg>
 									</div>
-									<span className="text-green-800 font-semibold text-lg">
+									<span className="text-green-800 font-medium text-base">
 										{t.subscription.trialActivatedSuccess}
 									</span>
 								</div>

@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import { useNavigate } from "react-router-dom";
 import HomeButton from "../shared/components/HomeButton";
 import { useTranslation } from "../shared/hooks/useTranslation";
+import { useLanguage } from "../shared/hooks/useLanguage";
 import {
 	getUserConversation,
 	createUserConversation,
@@ -87,6 +88,7 @@ interface MessageContent extends Array<ObjectStringItem> {}
  */
 const ChatPage: React.FC = () => {
 	const { t } = useTranslation();
+	const { language, toggleLanguage } = useLanguage();
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [inputText, setInputText] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
@@ -99,6 +101,8 @@ const ChatPage: React.FC = () => {
 		null
 	);
 	const initializationAttempted = useRef(false);
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+	const [inputHeight, setInputHeight] = useState<number>(56);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -107,6 +111,19 @@ const ChatPage: React.FC = () => {
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages, streamingText]);
+
+	// Auto-grow textarea up to half of the viewport height
+	useEffect(() => {
+		const el = textareaRef.current;
+		if (!el) return;
+		el.style.height = "auto";
+		const maxPx = Math.floor(window.innerHeight * 0.5);
+		const nextHeight = Math.min(el.scrollHeight, maxPx);
+		el.style.height = `${nextHeight}px`;
+		setInputHeight(nextHeight);
+		// keep the latest messages visible when input grows
+		scrollToBottom();
+	}, [inputText]);
 
 	// Initialize welcome message when language changes
 	useEffect(() => {
@@ -484,36 +501,47 @@ const ChatPage: React.FC = () => {
 		}
 	};
 
-	return (
-		<div className="h-screen flex flex-col bg-gray-50">
-			{/* Neo-Brutalism Header */}
-			<div className="bg-gray-50 border-b-2 border-gray-200 px-6 py-4 flex justify-between items-center shadow-lg">
+		return (
+			<div className="h-screen flex flex-col bg-[#F8F7F4]">
+			{/* Navigation Header */}
+			<nav className="bg-[#F8F7F4] border-b border-gray-200 px-6 py-3 flex justify-between items-center">
 				<HomeButton />
-				<button
-					onClick={handleClearChat}
-					disabled={isLoading}
-					className="w-10 h-10 flex items-center justify-center bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 rounded-xl"
-					title={t.chat.clearChat}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						className="w-5 h-5"
+				<div className="flex items-center gap-4">
+					<button
+						onClick={toggleLanguage}
+						className="px-3 py-1.5 text-sm text-notion-gray-600 hover:text-notion-gray-700 hover:bg-notion-gray-50 rounded-md transition-colors"
 					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-						/>
-					</svg>
-				</button>
-			</div>
+						{language === 'ru' ? 'EN' : 'RU'}
+					</button>
+					<button
+						onClick={handleClearChat}
+						disabled={isLoading}
+						className="w-8 h-8 flex items-center justify-center text-notion-gray-600 hover:text-notion-gray-700 hover:bg-notion-gray-50 rounded-md transition-colors"
+						title={t.chat.clearChat}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							className="w-5 h-5"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+							/>
+						</svg>
+					</button>
+				</div>
+			</nav>
 
 			{/* Messages Container */}
-			<div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+			<div
+				className="flex-1 overflow-y-auto px-6 py-4 space-y-4 transition-all duration-300 ease-out"
+				style={{ paddingBottom: Math.max(120, inputHeight + 96) }}
+			>
 				{isInitializing && (
 					<div className="flex justify-center items-center h-full">
 						<div className="bg-white border-2 border-gray-200 text-gray-900 px-6 py-4 rounded-xl shadow-lg">
@@ -531,10 +559,10 @@ const ChatPage: React.FC = () => {
 							className={`flex ${message.isUser ? "justify-end" : "justify-start"}`}
 						>
 							<div
-								className={`max-w-3xl px-4 py-3 rounded-xl shadow-lg ${
-									message.isUser
-										? "bg-gradient-to-r from-harvard-crimson to-red-600 text-white border-2 border-gradient-to-r border-from-red-700 border-to-red-800"
-										: "bg-white text-gray-900 border-2 border-gray-200"
+							className={`max-w-3xl px-4 py-3 rounded-xl shadow-lg ${
+								message.isUser
+									? "bg-notion-gray-700 text-white border-2 border-notion-gray-700"
+									: "bg-white text-gray-900 border-2 border-gray-200"
 								}`}
 							>
 								{message.isUser ? (
@@ -668,8 +696,8 @@ const ChatPage: React.FC = () => {
 				<div ref={messagesEndRef} />
 			</div>
 
-			{/* Neo-Brutalism Input Area */}
-			<div className="border-t-2 border-gray-200 px-6 py-4 bg-white shadow-lg">
+			{/* Input Area - Centered Island (fixed overlay) */}
+			<div className="fixed inset-x-0 bottom-0 px-4 py-4 bg-transparent z-50 pointer-events-none">
 				{/* Attached file display - shown above input on mobile */}
 				{attachedFile && (
 					<div className="mb-3 md:hidden">
@@ -701,14 +729,15 @@ const ChatPage: React.FC = () => {
 					</div>
 				)}
 
-				<div className="flex space-x-4">
+				<div className="w-full flex justify-center">
+					<div className="w-full max-w-3xl bg-white border border-gray-200 rounded-2xl shadow-xl px-3 py-3 flex items-end gap-2 pointer-events-auto">
 					{/* Hidden file input */}
 					<input type="file" id="file-upload" className="hidden" onChange={handleFileSelect} />
 					{/* File upload button */}
-					<label
-						htmlFor="file-upload"
-						className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-300 border-2 border-gray-200 hover:border-gray-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
-					>
+						<label
+							htmlFor="file-upload"
+							className="cursor-pointer w-9 h-9 flex items-center justify-center rounded-xl bg-white/90 border border-gray-300 shadow-md hover:bg-gray-50 hover:border-gray-300 transition-colors self-end"
+						>
 						{/* Plus in circle icon (Material Icons) */}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -716,7 +745,7 @@ const ChatPage: React.FC = () => {
 							fill="none"
 							stroke="currentColor"
 							strokeWidth="2"
-							className="w-7 h-7 text-gray-700"
+								className="w-5 h-5 text-gray-600"
 						>
 							<circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" fill="none" />
 							<path
@@ -727,18 +756,19 @@ const ChatPage: React.FC = () => {
 							/>
 						</svg>
 					</label>
-					<textarea
+						<textarea
+							ref={textareaRef}
 						value={inputText}
 						onChange={(e) => setInputText(e.target.value)}
 						onKeyPress={handleKeyPress}
 						placeholder={t.chat.placeholder}
-						className="flex-1 resize-none rounded-xl border-2 border-gray-200 px-4 py-2 focus:border-gradient-to-r focus:border-from-harvard-crimson focus:border-to-red-600 focus:outline-none focus:ring-1 focus:ring-gradient-to-r focus:ring-from-harvard-crimson focus:ring-to-red-600 shadow-md"
+							className="flex-1 resize-none rounded-xl border-0 px-3 py-2 focus:outline-none focus:ring-0 bg-transparent leading-6 max-h-[50vh] overflow-y-auto"
 						rows={1}
 						disabled={isLoading}
 					/>
 					{/* Desktop file display - shown inline on desktop */}
-					{attachedFile && (
-						<div className="hidden md:flex items-center space-x-2 px-2 py-1 bg-white border-2 border-gray-200 rounded-xl text-gray-800 shadow-md">
+						{attachedFile && (
+							<div className="hidden md:flex items-center space-x-2 px-2 py-1 bg-gray-50 border border-gray-200 rounded-xl text-gray-800 self-end">
 							{/* File icon */}
 							<div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-gradient-to-r from-harvard-crimson to-red-600 text-white rounded">
 								{/* Simple text icon based on extension or type */}
@@ -765,16 +795,14 @@ const ChatPage: React.FC = () => {
 							</button>
 						</div>
 					)}
-					<button
+						<button
 						onClick={() => handleSendMessage()}
 						disabled={isLoading || (!inputText.trim() && !attachedFile)}
-						className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 border-2 shadow-md hover:shadow-lg transform hover:-translate-y-1
-              ${
+							className={`w-9 h-9 flex items-center justify-center rounded-xl transition-colors border shadow-md self-end ${
 								isLoading || (!inputText.trim() && !attachedFile)
-									? "border-gray-200 bg-gray-50"
-									: "border-gradient-to-r border-from-harvard-crimson border-to-red-600 bg-white hover:bg-gray-50"
-							}
-            `}
+									? "bg-white/90 border-gray-300"
+									: "bg-notion-gray-700 border-notion-gray-700 hover:bg-notion-gray-600"
+							}`}
 						title={t.chat.send}
 					>
 						{/* Send (paper plane) icon */}
@@ -784,13 +812,11 @@ const ChatPage: React.FC = () => {
 							fill="none"
 							stroke="currentColor"
 							strokeWidth="2"
-							className={`w-7 h-7 transition-colors
-              ${
+							className={`w-5 h-5 transition-colors ${
 								isLoading || (!inputText.trim() && !attachedFile)
 									? "text-gray-400"
-									: "text-gradient-to-r from-harvard-crimson to-red-600"
-							}
-            `}
+									: "text-white"
+							}`}
 						>
 							<polygon
 								points="3 20 21 12 3 4 7 12 3 20"
@@ -800,7 +826,8 @@ const ChatPage: React.FC = () => {
 								fill="none"
 							/>
 						</svg>
-					</button>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

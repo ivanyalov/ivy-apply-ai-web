@@ -37,6 +37,11 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 			return;
 		}
 
+		if (!agreedToRecurring) {
+			alert("Пожалуйста, согласитесь с условиями автоматического продления подписки");
+			return;
+		}
+
 		// Проверяем доступность CloudPayments
 		if (typeof window.cp === "undefined") {
 			console.error("❌ CloudPayments не загружен!");
@@ -44,138 +49,32 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 			return;
 		}
 
-		// Проверяем Public ID
-		if (!publicId || publicId === "test_api_00000000000000000000002") {
-			console.warn("⚠️ Используется тестовый Public ID. TransactionId может не возвращаться.");
-		}
-
 		console.log("✅ CloudPayments доступен:", window.cp);
-		console.log("📋 Доступные методы:", Object.keys(window.cp));
 		console.log("📋 Public ID:", publicId);
 
 		setIsLoading(true);
 
 		try {
-			// Создаем виджет CloudPayments согласно документации
-			const payments = new window.cp.CloudPayments({
-				yandexPaySupport: false,
-				applePaySupport: false,
-				googlePaySupport: false,
-				masterPassSupport: false,
-				tinkoffInstallmentSupport: false,
+			console.log("🚀 Запускаем CloudPayments...");
+			
+			// Самый простой способ - как в оригинале
+			const widget = new window.cp.CloudPayments();
+			console.log("✅ Виджет создан:", widget);
+			
+			// Пробуем открыть виджет напрямую
+			widget.pay({
+				publicId: publicId,
+				description: "Подписка Ivy Apply AI",
+				amount: 990,
+				currency: "RUB",
+				invoiceId: "subscription-" + Date.now(),
+				accountId: user.id,
+				skin: "classic",
+				data: {}
 			});
-			console.log("✅ Виджет CloudPayments создан:", payments);
-
-			// Настраиваем событие oncomplete согласно документации
-			payments.oncomplete = (result: any) => {
-				console.log("🔄 oncomplete событие вызвано!", result);
-
-				// Проверяем успешность платежа - используем status вместо success
-				if (result && result.status === "success") {
-					console.log("✅ Платеж успешен!", result);
-
-					// Извлекаем данные для отправки на бэкэнд
-					const paymentData: CloudPaymentsResponse = {
-						transactionId:
-							result.data?.transactionId ||
-							result.transactionId ||
-							result.id ||
-							`transaction_${Date.now()}`,
-						subscriptionId: result.subscriptionId || result.subscription?.id,
-						status: "Completed",
-						amount: 990,
-						currency: "RUB",
-						token: result.token,
-					};
-
-					console.log("💾 Готовим данные для отправки:", paymentData);
-
-					// Отправляем данные на бэкэнд
-					handlePaymentSuccessWrapper(paymentData);
-				} else {
-					console.log("❌ Платеж не удался", result);
-					setIsLoading(false);
-				}
-			};
-
-			// Создаем чек для подписки согласно документации
-			const receipt = {
-				Items: [
-					{
-						label: "Подписка Ivy Apply AI - ежемесячный доступ",
-						price: 990.0,
-						quantity: 1.0,
-						amount: 990.0,
-						vat: 20,
-						method: 0,
-						object: 0,
-					},
-				],
-				taxationSystem: 0,
-				email: user.email,
-				phone: "",
-				isBso: false,
-				amounts: {
-					electronic: 990.0,
-					advancePayment: 0.0,
-					credit: 0.0,
-					provision: 0.0,
-				},
-			};
-
-			// Создаем данные для ОБЫЧНОГО платежа (установочный платеж)
-			const data = {
-				CloudPayments: {
-					CustomerReceipt: receipt,
-				},
-			};
-
-			console.log("💳 Запускаем установочный платеж для подписки...");
-
-			// Обычный платеж БЕЗ параметра recurrent
-			payments
-				.pay("charge", {
-					publicId: publicId,
-					description: "Подписка Ivy Apply AI - установочный платеж",
-					amount: 990,
-					currency: "RUB",
-					invoiceId: "subscription-setup-" + Date.now(),
-					accountId: user.id, // Добавляем для связи с пользователем
-					data: data,
-				})
-				.then((result: any) => {
-					if (result.type === "cancel" || result.type === "error") {
-						console.log("❌ Платеж отменен", result);
-						setIsLoading(false);
-						return;
-					}
-
-					// Виджет НЕ создает подписку, только получает токен
-					console.log("✅ Первый платеж успешен, токен сохранен!", result);
-
-					// Webhook получит Token и создаст подписку через API
-					// Здесь мы получаем только transactionId
-					const paymentData: CloudPaymentsResponse = {
-						transactionId:
-							result.data?.transactionId ||
-							result.transactionId ||
-							result.id ||
-							`transaction_${Date.now()}`,
-						status: "Completed",
-						amount: 990,
-						currency: "RUB",
-						// subscriptionId будет создан в webhook через API
-					};
-
-					handlePaymentSuccessWrapper(paymentData);
-				})
-				.catch((error: any) => {
-					console.error("❌ Ошибка при обработке платежа:", error);
-					alert("Ошибка при обработке платежа. Попробуйте снова.");
-					setIsLoading(false);
-				});
-
+			
 			console.log("✅ Виджет CloudPayments запущен");
+			
 		} catch (error) {
 			console.error("❌ Ошибка при создании виджета CloudPayments:", error);
 			alert("Ошибка при запуске платежной формы. Попробуйте обновить страницу.");
@@ -183,23 +82,18 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 		}
 	};
 
-	// Обработка успешного платежа через useSubscription хук
+	// Обработка успешного платежа
 	const handlePaymentSuccessWrapper = async (paymentData: CloudPaymentsResponse) => {
 		try {
 			console.log("💾 Processing payment success:", paymentData);
 
-			// Используем хук для отправки данных на бэкэнд
-			const result = await handlePaymentSuccess({
+			await handlePaymentSuccess({
 				...paymentData,
 				accountId: user?.id || "",
 			});
 
 			console.log("✅ Payment processed successfully");
-
-			// Показываем уведомление об успешном сохранении
 			alert("Подписка успешно оформлена!");
-
-			// Обновляем страницу или состояние приложения
 			window.location.reload();
 		} catch (error) {
 			console.error("❌ Error processing payment:", error);
@@ -212,10 +106,10 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 	return (
 		<button
 			onClick={handleCloudPayments}
-			className={`w-full py-3 px-6 rounded-xl text-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 ${
+			className={`w-full py-3 px-6 rounded-lg text-base font-medium transition-all duration-300 ${
 				agreedToRecurring && user?.email_verified && !isLoading
-					? "bg-gradient-to-r from-harvard-crimson to-red-600 text-white hover:from-red-700 hover:to-red-800"
-					: "bg-gray-300 text-gray-500 cursor-not-allowed"
+					? "bg-notion-gray-700 text-white hover:bg-notion-gray-600"
+					: "bg-notion-gray-700/30 text-notion-gray-500 cursor-not-allowed opacity-60"
 			}`}
 		>
 			{!user?.email_verified

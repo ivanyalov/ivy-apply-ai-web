@@ -19,6 +19,7 @@ const port = process.env.PORT || 8000; // Backend typically runs on a different 
 app.use(cors());
 app.use(express.json()); // Middleware to parse JSON bodies
 
+
 // Enable CORS
 app.use((req: Request, res: Response, next: NextFunction): void => {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -52,6 +53,16 @@ app.use("/api/conversation", conversationRoutes);
 // Health check endpoint
 app.get("/health", (req, res) => {
 	res.json({ status: "ok" });
+});
+
+// Content Security Policy for CloudPayments - TEMPORARILY PERMISSIVE FOR TESTING
+app.use((req: Request, res: Response, next: NextFunction): void => {
+	// Very permissive CSP for testing
+	const cspHeader = "default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src *; frame-src *; frame-ancestors *; style-src * 'unsafe-inline'; font-src *; img-src *; object-src *; base-uri *; form-action *;";
+	
+	console.log("Setting PERMISSIVE CSP header:", cspHeader);
+	res.setHeader("Content-Security-Policy", cspHeader);
+	next();
 });
 
 // Error handling middleware

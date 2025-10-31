@@ -8,25 +8,76 @@ export const en = {
 			startButton: "Start Chat",
 			subscriptionButton: "Subscription",
 			badge: "AI-Powered University Admissions",
+			valueProp1: "Get into your dream<br />university with AI",
+			valueProp2: "Extensive knowledge base<br />specifically for you",
 		},
-		features: {
-			title: "What you get",
-			item1: {
-				title: "Program list"
+		about: {
+			title: "What is Ivy Apply AI?",
+			description: "Ivy Apply AI is a personalized AI chatbot created specifically for university admissions. Unlike regular AI assistants, Ivy helps applicants find suitable universities for their specific profile, develop strategic solutions for document submission, and edit motivation letters in any language.",
+			description2: "Studying abroad is a huge stress: thousands of universities, endless requirements, conditions and deadlines - Ivy will help systematize information, build a personal track and create a deadline table for each area of work. Use the latest technologies and get maximum useful information.",
+			pricing: "For $10/month Ivy Apply AI gives you access to an extensive knowledge base. Unlimited questions. Unlimited help. No waiting.",
+			trial: "Try free for 3 days — no card required.",
+			feature1: {
+				title: "Ivy Apply AI is a personalized AI chatbot, created specifically for admission to your dream university.",
+				subtitle: "Unlike regular AI assistants, Ivy helps applicants:",
+				items: [
+					"Find the best universities for your profile",
+					"Develop strategic solutions for document submission", 
+					"Edit motivation letters in any language"
+				]
 			},
-			item2: {
-				title: "Plan and deadlines"
+			feature2: {
+				title: "Studying abroad is a huge stress: thousands of universities, endless requirements, conditions and deadlines.",
+				subtitle: "Ivy will help:",
+				items: [
+					"Systematize information",
+					"Build a personal track",
+					"Create a deadline table for each area of work"
+				]
+			}
+		},
+		comparison: {
+			title: "Ivy Apply AI vs Regular AI",
+			ordinaryAI: "Regular AI",
+			withIvy: "With Ivy Apply AI",
+			row1: {
+				ordinary: "You spend a lot of time finding answers",
+				ivy: "You discuss every question with Ivy and get personalized solutions"
 			},
-			item3: {
-				title: "Essay edits"
+			row2: {
+				ordinary: "3-4 weeks searching for universities on Google",
+				ivy: "Personalized list in 30 minutes"
 			},
-			item4: {
-				title: "Chat support"
+			row3: {
+				ordinary: "It's hard to write a convincing motivation letter",
+				ivy: "Ivy helps write a unique motivation letter in any language"
 			},
-			bottomTagline: "All this and much more in one service"
+			row4: {
+				ordinary: "Only enough willpower for 3-5 applications",
+				ivy: "You apply to 10-15 universities without burnout"
+			},
+			summary: "Result: You move from uncontrolled chaos to confidence. From months of work to weeks."
+		},
+		pricing: {
+			title: "Ready to start?",
+			description: "Try Ivy Apply AI free for 3 days. No card required. No risk.",
+			pricing: "$10/month",
+			trial: "3-day free trial, no card required",
+			monthly: "/month",
+			features: "Unlimited questions, personalized recommendations, essay editing, university matching",
+			startButton: "Start Free Trial",
+			unlimitedAccess: "You get unlimited access to:",
+			featuresList: [
+				"University search",
+				"Number of questions to Ivy Apply AI",
+				"Motivation letters in any language",
+				"Application assistance",
+				"No card required"
+			],
+			cancelAnytime: "Cancel anytime"
 		},
 		howItWorks: {
-			title: "How it works",
+			title: "How Ivy Apply AI works",
 			step1: {
 				title: "Define goals",
 				description: "establish country, deadlines, budget and priorities",
@@ -43,13 +94,46 @@ export const en = {
 				title: "Guide to application",
 				description: "application iterations, chat support and final package review",
 			},
+			userQuestion: "Your request: Which universities match my profile X and budget X?",
+			example: "Example: I'm 18 years old, GPA 4.2, and I want to study computer science. Budget $30,000 per year. Interested in cities with tech companies in the US. Which universities would be right for me?",
+			aiResponse: "Ivy Apply AI: Develops a clear plan",
+			description: "You can spend weeks searching among thousands of universities and still not understand where to apply. Tell Ivy about yourself (GPA, interests, budget, goals, opportunities and limitations, language skills and sports or social achievements). The program will analyze thousands of options and provide a personalized list with admission requirements, cost, deadlines, list of required documents and why each university is suitable for YOU.",
+			step1Title: "Your request: Which universities match my profile X and budget X?",
+			step1Example: "Example:",
+			step1ExampleText: "I'm 18 years old, GPA 4.2, and I want to study computer science. Budget $30,000 per year. Interested in cities with tech companies in the US. Which universities would be right for me?",
+			step2Title: "Ivy Apply AI: Develops a clear plan",
+			step2Description: "You can spend weeks searching among thousands of universities and still not understand where to apply.",
+			step2TellIvy: "🔍 Tell Ivy about yourself:",
+			step2List: [
+				"GPA",
+				"Interests", 
+				"Budget",
+				"Goals",
+				"Opportunities and limitations",
+				"Language skills",
+				"Sports or social achievements"
+			],
+			step2Analysis: "The program will analyze thousands of options and provide:",
+			step2Results: [
+				"✓ Personalized list of universities",
+				"✓ Admission requirements",
+				"✓ Tuition costs",
+				"✓ Application deadlines",
+				"✓ List of required documents",
+				"✓ Individual explanation of why each university is suitable for you"
+			]
 		},
 		forYou: {
-			title: "For you",
-			benefit1: "**Undergraduate and Graduate**",
-			benefit2: "**Study Abroad**",
-			benefit3: "**Independent Application**",
-			benefit4: "**Need a Clear Plan**",
+			title: "Ivy Apply AI for you?",
+			subtitle: "This is for you, if:",
+			yes1: "You love working with modern technologies",
+			yes2: "Want to get into your dream foreign university",
+			yes3: "Ready to share your story, give feedback, maintain your motivation",
+			yes4: "You want unlimited help without hourly limits or scheduled meetings",
+			subtitleNo: "This is NOT for you, if:",
+			no1: "You want someone to do absolutely everything for you",
+			no2: "You find AI technologies difficult",
+			note: "Remember, Ivy is a powerful assistant, not a magic wand"
 		},
 		whyUs: {
 			title: "Why us",
@@ -59,20 +143,25 @@ export const en = {
 		faq: {
 			title: "Frequently Asked Questions",
 			q1: {
-				question: "How does the AI assistant work?",
-				answer:
-					"Our AI is based on advanced language models specifically trained for university admission consulting. It can analyze documents, answer questions, and provide personalized recommendations.",
+				question: "Will universities know I used AI to write my motivation letter?",
+				answer: "Ivy writes a draft based on your story. You edit, personalize, and make it yours. Think of it as if you showed your letter to a friend or took writing lessons from a tutor. Remember, universities expect sincere and well-written letters first and foremost."
 			},
 			q2: {
-				question: "Is my data secure?",
-				answer:
-					"Yes, we take data security seriously. All uploaded documents and conversations are encrypted.",
+				question: "How is Ivy different from a regular consultant?",
+				answer: "Consultants provide limited hours, scheduled meetings, and work with you one-on-one. Ivy Apply AI gives you access to an extensive database 24/7 – ask questions anytime, search unlimited universities, practice writing motivation letters in any language. Yes, a consultant knows you personally. Ivy gets to know you through conversations and gives strategic advice based on data from thousands of successful admissions."
 			},
 			q3: {
-				question: "What types of documents can I upload?",
-				answer:
-					"You can upload essays, transcripts, recommendation letters, and other admission-related documents in various formats.",
+				question: "Is there a free trial period?",
+				answer: "Yes. 3 days, completely free. No card required. Use it to search for universities, ask strategic questions, and start your motivation letter. After 3 days, decide if you want to continue."
 			},
+			q4: {
+				question: "What if I don't get into any university?",
+				answer: "We cannot guarantee admission — that decision ultimately rests with the universities. However, Ivy Apply AI helps you find the right universities, make strategic decisions, and submit strong applications. Follow our recommendations, submit documents on time to your target universities, and maximize your chances of acceptance."
+			},
+			q5: {
+				question: "What languages does Ivy Apply AI support?",
+				answer: "Ivy understands and writes in any language – communicate in the most convenient way for you. Interface is in Russian and English. Need motivation letters in English? Or maybe German? French? Spanish? Ivy writes fluently in any language!"
+			}
 		},
 		footer: {
 			title: "Ivy Apply AI",
@@ -214,6 +303,8 @@ export const en = {
 		subscriptionActive: "Your subscription is active until",
 		goToChat: "Go to Chat",
 		cancelSubscription: "Cancel Subscription",
+		cancelTrial: "End Free Trial",
+		cancelSubscriptionText: "Stop Subscription",
 		confirmCancel: "Are you sure you want to cancel your subscription?",
 		confirmCancelTitle: "Cancel Subscription",
 		confirmCancelMessage:
@@ -256,6 +347,7 @@ export const en = {
 		days3: "/ 3 days",
 		fullAccess: "Full access to AI chat",
 		tryAllFeatures: "Try all features",
+		noCardRequired: "No card required",
 		trialAlreadyUsedButton: "Trial period already used",
 		trialCurrentlyUsedButton: "Trial period in use",
 		startTrialButton: "Start trial period",

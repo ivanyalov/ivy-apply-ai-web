@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudPayments Widget Test</title>
+    <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
+</head>
+<body>
+    <h1>CloudPayments Widget Test</h1>
+    <button id="testButton">Test Payment</button>
+    
+    <script>
+        document.getElementById('testButton').addEventListener('click', function() {
+            console.log('Testing CloudPayments widget...');
+            
+            if (typeof window.cp === 'undefined') {
+                console.error('CloudPayments not loaded');
+                alert('CloudPayments not loaded');
+                return;
+            }
+            
+            console.log('CloudPayments available:', window.cp);
+            
+            try {
+                const widget = new window.cp.CloudPayments();
+                console.log('Widget created:', widget);
+                
+                widget.pay('charge', {
+                    publicId: 'pk_51336d8ac8529afe046f754893a1e',
+                    description: 'Test Payment',
+                    amount: 100,
+                    currency: 'RUB',
+                    invoiceId: 'test-' + Date.now()
+                });
+                
+                console.log('Payment initiated');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
+
+

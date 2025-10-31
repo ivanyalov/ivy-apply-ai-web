@@ -4,7 +4,7 @@
 
 **Почта для связи:**
 
-[ivv.apply.ai@gmail.com](mailto:ivv.apply.ai@gmail.com)
+[ivy.apply.ai@gmail.com](mailto:ivy.apply.ai@gmail.com)
 
 *Этот адрес предназначен для любых обращений:*
 

@@ -1,0 +1,15 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://widget.cloudpayments.ru https://forma.tinkoff.ru https://pay.google.com https://pay.yandex.ru; connect-src 'self' https://widget.cloudpayments.ru https://intent-api.cloudpayments.ru https://api.cloudpayments.ru https://api2.amplitude.com/ https://static.cloudpayments.ru https://static-stage.cloudpayments.ru https://pay.google.com https://google.com https://www.google.com https://pay.yandex.ru https://api-statist.dev-tcsgroup.io https://api-statist.tinkoff.ru https://forma.tinkoff.ru; frame-src 'self' https://widget.cloudpayments.ru; frame-ancestors 'self' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; object-src 'none'; base-uri 'self'; form-action 'self' https://widget.cloudpayments.ru;"
+        }
+      ]
+    }
+  ]
+}
+
+

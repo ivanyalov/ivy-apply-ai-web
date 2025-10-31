@@ -4,6 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { authService } from "../shared/api/auth";
 import { useAuth } from "../shared/hooks/useAuth";
 import { useTranslation } from "../shared/hooks/useTranslation";
+import { useLanguage } from "../shared/hooks/useLanguage";
+import { useSubscription } from "../shared/hooks/useSubscription";
 
 const EmailVerificationPage: React.FC = () => {
 	const [searchParams] = useSearchParams();
@@ -11,6 +13,8 @@ const EmailVerificationPage: React.FC = () => {
 	const queryClient = useQueryClient();
 	const { user, signout } = useAuth();
 	const { t } = useTranslation();
+	const { language, toggleLanguage } = useLanguage();
+	const { subscription } = useSubscription();
 	const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
 	const [message, setMessage] = useState("");
 	const [resendLoading, setResendLoading] = useState(false);
@@ -168,105 +172,156 @@ const EmailVerificationPage: React.FC = () => {
 		navigate("/");
 	};
 
+	const handleStart = () => {
+		if (subscription?.hasAccess) {
+			navigate('/chat');
+		} else {
+			navigate('/access');
+		}
+	};
+
+	const handleSubscription = () => {
+		navigate('/access');
+	};
+
 	return (
-		<div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-			<div className="max-w-md w-full space-y-8">
-				<div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-lg">
-					<div className="text-center">
-						<h2 className="mt-6 text-3xl font-bold text-gray-900">{t.emailVerification.title}</h2>
+		<div className="min-h-screen bg-notion-gray-50">
+			{/* Navigation */}
+			<nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50">
+				<div className="w-full px-6 py-3 flex justify-between items-center">
+					{/* Home Icon */}
+					<button
+						onClick={() => navigate('/')}
+						className="text-notion-gray-700 hover:text-notion-gray-600 transition-colors"
+						aria-label="Go to home page"
+					>
+						<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+						</svg>
+					</button>
+
+					<div className="flex items-center gap-4">
+						<button
+							onClick={toggleLanguage}
+							className="px-3 py-1.5 text-sm text-notion-gray-600 hover:text-notion-gray-700 hover:bg-notion-gray-50 rounded-md transition-colors"
+						>
+							{language === 'ru' ? 'EN' : 'RU'}
+						</button>
+						<button
+							onClick={handleSubscription}
+							className="px-4 py-1.5 text-sm font-medium text-notion-gray-700 bg-white border border-notion-gray-300 hover:bg-notion-gray-50 rounded-md transition-colors"
+						>
+							{t.landing.hero.subscriptionButton}
+						</button>
+						<button
+							onClick={handleStart}
+							className="px-4 py-1.5 text-sm font-medium text-white bg-notion-gray-700 hover:bg-notion-gray-600 rounded-md transition-colors"
+						>
+							{t.landing.hero.startButton}
+						</button>
 					</div>
-					{status === "loading" && (
+				</div>
+			</nav>
+
+			<div className="flex items-center justify-center min-h-screen pt-20 pb-20 px-6">
+				<div className="max-w-md w-full">
+					<div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm hover:shadow-md transition-all duration-300">
 						<div className="text-center">
-							<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gradient-to-r from-harvard-crimson to-red-600 mx-auto"></div>
-							<p className="mt-4 text-gray-600">{t.emailVerification.verifying}</p>
+							<h2 className="text-3xl font-bold text-notion-gray-700 mb-6 font-dm-sans">{t.emailVerification.title}</h2>
 						</div>
-					)}
-
-					{status === "success" && (
-						<div className="text-center">
-							<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-xl bg-green-50 border-2 border-green-200 shadow-md mb-6 mt-8">
-								<svg
-									className="h-6 w-6 text-green-600"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth={2}
-										d="M5 13l4 4L19 7"
-									/>
-								</svg>
+						{status === "loading" && (
+							<div className="text-center">
+								<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-notion-gray-700 mx-auto"></div>
+								<p className="mt-4 text-notion-gray-600">{t.emailVerification.verifying}</p>
 							</div>
-							<h3 className="text-lg font-medium text-gray-900 mb-6">{t.emailVerification.successTitle}</h3>
-							<div>
-								<button
-									onClick={handleContinue}
-									className="w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-4 border-2 border-gradient-to-r border-from-red-700 border-to-red-800 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 hover:border-gradient-to-r hover:border-from-red-700 hover:border-to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
-								>
-									{t.emailVerification.continueButton}
-								</button>
-							</div>
-						</div>
-					)}
+						)}
 
-					{status === "error" && (
-						<div className="text-center">
-							<div className="mx-auto flex items-center justify-center h-12 w-12 rounded-xl bg-red-50 border-2 border-red-200 shadow-md">
-								<svg
-									className="h-6 w-6 text-red-600"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth={2}
-										d="M6 18L18 6M6 6l12 12"
-									/>
-								</svg>
-							</div>
-							<h3 className="mt-4 text-lg font-medium text-gray-900">{t.emailVerification.errorTitle}</h3>
-							<p className="mt-2 text-sm text-gray-600">{message}</p>
-
-							{user && !user.email_verified && (
-								<div className="mt-6 space-y-3">
-									<button
-										onClick={handleResendEmail}
-										disabled={resendLoading}
-										className="w-full bg-gray-600 text-white py-3 px-4 border-2 border-gray-700 rounded-xl text-lg font-semibold hover:bg-gray-700 hover:border-gray-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+						{status === "success" && (
+							<div className="text-center">
+								<div className="mx-auto flex items-center justify-center w-16 h-16 bg-green-100 rounded-xl mb-6">
+									<svg
+										className="w-8 h-8 text-green-600"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
 									>
-										{resendLoading ? t.emailVerification.resendingButton : t.emailVerification.resendButton}
-									</button>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M5 13l4 4L19 7"
+										/>
+									</svg>
+								</div>
+								<h3 className="text-xl font-semibold text-notion-gray-700 mb-8 font-dm-sans">{t.emailVerification.successTitle}</h3>
+								<div>
 									<button
-										onClick={handleLogout}
-										className="w-full bg-white border-2 border-gray-200 text-gray-900 py-3 px-4 rounded-xl text-lg font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+										onClick={handleContinue}
+										className="w-full bg-notion-gray-700 text-white py-3 px-4 rounded-lg text-base font-medium hover:bg-notion-gray-600 transition-all duration-300"
 									>
-										{t.emailVerification.logoutButton}
+										{t.emailVerification.continueButton}
 									</button>
 								</div>
-							)}
+							</div>
+						)}
 
-							{!user && (
-								<div className="mt-6 space-y-3">
-									<Link
-										to="/login"
-										className="block w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-4 border-2 border-gradient-to-r border-from-red-700 border-to-red-800 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 hover:border-gradient-to-r hover:border-from-red-700 hover:border-to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center"
+						{status === "error" && (
+							<div className="text-center">
+								<div className="mx-auto flex items-center justify-center w-16 h-16 bg-red-100 rounded-xl mb-6">
+									<svg
+										className="w-8 h-8 text-red-600"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
 									>
-										{t.emailVerification.loginButton}
-									</Link>
-									<Link
-										to="/register"
-										className="block w-full bg-gradient-to-r from-harvard-crimson to-red-600 text-white py-3 px-4 border-2 border-gradient-to-r border-from-red-700 border-to-red-800 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 hover:border-gradient-to-r hover:border-from-red-700 hover:border-to-red-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center"
-									>
-										{t.emailVerification.registerButton}
-									</Link>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M6 18L18 6M6 6l12 12"
+										/>
+									</svg>
 								</div>
-							)}
-						</div>
-					)}
+								<h3 className="text-xl font-semibold text-notion-gray-700 mb-4 font-dm-sans">{t.emailVerification.errorTitle}</h3>
+								<p className="text-sm text-notion-gray-600 mb-8">{message}</p>
+
+								{user && !user.email_verified && (
+									<div className="space-y-3">
+										<button
+											onClick={handleResendEmail}
+											disabled={resendLoading}
+											className="w-full bg-amber-500/90 text-white py-3 px-4 rounded-lg text-base font-medium hover:bg-amber-600/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+										>
+											{resendLoading ? t.emailVerification.resendingButton : t.emailVerification.resendButton}
+										</button>
+										<button
+											onClick={handleLogout}
+											className="w-full bg-notion-gray-700 text-white py-3 px-4 rounded-lg text-base font-medium hover:bg-notion-gray-600 transition-all duration-300"
+										>
+											{t.emailVerification.logoutButton}
+										</button>
+									</div>
+								)}
+
+								{!user && (
+									<div className="space-y-3">
+										<Link
+											to="/login"
+											className="block w-full bg-notion-gray-700 text-white py-3 px-4 rounded-lg text-base font-medium hover:bg-notion-gray-600 transition-all duration-300 text-center"
+										>
+											{t.emailVerification.loginButton}
+										</Link>
+										<Link
+											to="/register"
+											className="block w-full bg-notion-gray-700 text-white py-3 px-4 rounded-lg text-base font-medium hover:bg-notion-gray-600 transition-all duration-300 text-center"
+										>
+											{t.emailVerification.registerButton}
+										</Link>
+									</div>
+								)}
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
