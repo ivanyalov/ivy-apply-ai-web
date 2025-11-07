@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../shared/hooks/useAuth";
 import { useSubscription } from "../../shared/hooks/useSubscription";
 import { useTranslation } from "../../shared/hooks/useTranslation";
+import { cloudPaymentsService } from "../../shared/services/cloudpayments.service";
 
 const publicId = import.meta.env.VITE_CLOUDPAYMENTS_PUBLIC_ID;
 
@@ -31,7 +32,7 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 	const { t } = useTranslation();
 	const { handlePaymentSuccess } = useSubscription();
 
-	const handleCloudPayments = () => {
+	const handleCloudPayments = async () => {
 		if (!user?.id) {
 			alert("Пожалуйста, войдите в систему для оформления подписки");
 			return;
@@ -43,13 +44,13 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 		}
 
 		// Проверяем доступность CloudPayments
-		if (typeof window.cp === "undefined") {
+		if (!cloudPaymentsService.isWidgetAvailable()) {
 			console.error("❌ CloudPayments не загружен!");
 			alert("Ошибка: CloudPayments не загружен. Обновите страницу и попробуйте снова.");
 			return;
 		}
 
-		console.log("✅ CloudPayments доступен:", window.cp);
+		console.log("✅ CloudPayments доступен");
 		console.log("📋 Public ID:", publicId);
 
 		setIsLoading(true);
@@ -57,23 +58,34 @@ const SubscribeButton: React.FC<SubscribeButtonProps> = ({ agreedToRecurring }) 
 		try {
 			console.log("🚀 Запускаем CloudPayments...");
 			
-			// Самый простой способ - как в оригинале
-			const widget = new window.cp.CloudPayments();
-			console.log("✅ Виджет создан:", widget);
-			
-			// Пробуем открыть виджет напрямую
-			widget.pay({
-				publicId: publicId,
-				description: "Подписка Ivy Apply AI",
+			// Используем сервис для создания подписки
+			const result = await cloudPaymentsService.createMonthlySubscription({
 				amount: 990,
-				currency: "RUB",
-				invoiceId: "subscription-" + Date.now(),
+				description: "Подписка Ivy Apply AI",
 				accountId: user.id,
-				skin: "classic",
-				data: {}
+				email: user.email,
+				invoiceId: "subscription-" + Date.now(),
 			});
 			
-			console.log("✅ Виджет CloudPayments запущен");
+			console.log("✅ Результат платежа:", result);
+			
+			if (result.success) {
+				// Обрабатываем успешный платеж
+				await handlePaymentSuccessWrapper({
+					transactionId: result.data?.TransactionId || result.data?.Id || "",
+					subscriptionId: result.data?.SubscriptionId,
+					status: "Success",
+					amount: 990,
+					currency: "RUB",
+					token: result.token,
+				});
+			} else {
+				console.error("❌ Ошибка платежа:", result.error);
+				if (result.error !== "Widget closed") {
+					alert(`Ошибка платежа: ${result.error}`);
+				}
+				setIsLoading(false);
+			}
 			
 		} catch (error) {
 			console.error("❌ Ошибка при создании виджета CloudPayments:", error);
